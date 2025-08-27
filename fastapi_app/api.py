@@ -28,6 +28,10 @@ class Attachement(BaseModel):
 def read_root():
     return {"message": "Welcome to my FastAPI base project!"}
 
+@app.get("/home")
+def read_root():
+    return {"message": "Welcome to the homepage!"}
+
 # Example GET
 @app.get("/ping")
 def ping():

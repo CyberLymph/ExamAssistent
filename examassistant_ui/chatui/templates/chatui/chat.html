@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ExamAssistant · Chat</title>
+    <link rel="stylesheet" href="/static/chatui/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <section class="chat">
+        <header class="chat__header">
+          <h1>ExamAssistant · Chat</h1>
+          <small>minimal: Text + PDF</small>
+        </header>
+
+        <div id="messages" class="chat__messages"></div>
+
+        <form id="form" class="chat__form">
+          <div class="row">
+            <label class="file">
+              <input id="file" type="file" accept="application/pdf" />
+              <span>PDF anhängen</span>
+            </label>
+            <span id="uploadStatus" class="muted"></span>
+          </div>
+
+          <div class="row">
+            <textarea id="input" placeholder="Frag mich etwas…"></textarea>
+            <button id="send" type="submit">Senden</button>
+          </div>
+          {% csrf_token %}
+        </form>
+      </section>
+    </main>
+
+    <script>
+      function getCookie(name){const v=document.cookie.match('(?:^|; )'+name+'=([^;]*)');return v?decodeURIComponent(v[1]):null}
+      window.CSRF_TOKEN = getCookie('csrftoken');
+    </script>
+    <script src="/static/chatui/chat.js"></script>
+  </body>
+</html>
