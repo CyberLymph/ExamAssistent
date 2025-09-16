@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import uvicorn
-from deepseek import DeepSeekWrapper
+from mistral import MistralWrapper # from mistral import mistralWrapper
 
-wrapper = DeepSeekWrapper()
+wrapper = MistralWrapper()
 
 # Create FastAPI app
 app = FastAPI(title="My API Base", version="1.0.0")
@@ -39,10 +39,9 @@ def ping():
 
 @app.post("/sendApiMessage")
 def sendApiMessage(message: OpenApiMessage):
-    #Note: If input is file: 
-
     response = wrapper.send_request(message=message.content)
-    print(response)
+    return {"response": response}
+
 
 @app.post("/send-attachement")
 def sendAttachementToOpenAi(attachement: Attachement):
