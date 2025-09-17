@@ -9,19 +9,23 @@ FASTAPI_BASE = getattr(settings, "FASTAPI_BASE", "http://localhost:8000")
 def chat_page(request):
     return render(request, "chatui/chat.html")
 
+
 @require_POST
 def api_message(request):
     body = json.loads(request.body.decode("utf-8"))
     content = body.get("content", "")
-    payload = [
-        {"role": "system", "content": "Du bist ein Klausur-Assistent. Antworte knapp und strukturiert."},
-        {"role": "user", "content": content},
-    ]
-    r = requests.post(f"{FASTAPI_BASE}/sendApiMessage", json={"content": json.dumps(payload)})
+
+    # Nur Text an FastAPI schicken (kein json.dumps von payload)
+    r = requests.post(f"{FASTAPI_BASE}/sendApiMessage",
+                      json={"content": content})
+
     if r.status_code >= 400:
         return JsonResponse({"error": f"FastAPI error {r.status_code}", "details": r.text}, status=502)
+
     data = r.json()
-    return JsonResponse({"reply": data.get("reply") or data.get("content") or data})
+    # FastAPI liefert jetzt {"reply": "..."}
+    return JsonResponse({"reply": data.get("reply")})
+
 
 @require_POST
 def api_attachment(request):

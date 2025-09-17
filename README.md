@@ -60,7 +60,7 @@ pip install -r requirements.txt
 ---
 #### Windows (PowerShell)
 
-python -m venv .venv
+python -m venv .venv // Do this inside root
 
 .venv\Scripts\Activate.ps1
 

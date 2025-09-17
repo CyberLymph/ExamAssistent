@@ -37,10 +37,11 @@ def read_root():
 def ping():
     return {"ping": "pong"}
 
+
 @app.post("/sendApiMessage")
 def sendApiMessage(message: OpenApiMessage):
     response = wrapper.send_request(message=message.content)
-    return {"response": response}
+    return {"reply": response}   # <— statt {"response": ...}
 
 
 @app.post("/send-attachement")
