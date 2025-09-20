@@ -7,3 +7,4 @@ requests
 mistralai
 django
 pypdf
+pytest

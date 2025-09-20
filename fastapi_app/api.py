@@ -17,12 +17,6 @@ from mistral import MistralWrapper # from mistral import mistralWrapper
 app = FastAPI(title="My API Base", version="1.0.0")
 wrapper = MistralWrapper()
 
-# Example request body
-class Item(BaseModel):
-    name: str
-    description: str
-    price: float
-    tax: float
 
 class OpenApiMessage(BaseModel):
     content: str
@@ -38,6 +32,25 @@ class MessageRequest(BaseModel):
     attachment: Optional[Attachment] = None
 
 
+#llm extraction
+def now_iso() -> str:
+    return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+
+def make_run_id() -> str:
+    # z.B. 2025-09-20T16-45-10Z_ab12cd34 (zeitsortierbar + kurz)
+    ts = datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%SZ")
+    return f"{ts}_{uuid.uuid4().hex[:8]}"
+
+def ensure_dir(p: Path) -> Path:
+    p.mkdir(parents=True, exist_ok=True)
+    return p
+
+def append_jsonl(path: Path, obj: dict) -> None:
+    ensure_dir(path.parent)
+    with path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(obj, ensure_ascii=False) + "\n")    
+
+#uploads extraction
 def generate_doc_id(original_name: str) -> str:
     base = os.path.splitext(os.path.basename(original_name))[0][:64] or "upload"
     return f"{base}_{uuid.uuid4().hex[:8]}"    
@@ -69,30 +82,40 @@ def extract_pdf_text(pdf_path: str, max_chars: int = 8000, max_pages: int = 10) 
 
 @app.post("/sendApiMessage")
 def sendApiMessage(message: MessageRequest):
+    # --- kleine Helfer lokal ---
+    def now_iso() -> str:
+        return datetime.utcnow().replace(microsecond=0).format('%Y-%m-%dT%H:%M:%SZ') if hasattr(datetime.utcnow(), 'format') \
+               else datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+
+    def make_run_id() -> str:
+        ts = datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%SZ")
+        return f"{ts}_{uuid.uuid4().hex[:8]}"
+
+    def append_jsonl(path: Path, obj: dict) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(obj, ensure_ascii=False) + "\n")
 
     saved_path = None
     saved_pdf = None
     saved_extract = None
     pdf_text = ""
 
-
+    # ========= 1) optional: PDF speichern + extrahieren =========
     if message.attachment is not None:
         attchmnt = message.attachment
 
-        if attchmnt.file_type.lower() != "pdf":# Nur pdf zulassen
-            raise HTTPException(
-            status_code=400,
-            detail="Filetype can only be PDF."
-        )
+        if attchmnt.file_type.lower() != "pdf":
+            raise HTTPException(status_code=400, detail="Filetype can only be PDF.")
 
-        try: # base64 decoding
+        try:
             raw_input = base64.b64decode(attchmnt.content_base64, validate=True)
         except Exception:
-             raise HTTPException( status_code=400, detail="Invalid base64 payload.")
-        
-        if not raw_input.startswith(b"%PDF"): #validation
-            raise HTTPException( status_code=400, detail="File is not valid.")
-        
+            raise HTTPException(status_code=400, detail="Invalid base64 payload.")
+
+        if not raw_input.startswith(b"%PDF"):
+            raise HTTPException(status_code=400, detail="File is not valid.")
+
         # Ordner: data/uploads/{chat_id}/{doc_id}/
         doc_id = generate_doc_id(attchmnt.file_name)
         base_dir = Path("data") / "uploads" / message.chat_id / doc_id
@@ -103,10 +126,9 @@ def sendApiMessage(message: MessageRequest):
         saved_pdf.write_bytes(raw_input)
 
         # extract.txt
-        pdf_text = extract_pdf_text(str(saved_pdf), max_chars=8000, max_pages=10)
+        pdf_text = extract_pdf_text(str(saved_pdf), max_chars=8000, max_pages=10)## Geschützt vor pfad-tricks und begrenzt den dateinamen auf 64 Zeichen und falls dateiname ".pdf" ist.
         saved_extract = base_dir / "extract.txt"
         saved_extract.write_text(pdf_text, encoding="utf-8")
-
 
         # upload.json (Metadaten)
         meta = {
@@ -127,13 +149,7 @@ def sendApiMessage(message: MessageRequest):
         (base_dir / "upload.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         saved_path = str(base_dir)
 
-
-
-
-
-
-
-    # --- Prompt bauen, damit das LLM die PDF „sieht“ ---
+    #  --- Prompt bauen, damit das LLM die PDF „sieht“ ---
     user_text = (message.content or "").strip()
     if user_text and pdf_text:
         prompt = (
@@ -149,17 +165,65 @@ def sendApiMessage(message: MessageRequest):
     else:
         prompt = user_text or "Keine Eingabe erhalten."
 
-    # --- LLM-Aufruf ---
+    # --- 3) LLM-Run-Ordner + Prompt persistieren ---
+    run_id = make_run_id()
+    llm_run_dir = Path("data") / "llm" / message.chat_id / run_id
+    llm_run_dir.mkdir(parents=True, exist_ok=True)
+
+    prompt_path = llm_run_dir / "prompt.txt"
+    prompt_path.write_text(prompt, encoding="utf-8")
+
+    # --- 4) LLM aufrufen + Antwort speichern ---
     reply = wrapper.send_request(prompt)
 
-     # ====== 4) Antwort an UI ======
+    response_txt = llm_run_dir / "response.txt"
+    response_txt.write_text(reply, encoding="utf-8")
+
+    model_name = getattr(wrapper, "model", "mistral-*")
+    resp_meta = {
+        "chat_id": message.chat_id,
+        "run_id": run_id,
+        "model": model_name,
+        "created_at": now_iso(),
+        "inputs": {
+            "has_pdf": message.attachment is not None,
+            "pdf_preview_chars": len(pdf_text),
+        },
+        "paths": {
+            "prompt": str(prompt_path),
+            "response_txt": str(response_txt),
+        },
+        "usage": {
+            "prompt_tokens": None,
+            "completion_tokens": None,
+            "total_tokens": None
+        }
+    }
+    (llm_run_dir / "response.json").write_text(json.dumps(resp_meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    # ========= 5) Chat-Verlauf speichern =========
+    chat_log_path = Path("data") / "chats" / message.chat_id / "log.jsonl"
+    append_jsonl(chat_log_path, {
+        "ts": now_iso(),
+        "run_id": run_id,
+        "user": user_text,
+        "pdf_preview_chars": len(pdf_text),
+        "reply": reply
+    })
+
+    # ========= 6) Antwort an UI =========
     return {
         "reply": reply,
-        "saved_dir": saved_path,                         # z.B. data/uploads/{chat_id}/{doc_id}
+        "saved_dir": saved_path,                              # z.B. data/uploads/{chat_id}/{doc_id}
         "saved_file": str(saved_pdf) if saved_pdf else None,
         "extract_file": str(saved_extract) if saved_extract else None,
-        "pdf_preview_chars": len(pdf_text)
+        "pdf_preview_chars": len(pdf_text),
+        # LLM-Persistenz
+        "llm_run_id": run_id,
+        "llm_run_dir": str(llm_run_dir),
+        "prompt_path": str(prompt_path),
     }
+
 
 
 @app.post("/send-attachement")
@@ -173,12 +237,6 @@ def sendAttachementToOpenAi(attachment: Attachment):
         return {"ok": True, "filename": attachment.file_name}
 
 
-
-# Example POST
-@app.post("/items/")
-def create_item(item: Item):
-    total_price = item.price + (item.tax if item.tax else 0)
-    return {"name": item.name, "total_price": total_price}
 
 if __name__ == "__main__":
     uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
