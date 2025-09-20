@@ -5,6 +5,8 @@ from typing import Optional
 from pathlib import Path
 import base64, os, uuid, re
 from pypdf import PdfReader
+from datetime import datetime
+import json
 
 
 from mistral import MistralWrapper # from mistral import mistralWrapper
@@ -36,30 +38,30 @@ class MessageRequest(BaseModel):
 
 
 
-def extract_pdf_text(pdf_path: str, max_chars: int = 8000) -> str:
+def extract_pdf_text(pdf_path: str, max_chars: int = 8000, max_pages: int = 10) -> str:
     """Liest PDF-Text grob, bereinigt Whitespace und kürzt auf max_chars."""
     try:
         reader = PdfReader(pdf_path)
         chunks = []
-        for page in reader.pages:
+        for i, page in enumerate(reader.pages):
+            if i >= max_pages:
+                break
             txt = page.extract_text() or ""
             chunks.append(txt)
         text = "\n".join(chunks)
-        # Whitespace etwas normalisieren
         text = re.sub(r"[ \t]+", " ", text)
         text = re.sub(r"\n{3,}", "\n\n", text).strip()
         return text[:max_chars]
-    except Exception as e:
-        # Falls etwas schiefläuft, lieber ohne PDF-Text weitermachen
+    except Exception:
         return ""    
      
 
 
 @app.post("/sendApiMessage")
 def sendApiMessage(message: MessageRequest):
-    response = wrapper.send_request(message=message.content)#LLM Antwort
 
     saved_path = None
+    pdf_text = ""
     if message.attachment is not None:
         attchmnt = message.attachment
 
@@ -82,7 +84,7 @@ def sendApiMessage(message: MessageRequest):
         unique = uuid.uuid4().hex[:8]# zufällige Hex Werte zur Verhinderung der Kollision, wenn gleiche Dateinamen gespeichert werden müssen.
         final_name = f"{safe_name}_{unique}.pdf" # "klausur.pdf" → "klausur_a1b2c3d4.pdf"
 
-        uploads = Path("Uploads")
+        uploads = Path("uploads")
         uploads.mkdir(exist_ok=True)
         (uploads / final_name).write_bytes(raw_input)
         saved_path = str(uploads / final_name)

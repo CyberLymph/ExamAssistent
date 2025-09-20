@@ -13,18 +13,19 @@ def chat_page(request):
 @require_POST
 def api_message(request):
     body = json.loads(request.body.decode("utf-8"))
-    content = body.get("content", "")
+    payload = {"content": body.get("content", "")}
 
-    # Nur Text an FastAPI schicken (kein json.dumps von payload)
-    r = requests.post(f"{FASTAPI_BASE}/sendApiMessage",
-                      json={"content": content})
+    
+    if "attachment" in body:# falls attachment im Request enthalten ist
+        payload["attachment"] = body["attachment"]
 
+    r = requests.post(f"{FASTAPI_BASE}/sendApiMessage", json=payload)
     if r.status_code >= 400:
         return JsonResponse({"error": f"FastAPI error {r.status_code}", "details": r.text}, status=502)
 
     data = r.json()
-    # FastAPI liefert jetzt {"reply": "..."}
     return JsonResponse({"reply": data.get("reply")})
+
 
 
 @require_POST
@@ -33,4 +34,9 @@ def api_attachment(request):
     r = requests.post(f"{FASTAPI_BASE}/send-attachement", json=body)
     if r.status_code >= 400:
         return JsonResponse({"error": f"FastAPI error {r.status_code}", "details": r.text}, status=502)
-    return JsonResponse(r.json())
+    try:
+        data = r.json()
+    except ValueError:
+        return JsonResponse({"error": "Invalid JSON from FastAPI"}, status=502)
+    return JsonResponse(data, safe=isinstance(data, dict))
+
