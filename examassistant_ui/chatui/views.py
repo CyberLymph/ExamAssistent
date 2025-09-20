@@ -13,18 +13,26 @@ def chat_page(request):
 @require_POST
 def api_message(request):
     body = json.loads(request.body.decode("utf-8"))
-    payload = {"content": body.get("content", "")}
+    payload = {
+        "chat_id": body.get("chat_id"),            # ✅ WICHTIG!
+        "content": body.get("content", ""),
+        "attachment": body.get("attachment")
+    }
+    try:
+        r = requests.post(
+            f"{FASTAPI_BASE}/sendApiMessage",
+            json=payload,
+            timeout=30
+        )
+    except Exception as e:
+        return JsonResponse({"error": f"FastAPI unreachable: {e}"}, status=502)
 
-    
-    if "attachment" in body:# falls attachment im Request enthalten ist
-        payload["attachment"] = body["attachment"]
-
-    r = requests.post(f"{FASTAPI_BASE}/sendApiMessage", json=payload)
     if r.status_code >= 400:
-        return JsonResponse({"error": f"FastAPI error {r.status_code}", "details": r.text}, status=502)
+        return JsonResponse({"error": f"FastAPI {r.status_code}", "details": r.text}, status=502)
 
     data = r.json()
-    return JsonResponse({"reply": data.get("reply")})
+    return JsonResponse({"reply": data.get("reply"), **{k: v for k, v in data.items() if k != "reply"}})
+
 
 
 

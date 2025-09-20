@@ -33,8 +33,18 @@ class Attachment(BaseModel):
     file_type: str = "pdf"
 
 class MessageRequest(BaseModel):
+    chat_id: str                    
     content: str
     attachment: Optional[Attachment] = None
+
+
+def generate_doc_id(original_name: str) -> str:
+    base = os.path.splitext(os.path.basename(original_name))[0][:64] or "upload"
+    return f"{base}_{uuid.uuid4().hex[:8]}"    
+
+
+def ts_iso() -> str:
+    return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
 
 
@@ -54,14 +64,18 @@ def extract_pdf_text(pdf_path: str, max_chars: int = 8000, max_pages: int = 10) 
         return text[:max_chars]
     except Exception:
         return ""    
-     
+    
 
 
 @app.post("/sendApiMessage")
 def sendApiMessage(message: MessageRequest):
 
     saved_path = None
+    saved_pdf = None
+    saved_extract = None
     pdf_text = ""
+
+
     if message.attachment is not None:
         attchmnt = message.attachment
 
@@ -79,18 +93,45 @@ def sendApiMessage(message: MessageRequest):
         if not raw_input.startswith(b"%PDF"): #validation
             raise HTTPException( status_code=400, detail="File is not valid.")
         
-        #Dateinamen 
-        safe_name = os.path.splitext(os.path.basename(attchmnt.file_name))[0][:64] or "upload"# Geschützt vor pfad-tricks und begrenzt den dateinamen auf 64 Zeichen und falls dateiname ".pdf" ist.
-        unique = uuid.uuid4().hex[:8]# zufällige Hex Werte zur Verhinderung der Kollision, wenn gleiche Dateinamen gespeichert werden müssen.
-        final_name = f"{safe_name}_{unique}.pdf" # "klausur.pdf" → "klausur_a1b2c3d4.pdf"
+        # Ordner: data/uploads/{chat_id}/{doc_id}/
+        doc_id = generate_doc_id(attchmnt.file_name)
+        base_dir = Path("data") / "uploads" / message.chat_id / doc_id
+        base_dir.mkdir(parents=True, exist_ok=True)
 
-        uploads = Path("uploads")
-        uploads.mkdir(exist_ok=True)
-        (uploads / final_name).write_bytes(raw_input)
-        saved_path = str(uploads / final_name)
+        # source.pdf
+        saved_pdf = base_dir / "source.pdf"
+        saved_pdf.write_bytes(raw_input)
 
-        # lokale Extraktion (erste Seiten, gekürzt)
-        pdf_text = extract_pdf_text(saved_path, max_chars=8000, max_pages=10)
+        # extract.txt
+        pdf_text = extract_pdf_text(str(saved_pdf), max_chars=8000, max_pages=10)
+        saved_extract = base_dir / "extract.txt"
+        saved_extract.write_text(pdf_text, encoding="utf-8")
+
+
+        # upload.json (Metadaten)
+        meta = {
+            "chat_id": message.chat_id,
+            "doc_id": doc_id,
+            "file_name": attchmnt.file_name,
+            "paths": {
+                "pdf": str(saved_pdf),
+                "extract": str(saved_extract),
+            },
+            "preview": {
+                "pdf_preview_chars": len(pdf_text),
+                "pages_limit": 10,
+                "chars_limit": 8000
+            },
+            "created_at": ts_iso()
+        }
+        (base_dir / "upload.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        saved_path = str(base_dir)
+
+
+
+
+
+
 
     # --- Prompt bauen, damit das LLM die PDF „sieht“ ---
     user_text = (message.content or "").strip()
@@ -111,10 +152,13 @@ def sendApiMessage(message: MessageRequest):
     # --- LLM-Aufruf ---
     reply = wrapper.send_request(prompt)
 
+     # ====== 4) Antwort an UI ======
     return {
         "reply": reply,
-        "saved_attachment": saved_path,
-        "pdf_preview_chars": len(pdf_text) if pdf_text else 0
+        "saved_dir": saved_path,                         # z.B. data/uploads/{chat_id}/{doc_id}
+        "saved_file": str(saved_pdf) if saved_pdf else None,
+        "extract_file": str(saved_extract) if saved_extract else None,
+        "pdf_preview_chars": len(pdf_text)
     }
 
 
