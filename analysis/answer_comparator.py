@@ -5,6 +5,10 @@ from sentence_transformers import SentenceTransformer, util
 
 class AnswerComparator:
     def __init__(self, model_name="sentence-transformers/all-MiniLM-L6-v2", base_dir="analysis"):
+        """
+        model_name: SentenceTransformer Modell
+        base_dir: Wurzelordner für Ergebnisse
+        """
         self.model = SentenceTransformer(model_name)
         self.base_dir = base_dir
 

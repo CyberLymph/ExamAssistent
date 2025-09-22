@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from mistralai import Mistral  # ✅ neue Client-Klasse
+from mistralai import Mistral
 
 class MistralWrapper:
     def __init__(self, model: str = "mistral-small-latest"):

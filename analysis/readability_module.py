@@ -4,24 +4,38 @@ import textstat
 import spacy
 
 class ReadabilityAnalyzer:
-    def __init__(self, base_dir="analysis"):
+    def __init__(self, base_dir="analysis", lang_model="de_core_news_sm"):
+        """
+        base_dir: Wurzelordner für Ergebnisse
+        lang_model: spaCy Modell (z.B. 'de_core_news_sm' oder 'en_core_web_sm')
+        """
         self.base_dir = base_dir
         os.makedirs(self.base_dir, exist_ok=True)
-        self.nlp = spacy.load("en_core_web_sm")  # oder "de_core_news_sm" für Deutsch
+        self.nlp = spacy.load(lang_model)
+
+    def safe_stat(self, func, text):
+        """
+        Hilfsfunktion: ruft eine Textstat-Metrik auf,
+        fängt Fehler (z.B. fehlendes cmudict) ab.
+        """
+        try:
+            return func(text)
+        except Exception as e:
+            return f"Error: {str(e)}"
 
     def analyze_and_save(self, text: str, chat_id: str, run_id: str):
         outdir = os.path.join(self.base_dir, str(chat_id), str(run_id))
         os.makedirs(outdir, exist_ok=True)
 
-        # Metriken mit textstat
+        # Metriken mit Fehler-Schutz
         metrics = {
-            "flesch_reading_ease": textstat.flesch_reading_ease(text),
-            "flesch_kincaid_grade": textstat.flesch_kincaid_grade(text),
-            "smog_index": textstat.smog_index(text),
-            "automated_readability_index": textstat.automated_readability_index(text),
-            "dale_chall_readability_score": textstat.dale_chall_readability_score(text),
-            "difficult_words": textstat.difficult_words(text),
-            "syllable_count": textstat.syllable_count(text),
+            "flesch_reading_ease": self.safe_stat(textstat.flesch_reading_ease, text),
+            "flesch_kincaid_grade": self.safe_stat(textstat.flesch_kincaid_grade, text),
+            "smog_index": self.safe_stat(textstat.smog_index, text),
+            "automated_readability_index": self.safe_stat(textstat.automated_readability_index, text),
+            "dale_chall_readability_score": self.safe_stat(textstat.dale_chall_readability_score, text),
+            "difficult_words": self.safe_stat(textstat.difficult_words, text),
+            "syllable_count": self.safe_stat(textstat.syllable_count, text),
             "lexicon_count": textstat.lexicon_count(text),
             "sentence_count": textstat.sentence_count(text),
         }

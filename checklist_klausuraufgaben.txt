@@ -1,0 +1,29 @@
+
+# Checkliste für die Bewertung von Klausuraufgaben
+
+## 1. Bloom-Taxonomie (Lernziel-Niveau)
+- [ ] Erinnern – Wird Basiswissen abgefragt?
+- [ ] Verstehen – Müssen Inhalte erklärt werden?
+- [ ] Anwenden – Anwendung von Wissen in neuen Situationen?
+- [ ] Analysieren – Strukturen/Unterschiede erkennen?
+- [ ] Bewerten – Kritische Urteile/Begründungen?
+- [ ] Erschaffen – Neues entwickeln / kreativ gestalten?
+
+## 2. Flesch Reading Ease (Lesbarkeit)
+- ASL (ø Satzlänge) prüfen
+- ASW (ø Silben pro Wort) prüfen
+- Zielbereich je nach Zielgruppe:
+  - Hochschule: 30–50
+  - Sek II: 50–70
+
+## 3. Aufgabenqualität
+- Klarheit: Sind Instruktionen eindeutig (z. B. Operatoren, Umfang)?
+- Transparenz: Lernziel und Bewertungskriterien erkennbar?
+- Kognitive Aktivierung: Transfer, Problemlösung, Reflexion?
+- Differenzierung: versch. Schwierigkeitsgrade oder Wahloptionen?
+- Authentizität: Praxisbezug vorhanden?
+- Feedback: Rubrik, Musterlösung oder Selbstkontrolle vorhanden?
+
+## 4. Bewertungsskala (Empfehlung)
+1 = ungenügend | 2 = schwach | 3 = befriedigend | 4 = gut | 5 = sehr gut
+
