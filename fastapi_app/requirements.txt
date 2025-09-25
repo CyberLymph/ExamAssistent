@@ -12,3 +12,5 @@ textstat
 spacy
 de_core_news_sm
 en_core_web_sm
+pypdf
+critiria
