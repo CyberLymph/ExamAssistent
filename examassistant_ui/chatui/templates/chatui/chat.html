@@ -1,10 +1,11 @@
+{% load static %}
 <!doctype html>
 <html lang="de">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ExamAssistant · Chat</title>
-    <link rel="stylesheet" href="/static/chatui/styles.css" />
+    <link rel="stylesheet" href="{% static 'chatui/styles.css' %}" />
   </head>
   <body>
     <main class="container">
@@ -38,6 +39,7 @@
       function getCookie(name){const v=document.cookie.match('(?:^|; )'+name+'=([^;]*)');return v?decodeURIComponent(v[1]):null}
       window.CSRF_TOKEN = getCookie('csrftoken');
     </script>
-    <script src="/static/chatui/chat.js"></script>
+    <!-- Cache-Busting via Version-Query + sicheres Laden via static -->
+    <script defer src="{% static 'chatui/chat.js' %}?v=20250920-2"></script>
   </body>
 </html>

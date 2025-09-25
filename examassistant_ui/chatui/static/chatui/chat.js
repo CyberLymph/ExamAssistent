@@ -5,6 +5,21 @@ const elSend = document.getElementById("send");
 const elFile = document.getElementById("file");
 const elUploadStatus = document.getElementById("uploadStatus");
 
+// Debug: sicherstellen, dass das richtige Script geladen wurde
+console.log("[chat] loaded v=20250920-2");
+
+function ensureChatId() {
+  let id = localStorage.getItem("chat_id");
+  if (!id) {
+    const stamp = new Date().toISOString().slice(0,10); // yyyy-mm-dd
+    const rand = Math.random().toString(36).slice(2,8);
+    id = `${stamp}-${rand}`;
+    localStorage.setItem("chat_id", id);
+  }
+  return id;
+}
+const CHAT_ID = ensureChatId();
+
 function addMsg(role, content){
   const div = document.createElement("div");
   div.className = `msg ${role === 'user' ? 'msg--user' : 'msg--bot'}`;
@@ -13,46 +28,80 @@ function addMsg(role, content){
   elMessages.scrollTop = elMessages.scrollHeight;
 }
 
+// **Neu:** Upload-Status aktualisieren, wenn PDF gewählt wird
+elFile.addEventListener("change", () => {
+  const f = elFile.files && elFile.files[0];
+  if (!f) { elUploadStatus.textContent = ""; return; }
+  if (f.type !== "application/pdf") {
+    elUploadStatus.textContent = "Nur PDF erlaubt.";
+    return;
+  }
+  const mb = (f.size / (1024*1024)).toFixed(2);
+  elUploadStatus.textContent = `📎 ${f.name} (${mb} MB) bereit zum Senden`;
+});
+
+// Senden (Text + optional PDF)
 elForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const text = elInput.value.trim();
-  if (!text) return;
-  addMsg('user', text);
+  const f = elFile.files && elFile.files[0];
+  if (!text && !f) return;
+
+  addMsg('user', text || (f ? `📎 ${f.name}` : ''));
   elInput.value = '';
   elSend.disabled = true;
+
+  const body = { chat_id: CHAT_ID, content: text };
+  if (f) {
+    const b64 = await fileToBase64(f);
+    body.attachment = {
+      file_name: f.name,
+      content_base64: b64.split(',')[1],
+      file_type: 'pdf'
+    };
+  }
+
   try {
     const res = await fetch("/api/message", {
       method: "POST",
-      headers: {"Content-Type":"application/json","X-CSRFToken": window.CSRF_TOKEN},
-      body: JSON.stringify({ content: text })
+      headers: { "Content-Type":"application/json", "X-CSRFToken": window.CSRF_TOKEN },
+      body: JSON.stringify(body)
     });
-    const data = await res.json();
-    addMsg('assistant', data.reply || data.error || '(keine Antwort)');
+    let data = {};
+    try { data = await res.json(); } catch {}
+    if (!res.ok) {
+      addMsg('assistant', data.error || `Fehler: ${res.status}`);
+      elUploadStatus.textContent = "⚠️ Senden fehlgeschlagen.";
+      return;
+    }
+
+    addMsg('assistant', data.reply || '(keine Antwort)');
+
+    // Upload-Status freundlich updaten
+    if (f) {
+      elUploadStatus.textContent = data.saved_file
+        ? `✔️ Gespeichert: ${data.saved_file}`
+        : `✔️ PDF gesendet.`;
+    }
+
+    // Debug-Pfade zeigen (optional)
+    if (data.saved_dir || data.saved_file || data.extract_file) {
+      const lines = [
+        data.saved_dir ? `📁 Ordner: ${data.saved_dir}` : null,
+        data.saved_file ? `📄 PDF: ${data.saved_file}` : null,
+        data.extract_file ? `📝 Extract: ${data.extract_file}` : null,
+        (typeof data.pdf_preview_chars === 'number') ? `ℹ️ Preview-Zeichen: ${data.pdf_preview_chars}` : null
+      ].filter(Boolean);
+      if (lines.length) addMsg('assistant', lines.join('\n'));
+    }
+
+    // Datei-Eingabe leeren nach erfolgreichem Senden
+    if (elFile) elFile.value = "";
   } catch (e){
-    addMsg('assistant', `Fehler: ${e}`);
+    addMsg('assistant', `Netzwerkfehler: ${e}`);
+    elUploadStatus.textContent = "❌ Netzwerkfehler.";
   } finally {
     elSend.disabled = false;
-  }
-});
-
-elFile.addEventListener("change", async (e) => {
-  const f = e.target.files && e.target.files[0];
-  if (!f) return;
-  if (f.type !== 'application/pdf'){
-    elUploadStatus.textContent = 'Nur PDF-Dateien sind erlaubt.';
-    return;
-  }
-  const b64 = await fileToBase64(f);
-  try {
-    const res = await fetch('/api/attachment', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','X-CSRFToken': window.CSRF_TOKEN},
-      body: JSON.stringify({ file_name: f.name, content_base64: b64.split(',')[1], file_type: 'pdf' })
-    });
-    const data = await res.json();
-    elUploadStatus.textContent = data.ok ? `✔️ ${f.name} hochgeladen.` : `⚠️ Upload-Fehler.`;
-  } catch (e){
-    elUploadStatus.textContent = `❌ Upload fehlgeschlagen: ${e}`;
   }
 });
 
@@ -64,3 +113,11 @@ function fileToBase64(file){
     r.readAsDataURL(file);
   });
 }
+
+// ENTER zum Senden (Shift+Enter = Zeilenumbruch)
+elInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    elForm.requestSubmit();
+  }
+});
