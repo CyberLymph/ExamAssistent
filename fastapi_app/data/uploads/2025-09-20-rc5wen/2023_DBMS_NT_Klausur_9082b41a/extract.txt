@@ -1,0 +1,475 @@
+Klausur Datenbankmanagementsysteme 
+Zweiter Termin Sommersemester 2023, 25.09.2023 
+Name: ........................................... Vorname: ...................................... 
+Matr.Nr: ...................................... Studiengang: ................................. 
+Aufgabe Nr. Max. Punkte Erreichte Punkte 
+1 45 
+2 12 
+3 14 
+4 10 
+5 9 
+ 
+ 
+Summe 90 
+Note: 
+ 
+• Bitte füllen Sie zuerst das Deckblatt aus und legen Sie Studentenausweis und 
+Personalausweis bereit. 
+• Bitte beachten Sie, dass Lösungen in lesbarer Form geschrieben werden müssen. Sollten 
+Lösungen ganz oder teilweise nicht lesbar sein, können sie nicht oder nur teilweise als 
+Lösung angerechnet werden. 
+• Schreiben Sie NICHT mit Rotstift, Bleistift, etc. 
+• Falls der vorgesehene Platz nicht für Ihre Lösung ausreichen sollte, benutzen Sie bitte 
+die gegenüberliegenden, leeren Seiten. 
+• Die Bearbeitungszeit beträgt 90 Minuten. 
+ 
+ 
+Über das LiveKorrektur System können Sie während der Korrektur ihrer 
+Klausur ihren Punktestand und nach Korrekturende ihre Note erfahren. Ihr 
+Punktestand, Note und Matrikelnummer sind öffentlich auf der 
+LiveKorrektur Webseite einsehbar. 
+ 
+ 
+ 
+ 
+Wir wünschen Ihnen viel Erfolg!
+ Ich bin einverstanden und nehme an LiveKorrektur teil. 
+ Ich bin nicht einverstanden und erfahre meine Note vom Prüfungsamt. 
+
+Matrikelnummer, Name: 
+ 
+Klausur Datenbankmanagementsysteme Seite 1 
+Aufgabe 1: SQL (45 Punkte) 
+Für die angegebenen Tabellen aus dem Harry-Potter-Schema gilt, dass der Primärschlüssel 
+unterstrichen ist. Fremdschlüssel werden durch Pfeile dargestellt, wobei die Pfeilenden auf 
+die Ursprungsrelationen zeigen. Geben Sie für die unten angegebenen Anfragen 
+entsprechende SQL Statements an. 
+ 
+Hinweis: Die Attributnamen sind im Vergleich zum Übungsserver verändert. Es sind 
+keine weiteren Relationen für die Bearbeitung der Aufgaben notwendig (noch 
+vorhanden). Bitte beachten Sie, dass die schoolID sowohl in der Relation Student als 
+auch Teaches vorkommt. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+a) Alle angewendeten Zaubersprüche. (sID, spellname) (1 Punkte) 
+ 
+ 
+ 
+ 
+b) Die Anzahl aller bekannten Geschlechter. (numGen) (1 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+c) Alle Charakter, auf die kein Zauberspruch angewendet wurde. (cID) (2 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+d) Anzahl aller Zaubersprüche (beachten Sie den Unterschied zwischen asID und sID) , die 
+gegen einen Charakter mit dem Namen „Ron“ angewendet wurden. (anzahl) (2 Punkte) 
+ 
+Character 
+cID integer 
+name text 
+kindID integer 
+genderID integer 
+ 
+Teaches 
+cID integer 
+schoolID integer 
+courseID integer 
+year integer 
+AppliedSpell 
+asID integer 
+sID integer 
+spellname text 
+cID integer 
+againstID integer 
+Student 
+cID integer 
+schoolID integer 
+year integer 
+ 
+Matrikelnummer, Name: 
+ 
+Klausur Datenbankmanagementsysteme Seite 2 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+e) Alle Lehrer, die an einer Schule gelehrt haben, an der sie auch Schüler waren. (cID) 
+(2 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+f) Die Namen der Chara kter, die einen Zauberspruch gegen einen anderen Charakter 
+ausgesprochen haben. (SprecherName, OpferName) (2 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+g) Alle Schüler, die im gleichen Jahr an mehr als einer Schule waren. (cID) (2 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+h) Den Charakter (es kön nen auch mehrer e sein!), gegen den am häufigsten ein 
+Zauberspruch angewendet wurde. (cID, anzahl) (2 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Character 
+cID integer 
+name text 
+kindID integer 
+genderID integer 
+ 
+Teaches 
+cID integer 
+schoolID integer 
+courseID integer 
+year integer 
+AppliedSpell 
+asID integer 
+sID integer 
+spellname text 
+cID integer 
+againstID integer 
+Student 
+cID integer 
+schoolID integer 
+year integer 
+ 
+Matrikelnummer, Name: 
+ 
+Klausur Datenbankmanagementsysteme Seite 3 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+i) Für jeden Charakter, wie häufig er jeden Zauberspruch angewendet hat (cID, sID, anzahl) 
+(3 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+j) Für alle Schüler, wie häufig sie Zaubersprüche gegen Lehrer un d Schüler ausgesprochen 
+haben. (cID, numTeacher, numStudent) (3 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+k) Alle Schulen, an denen ausschließlich Lehrer gelehrt haben, die an keiner anderen Schule 
+gelehrt haben. (schoolID) (4 Punkte) 
+ 
+ 
+ 
+ 
+Character 
+cID integer 
+name text 
+kindID integer 
+genderID integer 
+ 
+Teaches 
+cID integer 
+schoolID integer 
+courseID integer 
+year integer 
+AppliedSpell 
+asID integer 
+sID integer 
+spellname text 
+cID integer 
+againstID integer 
+Student 
+cID integer 
+schoolID integer 
+year integer 
+ 
+Matrikelnummer, Name: 
+ 
+Klausur Datenbankmanagementsysteme Seite 4 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+l) Für jedes bekannte Jahr die Schule (ggf. mehr als eine ) mit der grö ßten Anzahl an 
+Schülern. (jahr, schoolID, anzahl) (4 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+m) Für alle Schüler, wie häufig sie Zaubersprüche gegen Lehrer un d Schüler ausgesprochen 
+haben. (cID, numTeacher, numStudent) (4 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+n) Alle Charakter, die an allen bekannten Zaubersprüchen beteil igt waren (als Täter oder 
+Opfer). (cID) (4 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Character 
+cID integer 
+name text 
+kindID integer 
+genderID integer 
+ 
+Teaches 
+cID integer 
+schoolID integer 
+courseID integer 
+year integer 
+AppliedSpell 
+asID integer 
+sID integer 
+spellname text 
+cID integer 
+againstID integer 
+Student 
+cID integer 
+schoolID integer 
+year integer 
+ 
+Matrikelnummer, Name: 
+ 
+Klausur Datenbankmanagementsysteme Seite 5 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+o) Die Schule mit der größten Anzahl unterschiedlicher Geschlechter (sowohl hinsichtlich des 
+Lehrpersonals als auch der Schüler). (schoolID) 
+(4 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+p) Alle Schüler mit einer „Lücke“ im Lebenslauf (also mind. ein Jahr, in dem sie an keiner 
+Schule registriert waren , während sie davor und danach aber an einer Schule registriert 
+werden). (cID) (5 Punkte) 
+ 
+Character 
+cID integer 
+name text 
+kindID integer 
+genderID integer 
+ 
+Teaches 
+cID integer 
+schoolID integer 
+courseID integer 
+year integer 
+AppliedSpell 
+asID integer 
+sID integer 
+spellname text 
+cID integer 
+againstID integer 
+Student 
+cID integer 
+schoolID integer 
+year integer 
+ 
+Matrikelnummer, Name: 
+ 
+Klausur Datenbankmanagementsysteme Seite 6 
+Aufgabe 2: Referenzielle Integrität (12 Punkte) 
+a) Erläutern Sie den Begriff referenzielle Integrität und sagen Sie, unter welchen Umständen 
+die referenzielle Integrität verletzt wird. (3 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+b) Welche drei Möglichkeiten existieren, um in SQL die referenzielle Integrität (m.H. der 
+Definition von Foreign Keys) beim Update oder Delete sicherzustellen? Nennen Sie die 
+drei Möglichkeiten und erläutern Sie diese kurz (ein Satz). (3 Punkte) 
+ 
+ 
+ 
+ 
+ 
+ 
+c) Welches Problem existiert beim Einfügen in eine Tabelle R(A, B), in der das Attribut A 
+der Primärschlüssel ist und das Attribut B ein Fremdschlüssel auf das Attribut A ist? Wie 
+wird dieses Problem umgangen? (3 Punkte) 
+ 
+ 
+ 
+ 
+ 
+d) Gegeben sei die unten angegebene Vorlage einer Tabellendefinition. Ergänzen Sie die 
+Defininition, damit 
+1. Die Attribute a und b Primärschlüssel sind, 
+2. Die Attribute c und d ein Fremdschlüssel auf die Attribute (x, y) einer Tabelle R3 
+sind. 
+(3 Punkte) 
+CREATE TABLE R2 ( 
+ a integer 
+ b integer 
+ c integer 
+ d integer 
+ 
+ 
+Matrikelnummer, Name: 
+ 
+Klausur Datenbankmanagementsysteme Seite 7 
+Aufgabe 3: Normalisierung (14 Punkte) 
+a) Gegeben sind für die Definition für folgende Normalformen an: (3 Punkte) 
+ 
+1. Normalform: 
+ 
+ 
+2. Normalform: 
+ 
+ 
+3. Normalform: 
+ 
+ 
+ 
+b) Was ist ein Primeattribut? (1 Punkt) 
+ 
+ 
+ 
+ 
+c) Nennen Sie die Eigenschaften von Schlüsselkandidaten. (1 Punkte) 
+ 
+ 
+ 
+ 
+ 
+d) Gegeben sei die angegebene Tabelle R (alle Attribute vom Typ integer). (4 Punkte) 
+ 
+Geben Sie für jede unten angegebene 
+funktionale Abhängigkeit an, ob sie in der 
+Tabelle existieren kann. Sollte die 
+Abhängigkeit nicht möglich sein, 
+begründen sie dies. 
+ 
+ 
+1. {A} → {B} 
+ 
+ 
+2. {A, B} → {C} 
+ 
+ 
+ 
+3. {A, B, C} → {D} 
+ 
+ 
+ 
+4. {B, C} → {D} 
+ 
+A B C D 
+1 1 1 1 
+1 2 1 1 
+1 2 2 1 
+Matrikelnummer, Name: 
+ 
+Klausur Datenbankmanagementsysteme Seite 8 
+ 
+e) Erläutern Sie, was eine F

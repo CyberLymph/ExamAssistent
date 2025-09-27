@@ -1,0 +1,55 @@
+<header class="chat__header" style="display:flex;gap:16px;align-items:baseline">
+  <h1>ExamAssistant · Chat</h1>
+  <nav style="margin-left:auto;display:flex;gap:12px">
+    <a href="{% url 'chat' %}">Chat</a>
+    <a href="{% url 'generator' %}">↔ Generator</a>
+  </nav>
+</header>
+
+{% load static %}
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ExamAssistant · Aufgaben-Generator</title>
+  <link rel="stylesheet" href="{% static 'chatui/styles.css' %}" />
+</head>
+<body>
+  <main class="container">
+    <header class="chat__header" style="display:flex;gap:16px;align-items:baseline">
+      <h1>Aufgaben-Generator</h1>
+      <nav style="margin-left:auto;display:flex;gap:12px">
+        <a href="{% url 'chat' %}">↔ Zum Chat</a>
+        <a href="{% url 'generator' %}">Generator</a>
+      </nav>
+    </header>
+
+    <section class="chat" style="padding:16px">
+      <div class="row">
+        <textarea id="prompt" placeholder="z.B. Bitte erstelle mir eine Aufgabe zu SQL Joins für Anfänger..."></textarea>
+        <button id="btnGenerate" type="button">Erstellen</button>
+      </div>
+
+      <div id="result" class="chat__messages" style="min-height:200px;margin-top:12px"></div>
+
+      <div id="actions" style="display:none; gap:10px; margin-top:10px;">
+        <span id="readability" class="muted"></span>
+        <button id="btnAccept" type="button">Ja, in PDF rein</button>
+        <button id="btnDecline" type="button">Nein, Alternative</button>
+      </div>
+
+      <div class="row" style="margin-top:14px">
+        <button id="btnExport" type="button">Als PDF exportieren</button>
+        <span id="status" class="muted"></span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function getCookie(name){const v=document.cookie.match('(?:^|; )'+name+'=([^;]*)');return v?decodeURIComponent(v[1]):null}
+    window.CSRF_TOKEN = getCookie('csrftoken');
+  </script>
+  <script defer src="{% static 'chatui/generator.js' %}?v=1"></script>
+</body>
+</html>

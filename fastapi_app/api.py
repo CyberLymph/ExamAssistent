@@ -9,10 +9,16 @@ from datetime import datetime
 import json
 
 
+from analysis import readability
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+
 from mistral import MistralWrapper # from mistral import mistralWrapper
 
 
 
+
+# ----------------- ExamAssistantChat UI --------------------
 # Create FastAPI app
 app = FastAPI(title="My API Base", version="1.0.0")
 wrapper = MistralWrapper()
@@ -255,3 +261,140 @@ def read_root():
 @app.get("/ping")
 def ping():
     return {"ping": "pong"}
+
+
+
+# -------- AufgabenGenerator ---------
+
+
+class TaskPrompt(BaseModel):
+    chat_id: str
+    prompt: str
+    retry_of: Optional[str] = None   # für "Alternative"
+
+class AcceptBody(BaseModel):
+    chat_id: str
+    run_id: str
+    text: str
+
+class ExportBody(BaseModel):
+    chat_id: str
+    title: Optional[str] = "Klausur-Entwurf"
+
+def accepted_dir(chat_id: str) -> Path:
+    return Path("data") / "exports" / chat_id
+
+def accepted_list_path(chat_id: str) -> Path:
+    return accepted_dir(chat_id) / "accepted.json"
+
+def load_accepted(chat_id: str) -> list:
+    p = accepted_list_path(chat_id)
+    if not p.exists():
+        return []
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+def save_accepted(chat_id: str, items: list) -> None:
+    d = accepted_dir(chat_id)
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "accepted.jsonl").open("a", encoding="utf-8").write(
+        json.dumps({"ts": now_iso(), "count": len(items)}, ensure_ascii=False) + "\n"
+    )
+    accepted_list_path(chat_id).write_text(json.dumps(items, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+
+@app.post("/task/generate")
+def task_generate(body: TaskPrompt):
+    # Prompt bauen
+    base_prompt = (body.prompt or "").strip() or "Erstelle eine verständliche Prüfungsaufgabe."
+    run_id = make_run_id()
+    llm_run_dir = Path("data") / "llm" / body.chat_id / run_id
+    llm_run_dir.mkdir(parents=True, exist_ok=True)
+
+    # Prompt persistieren
+    prompt_path = llm_run_dir / "prompt.txt"
+    prompt_path.write_text(base_prompt, encoding="utf-8")
+
+    # LLM call
+    text = wrapper.send_request(base_prompt)
+
+    # Antwort speichern
+    (llm_run_dir / "response.txt").write_text(text, encoding="utf-8")
+    (llm_run_dir / "response.json").write_text(json.dumps({
+        "chat_id": body.chat_id,
+        "run_id": run_id,
+        "model": getattr(wrapper, "model", "mistral-*"),
+        "created_at": now_iso(),
+        "inputs": {"retry_of": body.retry_of},
+        "paths": {"prompt": str(prompt_path)},
+    }, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    # Lesbarkeit
+    rb = readability(text)
+
+    # Chat-Log anreichern
+    chat_log_path = Path("data") / "chats" / body.chat_id / "log.jsonl"
+    append_jsonl(chat_log_path, {
+        "ts": now_iso(), "run_id": run_id, "mode": "generator",
+        "prompt": base_prompt, "reply": text, "readability": rb
+    })
+
+    return {
+        "run_id": run_id,
+        "text": text,
+        "readability": rb,
+        "prompt_path": str(prompt_path),
+        "llm_run_dir": str(llm_run_dir),
+    }
+
+
+
+@app.post("/task/accept")
+def task_accept(body: AcceptBody):
+    items = load_accepted(body.chat_id)
+    items.append({
+        "run_id": body.run_id,
+        "text": body.text,
+        "accepted_at": now_iso()
+    })
+    save_accepted(body.chat_id, items)
+    return {"ok": True, "count": len(items)}
+
+
+
+@app.post("/task/export_pdf")
+def task_export_pdf(body: ExportBody):
+    items = load_accepted(body.chat_id)
+    if not items:
+        raise HTTPException(status_code=400, detail="Keine angenommenen Aufgaben vorhanden.")
+
+    out_dir = accepted_dir(body.chat_id)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / f"export_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.pdf"
+
+    # sehr einfacher PDF-Export (ReportLab)
+    c = canvas.Canvas(str(out_path), pagesize=A4)
+    width, height = A4
+    y = height - 50
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(40, y, body.title or "Klausur-Entwurf")
+    y -= 30
+    c.setFont("Helvetica", 11)
+
+    idx = 1
+    for item in items:
+        lines = [f"Aufgabe {idx}:", *item["text"].splitlines(), ""]
+        for line in lines:
+            if y < 80:
+                c.showPage()
+                y = height - 50
+                c.setFont("Helvetica", 11)
+            c.drawString(40, y, line[:110])  # simple wrap
+            y -= 16
+        idx += 1
+
+    c.save()
+    return {"ok": True, "pdf_path": str(out_path)}

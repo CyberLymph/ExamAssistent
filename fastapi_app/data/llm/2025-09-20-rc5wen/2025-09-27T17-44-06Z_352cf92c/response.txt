@@ -1,0 +1,40 @@
+Hier ist eine Aufgabe zum **Volumenrechnen**, die verschiedene mathematische Fähigkeiten analysiert, darunter:
+
+- **Raumvorstellung** (Formen erkennen und zuordnen)
+- **Formeln anwenden** (Volumenberechnung)
+- **Umgang mit Einheiten** (Umrechnung, sinnvolle Einheiten)
+- **Logisches Denken** (Zusammenhänge erkennen, Teilaufgaben lösen)
+
+---
+
+### **Aufgabe: Das Schwimmbecken**
+
+Ein rechteckiges Schwimmbecken hat die Maße:
+- **Länge (L)** = 12,5 m
+- **Breite (B)** = 6 m
+- **Tiefe (T)** = 1,8 m
+
+1. **Berechne das Volumen des Beckens in Kubikmetern (m³).**
+2. **Wie viele Liter Wasser sind im Becken, wenn es voll ist?**
+   *(Hinweis: 1 m³ = 1000 Liter)*
+3. **Das Becken soll um 0,5 m vertieft werden. Wie viel mehr Wasser (in Litern) passt dann hinein?**
+4. **An den beiden schmalen Seiten (Breite = 6 m) werden je 2 Treppenstufen mit einer Höhe von 0,3 m eingebaut. Wie verändert sich das Volumen des Beckens dadurch?**
+   *(Hinweis: Die Stufen nehmen jeweils 0,3 m Tiefe weg, aber die Fläche bleibt gleich.)*
+
+---
+
+### **Lösungen (zur Selbstkontrolle):**
+1. **Volumen = L × B × T = 12,5 m × 6 m × 1,8 m = 135 m³**
+2. **135 m³ × 1000 = 135.000 Liter**
+3. **Neue Tiefe = 1,8 m + 0,5 m = 2,3 m → Neues Volumen = 12,5 × 6 × 2,3 = 172,5 m³ → Mehrwasser = 172,5 – 135 = 37,5 m³ = 37.500 Liter**
+4. **Jede Stufe nimmt 0,3 m Tiefe weg → 2 Stufen × 0,3 m = 0,6 m weniger Tiefe → Neues Volumen = 12,5 × 6 × (1,8 – 0,6) = 12,5 × 6 × 1,2 = 90 m³ → Volumenverlust = 135 – 90 = 45 m³ = 45.000 Liter**
+
+---
+
+Diese Aufgabe prüft, ob du:
+✔ Volumenformeln korrekt anwendest,
+✔ Einheiten umrechnen kannst,
+✔ komplexe Änderungen (Vertiefung, Stufen) berücksichtigst,
+✔ logische Zusammenhänge verstehst.
+
+Viel Erfolg! 😊

@@ -8,3 +8,7 @@ mistralai
 django
 pypdf
 pytest
+textstat
+reportlab
+lib
+pdfgen

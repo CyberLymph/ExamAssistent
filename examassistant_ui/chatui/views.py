@@ -6,6 +6,9 @@ from django.views.decorators.http import require_POST
 
 FASTAPI_BASE = getattr(settings, "FASTAPI_BASE", "http://localhost:8000")
 
+
+
+# ----------------- ExamAssistantChat UI --------------------
 def chat_page(request):
     return render(request, "chatui/chat.html")
 
@@ -47,4 +50,38 @@ def api_attachment(request):
     except ValueError:
         return JsonResponse({"error": "Invalid JSON from FastAPI"}, status=502)
     return JsonResponse(data, safe=isinstance(data, dict))
+
+
+
+
+
+
+# -------- AufgabenGenerator ---------
+
+def generator_page(request):
+    return render(request, "chatui/generator.html")
+
+@require_POST
+def api_task_generate(request):
+    body = json.loads(request.body.decode("utf-8"))
+    r = requests.post(f"{FASTAPI_BASE}/task/generate", json=body, timeout=45)
+    if r.status_code >= 400:
+        return JsonResponse({"error": f"FastAPI {r.status_code}", "details": r.text}, status=502)
+    return JsonResponse(r.json())
+
+@require_POST
+def api_task_accept(request):
+    body = json.loads(request.body.decode("utf-8"))
+    r = requests.post(f"{FASTAPI_BASE}/task/accept", json=body, timeout=30)
+    if r.status_code >= 400:
+        return JsonResponse({"error": f"FastAPI {r.status_code}", "details": r.text}, status=502)
+    return JsonResponse(r.json())
+
+@require_POST
+def api_task_export(request):
+    body = json.loads(request.body.decode("utf-8"))
+    r = requests.post(f"{FASTAPI_BASE}/task/export_pdf", json=body, timeout=60)
+    if r.status_code >= 400:
+        return JsonResponse({"error": f"FastAPI {r.status_code}", "details": r.text}, status=502)
+    return JsonResponse(r.json())
 

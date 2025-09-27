@@ -1,0 +1,12 @@
+{
+  "chat_id": "2025-09-20-rc5wen",
+  "run_id": "2025-09-27T17-47-11Z_dc1749e6",
+  "model": "mistral-small-latest",
+  "created_at": "2025-09-27T17:47:14Z",
+  "inputs": {
+    "retry_of": null
+  },
+  "paths": {
+    "prompt": "data\\llm\\2025-09-20-rc5wen\\2025-09-27T17-47-11Z_dc1749e6\\prompt.txt"
+  }
+}

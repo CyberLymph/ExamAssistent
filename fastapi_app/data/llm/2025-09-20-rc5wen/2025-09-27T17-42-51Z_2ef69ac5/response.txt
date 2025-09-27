@@ -1,0 +1,48 @@
+Hier ist eine Aufgabe zum **Volumenrechnen**, die verschiedene mathematische Fähigkeiten analysiert, wie z. B. räumliches Vorstellungsvermögen, Rechenfertigkeiten und logisches Denken:
+
+---
+
+### **Aufgabe: Volumenberechnung eines zusammengesetzten Körpers**
+
+Ein Aquarium besteht aus einem **rechteckigen Grundkörper** (Länge = 80 cm, Breite = 50 cm, Höhe = 40 cm) mit einem **halbrunden Deckel** (Durchmesser = 50 cm). Berechne das **gesamte Volumen** des Aquariums in Litern (1 Liter = 1000 cm³).
+
+**Hinweise:**
+1. Der Deckel ist ein **Halbzylinder** (kein Vollzylinder!).
+2. Rechne mit π ≈ 3,1416.
+3. Runde das Ergebnis auf **eine Nachkommastelle**.
+
+---
+
+### **Lösungsweg (zur Selbstkontrolle):**
+1. **Volumen des rechteckigen Grundkörpers:**
+   \[
+   V_{\text{Rechteck}} = \text{Länge} \times \text{Breite} \times \text{Höhe} = 80 \times 50 \times 40 = 160.000 \text{ cm}³
+   \]
+
+2. **Volumen des halbrunden Deckels (Halbzylinder):**
+   \[
+   V_{\text{Halbzylinder}} = \frac{1}{2} \times \pi \times r² \times h
+   \]
+   - Radius \( r = \frac{50}{2} = 25 \text{ cm} \)
+   - Höhe \( h = 50 \text{ cm} \) (Breite des Rechtecks)
+   \[
+   V_{\text{Halbzylinder}} = \frac{1}{2} \times 3,1416 \times 25² \times 50 = 98.175 \text{ cm}³
+   \]
+
+3. **Gesamtvolumen:**
+   \[
+   V_{\text{gesamt}} = V_{\text{Rechteck}} + V_{\text{Halbzylinder}} = 160.000 + 98.175 = 258.175 \text{ cm}³
+   \]
+   \[
+   V_{\text{gesamt}} = \frac{258.175}{1.000} = 258,2 \text{ Liter}
+   \]
+
+---
+
+### **Analysierte Fähigkeiten:**
+✔ **Räumliches Vorstellungsvermögen** (Zusammensetzung aus Rechteck und Halbzylinder)
+✔ **Formelkenntnis** (Volumen von Rechteck und Zylinder)
+✔ **Rechengenauigkeit** (Umrechnung in Liter, π-Berechnung)
+✔ **Logisches Denken** (Unterschied zwischen Voll- und Halbzylinder)
+
+Viel Erfolg beim Lösen! 😊
