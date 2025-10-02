@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CalculationTask",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "Kurzer Titel der Aufgabe"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Thema oder Fachgebiet der Aufgabe"
+    },
+    "points_total": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "description": "Gesamtpunkte für die Aufgabe"
+    },
+    "problem": {
+      "type": "string",
+      "description": "Die eigentliche Rechenaufgabe"
+    },
+    "expected_steps": {
+      "type": "array",
+      "description": "Optional: Erwartete Rechenschritte",
+      "items": {
+        "type": "string"
+      }
+    },
+    "solution": {
+      "type": "string",
+      "description": "Das erwartete Endergebnis"
+    }
+  },
+  "required": ["title", "topic", "points_total", "problem", "solution"]
+}

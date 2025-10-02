@@ -1,12 +1,73 @@
 [
   {
-    "run_id": "2025-09-27T17-45-47Z_d07a6e4f",
-    "text": "Hier ist eine Aufgabe, die deine geometrischen Fähigkeiten analysiert. Sie kombiniert verschiedene Konzepte wie Flächenberechnung, Winkel und Ähnlichkeit von Dreiecken.\n\n---\n\n### **Geometrie-Aufgabe: Das geheimnisvolle Dreieck**\n\n**Aufgabenstellung:**\nEin rechtwinkliges Dreieck \\( \\triangle ABC \\) hat die Katheten \\( a = 6 \\) cm und \\( b = 8 \\) cm. Die Hypotenuse \\( c \\) wird durch die Gleichung \\( c = \\sqrt{a^2 + b^2} \\) berechnet.\n\n1. **Berechne die Länge der Hypotenuse \\( c \\).**\n2. **Berechne den Flächeninhalt des Dreiecks \\( \\triangle ABC \\).**\n3. **Konstruiere ein ähnliches Dreieck \\( \\triangle DEF \\) mit dem Maßstab \\( 1:2 \\).**\n   - Wie lang sind die Seiten \\( d, e, f \\) des neuen Dreiecks?\n4. **Berechne den Umfang des Dreiecks \\( \\triangle DEF \\).**\n5. **Berechne den Flächeninhalt des Dreiecks \\( \\triangle DEF \\).**\n6. **Wie groß ist der Winkel \\( \\alpha \\) (gegenüber der Seite \\( a \\)) im Dreieck \\( \\triangle ABC \\)?**\n   - Tipp: Nutze die Tangens-Funktion.\n\n**Bonusfrage:**\nWenn das Dreieck \\( \\triangle ABC \\) um den Faktor \\( 3 \\) vergrößert wird, wie verändert sich dann der Flächeninhalt?\n\n---\n\n### **Lösungsansatz (zur Selbstkontrolle):**\n1. \\( c = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = \\sqrt{100} = 10 \\) cm.\n2. Flächeninhalt \\( A = \\frac{a \\cdot b}{2} = \\frac{6 \\cdot 8}{2} = 24 \\) cm².\n3. Ähnlichkeit \\( 1:2 \\) → \\( d = 3 \\) cm, \\( e = 4 \\) cm, \\( f = 5 \\) cm.\n4. Umfang \\( U = 3 + 4 + 5 = 12 \\) cm.\n5. Flächeninhalt \\( A' = \\frac{3 \\cdot 4}{2} = 6 \\) cm² (oder \\( A' = A \\cdot \\left(\\frac{1}{2}\\right)^2 = 6 \\) cm²).\n6. \\( \\tan(\\alpha) = \\frac{b}{a} = \\frac{8}{6} = \\frac{4}{3} \\) → \\( \\alpha = \\arctan\\left(\\frac{4}{3}\\right) \\approx 53,13^\\circ \\).\n7. **Bonus:** Flächeninhalt vergrößert sich um \\( 3^2 = 9 \\).\n\n---\n\nDiese Aufgabe prüft dein Verständnis von:\n- Pythagoras,\n- Flächenberechnung,\n- Ähnlichkeit von Dreiecken,\n- Trigonometrie (Tangens),\n- Skalierungseffekten.\n\nViel Erfolg! 😊",
-    "accepted_at": "2025-09-27T17:46:04Z"
+    "run_id": "2025-10-02T01-41-36Z_b4d8092c",
+    "text": "Das schnellste Auto der Welt\nNenne das aktuell schnellste Auto der Welt und erkläre kurz, welche technischen Merkmale es besonders schnell machen.",
+    "json": {
+      "title": "Das schnellste Auto der Welt",
+      "topic": "Physik / Technik",
+      "points_total": 5,
+      "task": "Nenne das aktuell schnellste Auto der Welt und erkläre kurz, welche technischen Merkmale es besonders schnell machen."
+    },
+    "schema_type": "default",
+    "accepted_at": "2025-10-02T01:41:44Z"
   },
   {
-    "run_id": "2025-09-27T17-47-11Z_dc1749e6",
-    "text": "Hier ist eine etwas kniffligere Aufgabe mit dem gleichen Inhalt, aber etwas komplexer formuliert:\n\n**Aufgabe:**\nEin Rechteck hat eine Länge von 8 cm und eine Breite von 5 cm. Berechne den Umfang und die Fläche des Rechtecks. Anschließend sollst du die Diagonale des Rechtecks bestimmen, indem du den Satz des Pythagoras anwendest. Runde das Ergebnis auf zwei Nachkommastellen.\n\n**Lösungsschritte:**\n1. **Umfang (U):**\n   Die Formel für den Umfang eines Rechtecks lautet:\n   \\( U = 2 \\times (Länge + Breite) \\)\n   \\( U = 2 \\times (8\\,cm + 5\\,cm) = 2 \\times 13\\,cm = 26\\,cm \\)\n\n2. **Fläche (A):**\n   Die Formel für die Fläche eines Rechtecks lautet:\n   \\( A = Länge \\times Breite \\)\n   \\( A = 8\\,cm \\times 5\\,cm = 40\\,cm^2 \\)\n\n3. **Diagonale (d):**\n   Mit dem Satz des Pythagoras gilt:\n   \\( d = \\sqrt{Länge^2 + Breite^2} \\)\n   \\( d = \\sqrt{8^2 + 5^2} = \\sqrt{64 + 25} = \\sqrt{89} \\approx 9{,}43\\,cm \\)\n\n**Antwort:**\n- Umfang: 26 cm\n- Fläche: 40 cm²\n- Diagonale: 9,43 cm\n\nFalls du noch eine andere Art von Aufgabe möchtest, lass es mich wissen! 😊",
-    "accepted_at": "2025-09-27T17:47:28Z"
+    "run_id": "2025-10-02T01-42-31Z_50bbe347",
+    "text": "Größter Planet im Sonnensystem\nNennen Sie den größten Planeten unseres Sonnensystems und begründen Sie kurz, warum er diese Bezeichnung trägt.",
+    "json": {
+      "title": "Größter Planet im Sonnensystem",
+      "topic": "Astronomie",
+      "points_total": 5,
+      "task": "Nennen Sie den größten Planeten unseres Sonnensystems und begründen Sie kurz, warum er diese Bezeichnung trägt."
+    },
+    "schema_type": "default",
+    "accepted_at": "2025-10-02T01:42:37Z"
+  },
+  {
+    "run_id": "2025-10-02T01-43-56Z_4b2634a4",
+    "text": "Die schwerste Frage der Welt\nFormulieren Sie eine Frage, die so schwer ist, dass sie nicht beantwortet werden kann. Begründen Sie Ihre Wahl.",
+    "json": {
+      "title": "Die schwerste Frage der Welt",
+      "topic": "Philosophie",
+      "points_total": 50,
+      "task": "Formulieren Sie eine Frage, die so schwer ist, dass sie nicht beantwortet werden kann. Begründen Sie Ihre Wahl."
+    },
+    "schema_type": "default",
+    "accepted_at": "2025-10-02T01:44:04Z"
+  },
+  {
+    "run_id": "2025-10-02T01-44-49Z_0783443b",
+    "text": "Tiefster Punkt der Welt\nWelcher Punkt ist der tiefste Ort der Welt?\n1) Mariana-Graben\n2) Totes Meer\n3) Dead Sea\n4) Challenger Deep",
+    "json": {
+      "title": "Tiefster Punkt der Welt",
+      "topic": "Geographie",
+      "points_total": 1,
+      "question": "Welcher Punkt ist der tiefste Ort der Welt?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Mariana-Graben",
+          "correct": true
+        },
+        {
+          "id": "B",
+          "text": "Totes Meer",
+          "correct": false
+        },
+        {
+          "id": "C",
+          "text": "Dead Sea",
+          "correct": false
+        },
+        {
+          "id": "D",
+          "text": "Challenger Deep",
+          "correct": false
+        }
+      ],
+      "explanation": "Der tiefste Punkt der Welt ist der Mariana-Graben."
+    },
+    "schema_type": "mc",
+    "accepted_at": "2025-10-02T01:45:05Z"
   }
 ]

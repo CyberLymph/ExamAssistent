@@ -12,3 +12,4 @@ textstat
 reportlab
 lib
 pdfgen
+jsonschema

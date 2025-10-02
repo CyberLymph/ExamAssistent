@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MultipleChoiceTask",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "Kurzer Titel der Aufgabe"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Thema oder Fachgebiet der Aufgabe"
+    },
+    "points_total": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "description": "Gesamtpunkte für die Aufgabe"
+    },
+    "question": {
+      "type": "string",
+      "description": "Die Multiple-Choice-Frage"
+    },
+    "options": {
+      "type": "array",
+      "description": "Liste von Antwortoptionen",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": ["A", "B", "C", "D"],
+            "description": "Option-Buchstabe"
+          },
+          "text": {
+            "type": "string",
+            "description": "Antworttext"
+          },
+          "correct": {
+            "type": "boolean",
+            "description": "Markiert richtige Antwort"
+          }
+        },
+        "required": ["id", "text", "correct"]
+      },
+      "minItems": 2,
+      "maxItems": 6
+    },
+    "explanation": {
+      "type": "string",
+      "description": "Kurze Begründung oder Lösungshinweis"
+    }
+  },
+  "required": ["title", "topic", "points_total", "question", "options", "explanation"]
+}

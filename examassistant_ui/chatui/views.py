@@ -17,7 +17,7 @@ def chat_page(request):
 def api_message(request):
     body = json.loads(request.body.decode("utf-8"))
     payload = {
-        "chat_id": body.get("chat_id"),            # ✅ WICHTIG!
+        "chat_id": body.get("chat_id"),            
         "content": body.get("content", ""),
         "attachment": body.get("attachment")
     }
@@ -58,6 +58,10 @@ def api_attachment(request):
 
 # -------- AufgabenGenerator ---------
 
+def wizard_page(request):
+    return render(request, "chatui/wizard.html")
+
+
 def generator_page(request):
     return render(request, "chatui/generator.html")
 
@@ -85,3 +89,10 @@ def api_task_export(request):
         return JsonResponse({"error": f"FastAPI {r.status_code}", "details": r.text}, status=502)
     return JsonResponse(r.json())
 
+@require_POST
+def api_task_accepted_list(request):
+    body = json.loads(request.body.decode("utf-8"))
+    r = requests.post(f"{FASTAPI_BASE}/task/accepted_list", json=body, timeout=30)
+    if r.status_code >= 400:
+        return JsonResponse({"error": f"FastAPI {r.status_code}", "details": r.text}, status=502)
+    return JsonResponse(r.json())

@@ -7,6 +7,8 @@ const btnGenerate = document.getElementById("btnGenerate");
 const btnAccept = document.getElementById("btnAccept");
 const btnDecline = document.getElementById("btnDecline");
 const btnExport = document.getElementById("btnExport");
+// NEU:
+const elSchemaType = document.getElementById("schemaType"); // optional vorhanden
 
 function ensureChatId(){
   let id = localStorage.getItem("chat_id");
@@ -35,8 +37,10 @@ function showResult(text, rb){
 }
 
 async function generate(retry_of=null){
-  const prompt = elPrompt.value.trim();
+  const prompt = elPrompt.value?.trim?.() || "";
   if (!prompt){ elStatus.textContent = "Bitte Prompt eingeben."; return; }
+  const schema_type = elSchemaType ? (elSchemaType.value || "default") : "default";
+
   elStatus.textContent = "Erzeuge Aufgabe…";
   btnGenerate.disabled = true;
 
@@ -44,7 +48,7 @@ async function generate(retry_of=null){
     const r = await fetch("/api/task/generate", {
       method: "POST",
       headers: {"Content-Type":"application/json","X-CSRFToken": window.CSRF_TOKEN},
-      body: JSON.stringify({ chat_id: CHAT_ID, prompt, retry_of })
+      body: JSON.stringify({ chat_id: CHAT_ID, prompt, schema_type, retry_of })
     });
     const data = await r.json();
     if (!r.ok){ elStatus.textContent = data.error || "Fehler"; return; }
@@ -60,12 +64,12 @@ async function generate(retry_of=null){
   }
 }
 
-btnGenerate.addEventListener("click", () => {
+btnGenerate?.addEventListener("click", () => {
   current.retried = false;
   generate(null);
 });
 
-btnAccept.addEventListener("click", async () => {
+btnAccept?.addEventListener("click", async () => {
   if (!current.run_id){ return; }
   elStatus.textContent = "Übernehme in PDF-Entwurf…";
   try{
@@ -81,13 +85,13 @@ btnAccept.addEventListener("click", async () => {
     elActions.style.display = "none";
     elReadability.textContent = "";
     elStatus.textContent = `Hinzugefügt. Aktuell insgesamt: ${data.count}.`;
-    elPrompt.value = ""; // bereit für nächste Aufgabe
+    if (elPrompt) elPrompt.value = ""; // bereit für nächste Aufgabe
   }catch(e){
     elStatus.textContent = `Netzwerkfehler: ${e}`;
   }
 });
 
-btnDecline.addEventListener("click", async () => {
+btnDecline?.addEventListener("click", async () => {
   if (current.retried){
     // zweite Ablehnung → keine weitere Alternative, zurück zum Prompt
     elResult.innerHTML = "";
@@ -101,10 +105,11 @@ btnDecline.addEventListener("click", async () => {
   await generate(current.run_id);
 });
 
-btnExport.addEventListener("click", async () => {
+btnExport?.addEventListener("click", async () => {
   elStatus.textContent = "Exportiere PDF…";
   try{
-    const r = await fetch("/api/task/export", {
+    // WICHTIG: richtiges Endpoint /task/export_pdf
+    const r = await fetch("/api/task/export_pdf", {
       method: "POST",
       headers: {"Content-Type":"application/json","X-CSRFToken": window.CSRF_TOKEN},
       body: JSON.stringify({ chat_id: CHAT_ID, title: "Klausur-Entwurf" })
