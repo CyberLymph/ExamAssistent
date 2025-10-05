@@ -3,6 +3,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 FASTAPI_BASE = getattr(settings, "FASTAPI_BASE", "http://localhost:8000")
 
@@ -57,11 +58,11 @@ def api_attachment(request):
 
 
 # -------- AufgabenGenerator ---------
-
+@ensure_csrf_cookie
 def wizard_page(request):
     return render(request, "chatui/wizard.html")
 
-
+@ensure_csrf_cookie
 def generator_page(request):
     return render(request, "chatui/generator.html")
 
@@ -69,30 +70,56 @@ def generator_page(request):
 def api_task_generate(request):
     body = json.loads(request.body.decode("utf-8"))
     r = requests.post(f"{FASTAPI_BASE}/task/generate", json=body, timeout=45)
+    try:
+        data = r.json()
+    except ValueError:
+        return JsonResponse({"error": "Invalid JSON from FastAPI", "raw": r.text}, status=502)
     if r.status_code >= 400:
-        return JsonResponse({"error": f"FastAPI {r.status_code}", "details": r.text}, status=502)
-    return JsonResponse(r.json())
+        # echten Statuscode + Detail weitergeben
+        return JsonResponse(data, status=r.status_code, safe=isinstance(data, dict))
+    return JsonResponse(data)
 
 @require_POST
 def api_task_accept(request):
     body = json.loads(request.body.decode("utf-8"))
     r = requests.post(f"{FASTAPI_BASE}/task/accept", json=body, timeout=30)
+    try:
+        data = r.json()
+    except ValueError:
+        return JsonResponse({"error": "Invalid JSON from FastAPI", "raw": r.text}, status=502)
     if r.status_code >= 400:
-        return JsonResponse({"error": f"FastAPI {r.status_code}", "details": r.text}, status=502)
-    return JsonResponse(r.json())
+        return JsonResponse(data, status=r.status_code, safe=isinstance(data, dict))
+    return JsonResponse(data)
 
 @require_POST
 def api_task_export(request):
     body = json.loads(request.body.decode("utf-8"))
     r = requests.post(f"{FASTAPI_BASE}/task/export_pdf", json=body, timeout=60)
+    try:
+        data = r.json()
+    except ValueError:
+        return JsonResponse({"error": "Invalid JSON from FastAPI", "raw": r.text}, status=502)
     if r.status_code >= 400:
-        return JsonResponse({"error": f"FastAPI {r.status_code}", "details": r.text}, status=502)
-    return JsonResponse(r.json())
+        return JsonResponse(data, status=r.status_code, safe=isinstance(data, dict))
+    return JsonResponse(data)
 
 @require_POST
 def api_task_accepted_list(request):
     body = json.loads(request.body.decode("utf-8"))
-    r = requests.post(f"{FASTAPI_BASE}/task/accepted_list", json=body, timeout=30)
+    r = requests.post(f"{FASTAPI_BASE}/task/accepted_list", json=body, timeout=15)
+    try:
+        data = r.json()
+    except ValueError:
+        return JsonResponse({"error": "Invalid JSON from FastAPI", "raw": r.text}, status=502)
+    if r.status_code >= 400:
+        return JsonResponse(data, status=r.status_code, safe=isinstance(data, dict))
+    return JsonResponse(data)
+
+
+@require_POST
+def api_task_reset_exam(request):
+    body = json.loads(request.body.decode("utf-8"))
+    r = requests.post(f"{FASTAPI_BASE}/task/reset_exam", json=body, timeout=15)
     if r.status_code >= 400:
         return JsonResponse({"error": f"FastAPI {r.status_code}", "details": r.text}, status=502)
     return JsonResponse(r.json())

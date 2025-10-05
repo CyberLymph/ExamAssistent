@@ -106,6 +106,9 @@
 </section>
 {% endblock %}
 
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'chatui/styles.css' %}?v=20251006-4">
+{% endblock %}
 {% block scripts %}
-<script defer src="{% static 'chatui/wizard.js' %}?v=20251002-2"></script>
+  <script defer src="{% static 'chatui/wizard.js' %}?v=20251006-2"></script>
 {% endblock %}

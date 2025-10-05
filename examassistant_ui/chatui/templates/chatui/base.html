@@ -5,7 +5,11 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>{% block title %}Herzlich Wilkommen zu unserem ExamAssistant!{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'chatui/styles.css' %}"/>
+
+   <link rel="stylesheet" href="{% static 'chatui/base.css' %}?v=20251006-1"/>
+   <link rel="stylesheet" href="{% static 'chatui/styles.css' %}?v=20251006-5"/>
+    <link rel="icon" href="{% static 'chatui/favicon.ico' %}"/>
+
     {% block head_extra %}{% endblock %}
   </head>
   <body>

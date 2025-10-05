@@ -1,4 +1,57 @@
-// Elemente
+// wizard.js
+
+// ---------- CSRF Helpers ----------
+const _cookieGetter =
+  window.getCookie ||
+  function getCookie(name) {
+    const m = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
+    return m ? decodeURIComponent(m[1]) : null;
+  };
+
+function getCsrfToken() {
+  return window.CSRF_TOKEN || _cookieGetter('csrftoken');
+}
+
+// einmalig: falls beim ersten Aufruf kein Cookie vorhanden war, Seite 1x neu laden
+(function ensureCsrfOnce() {
+  const token = getCsrfToken();
+  const didReload = sessionStorage.getItem('csrf_reload_done') === '1';
+  if (!token && !didReload) {
+    console.warn('Kein CSRF-Token vorhanden – lade einmal neu, um ihn zu setzen …');
+    sessionStorage.setItem('csrf_reload_done', '1');
+    window.location.reload();
+  }
+})();
+
+// zentraler Fetch-Wrapper mit CSRF + Cookies + 403-Recovery
+async function fetchWithCsrf(url, opts = {}) {
+  const token = getCsrfToken();
+  const headers = new Headers(opts.headers || {});
+  if (!headers.has('Content-Type') && opts.body) {
+    headers.set('Content-Type', 'application/json');
+  }
+  if (token) headers.set('X-CSRFToken', token);
+
+  const res = await fetch(url, {
+    credentials: 'same-origin', // Cookies IMMER mitsenden (gleiche Origin)
+    ...opts,
+    headers,
+  });
+
+  if (res.status === 403) {
+    // CSRF-Cookie fehlt/ist ungültig -> Cookie neu holen und neu laden
+    console.warn('403 von Server – versuche CSRF-Cookie neu zu holen …');
+    sessionStorage.removeItem('csrf_reload_done');
+    try {
+      await fetch(window.location.pathname, { credentials: 'same-origin' });
+    } catch {}
+    window.location.reload();
+  }
+
+  return res;
+}
+
+// ---------- DOM Elemente ----------
 const elSubject = document.getElementById("subject");
 const elTopicCount = document.getElementById("topicCount");
 const elTopicsList = document.getElementById("topicsList");
@@ -25,7 +78,7 @@ const elPreviewPanel = document.getElementById("previewPanel");
 const btnExport = document.getElementById("btnExport");
 const elExportStatus = document.getElementById("exportStatus");
 
-// Chat-ID
+// ---------- Chat/Exam IDs ----------
 function ensureChatId(){
   let id = localStorage.getItem("chat_id");
   if (!id){
@@ -38,15 +91,43 @@ function ensureChatId(){
 }
 const CHAT_ID = ensureChatId();
 
-// Wizard State
+function newExamId(){
+  const ts = new Date().toISOString().replace(/[:.]/g,"-");
+  const rand = Math.random().toString(36).slice(2,8);
+  return `${ts}_${rand}`;
+}
+
+// Persistente EXAM_ID (damit akzeptieren nie ohne exam_id passiert)
+let EXAM_ID = localStorage.getItem("exam_id");
+if (!EXAM_ID) {
+  EXAM_ID = newExamId();
+  localStorage.setItem("exam_id", EXAM_ID);
+  // neuen Lauf im Backend initialisieren
+  fetchWithCsrf("/api/task/reset_exam", {
+    method: "POST",
+    body: JSON.stringify({ chat_id: CHAT_ID, exam_id: EXAM_ID })
+  }).catch(()=>{});
+}
+
+// ---------- Wizard State ----------
 let topics = [];
 let currentTopicIndex = 0;
 let finishedTopics = false;
 
 let current = { run_id: null, text: "", json: null, schema_type: "default", retried: false };
 
-// Step Navigation
-btnToStep2.addEventListener("click", () => {
+// ---------- Schritt-Navigation ----------
+btnToStep2.addEventListener("click", async () => {
+  // explizit neue Klausur starten (neuer Lauf)
+  EXAM_ID = newExamId();
+  localStorage.setItem("exam_id", EXAM_ID);
+  try{
+    await fetchWithCsrf("/api/task/reset_exam", {
+      method: "POST",
+      body: JSON.stringify({ chat_id: CHAT_ID, exam_id: EXAM_ID })
+    });
+  }catch(_e){ /* Reset-Fehler ist nicht fatal für UI */ }
+
   document.getElementById("step1").hidden = true;
   document.getElementById("step2").hidden = false;
 });
@@ -80,10 +161,11 @@ btnToStep3.addEventListener("click", () => {
   document.getElementById("step2").hidden = true;
   document.getElementById("step3").hidden = false;
 
-  // Preview erst jetzt zeigen, initial leer
+  // Preview erst jetzt zeigen, initial leer und export verstecken
   previewCard.hidden = false;
   elPreviewPanel.innerHTML = '<p class="muted">Noch keine Aufgaben übernommen.</p>';
-  btnExport.hidden = true; // erst nach "Fertig mit Themen"
+  btnExport.hidden = true;
+  btnExport.dataset.hasItems = "0";
 });
 
 function setTopicHeading(){
@@ -95,7 +177,7 @@ function setTopicHeading(){
   btnFinishTopics.hidden = (currentTopicIndex !== topics.length - 1);
 }
 
-// Generate/Accept/Decline
+// ---------- Generieren/Annehmen/Ablehnen ----------
 function showResult(text, rb){
   elGenText.textContent = text || "";
   elGenMeta.hidden = !text;
@@ -109,9 +191,8 @@ async function generate(retry_of=null){
   const schema_type = (elSchemaType.value || "default");
 
   try{
-    const r = await fetch("/api/task/generate", {
+    const r = await fetchWithCsrf("/api/task/generate", {
       method: "POST",
-      headers: {"Content-Type":"application/json","X-CSRFToken": window.CSRF_TOKEN},
       body: JSON.stringify({
         chat_id: CHAT_ID,
         prompt,
@@ -121,8 +202,9 @@ async function generate(retry_of=null){
     });
     const data = await r.json();
     if (!r.ok){
-      elGenText.textContent = data.error || "Fehler bei der Generierung.";
+      elGenText.textContent = (data && (data.error || data.detail)) || "Fehler bei der Generierung.";
       elGenMeta.hidden = true;
+      console.error("Generate failed:", r.status, data);
       return;
     }
     current.run_id = data.run_id;
@@ -142,59 +224,87 @@ async function generate(retry_of=null){
 btnGenerate.addEventListener("click", () => generate(null));
 
 btnAccept.addEventListener("click", async () => {
-  if (!current.run_id) return;
+  if (!current.run_id){
+    elGenText.textContent = "Bitte zuerst eine Aufgabe generieren.";
+    return;
+  }
+  // exam_id aus LocalStorage sicherstellen
+  EXAM_ID = (localStorage.getItem("exam_id") || EXAM_ID || "").trim();
+  if (!EXAM_ID){
+    alert("Bitte Schritt 1 ausfüllen, damit eine Klausur-ID gesetzt wird.");
+    return;
+  }
+
+  // >>> aktuelles Wizard-Thema als Pflicht-Topic setzen <<<
+  const forcedTopic = (topics[currentTopicIndex]?.name || "").trim() || `Thema ${currentTopicIndex+1}`;
+
+  // Robust: vorhandenes JSON klonen und Topic überschreiben
+  const mergedJson = (current.json && typeof current.json === "object") ? { ...current.json } : {};
+  mergedJson.topic = forcedTopic;                 // <-- HIER passiert die Magie
+
+  const body = {
+    chat_id: CHAT_ID,
+    exam_id: EXAM_ID,
+    run_id: current.run_id,
+    text: current.text,
+    payload: mergedJson,                          // statt current.json
+    schema_type: current.schema_type
+  };
+  console.debug("[WIZARD ACCEPT body]", body);
+
   try{
-    const r = await fetch("/api/task/accept", {
+    const r = await fetchWithCsrf("/api/task/accept", {
       method: "POST",
-      headers: {"Content-Type":"application/json","X-CSRFToken": window.CSRF_TOKEN},
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        run_id: current.run_id,
-        text: current.text,
-        json: current.json,
-        schema_type: current.schema_type
-      })
+      body: JSON.stringify(body)
     });
-    const data = await r.json();
+    let data = {};
+    try { data = await r.json(); } catch {}
     if (!r.ok){
-      elGenText.textContent = data.error || "Konnte nicht übernehmen.";
+      elGenText.textContent = (data && (data.detail || data.error)) || `Konnte nicht übernehmen. (${r.status})`;
+      console.error("Accept failed:", r.status, data);
       return;
     }
+
     // UI aufräumen
     elGenPrompt.value = "";
     elGenText.textContent = "";
     elGenMeta.hidden = true;
 
-    // Preview aktualisieren
+    // Preview aktualisieren (jetzt gruppiert nach deinem Namen)
     await refreshPreview();
-
-    // Automatisch zum nächsten Thema, falls vorhanden
-    if (currentTopicIndex < topics.length - 1){
-      currentTopicIndex++;
-      setTopicHeading();
-    } else {
-      // sind schon im letzten Thema – Next deaktivieren
-      btnNextTopic.disabled = true;
-      btnFinishTopics.hidden = false; // bleibt sichtbar
-    }
   }catch(e){
     elGenText.textContent = `Netzwerkfehler: ${e}`;
   }
 });
 
 btnDecline.addEventListener("click", async () => {
-  await generate(current.run_id || null); // Alternative
+  // Einmalige Alternative anfordern
+  await generate(current.run_id || null);
 });
 
-// Finish Topics
+// Themenwechsel manuell
+btnPrevTopic.addEventListener("click", () => {
+  if (currentTopicIndex > 0){
+    currentTopicIndex--;
+    setTopicHeading();
+  }
+});
+btnNextTopic.addEventListener("click", () => {
+  if (currentTopicIndex < topics.length - 1){
+    currentTopicIndex++;
+    setTopicHeading();
+  }
+});
+
+// Themen sind fertig
 btnFinishTopics.addEventListener("click", async () => {
   finishedTopics = true;
-  await refreshPreview(); // damit Button-Status korrekt gesetzt wird
-  // Export-Button nur zeigen, wenn es mind. 1 Aufgabe gibt
-  btnExport.hidden = btnExport.dataset.hasItems !== "1";
+  await refreshPreview(); // setzt Export-Sichtbarkeit abhängig von Items
+  const hasItems = (btnExport.dataset.hasItems === "1");
+  btnExport.hidden = !(finishedTopics && hasItems);
 });
 
-// Preview rendering
+// ---------- Preview rendering ----------
 function escapeHtml(s){
   return String(s || "")
     .replace(/&/g,"&amp;")
@@ -212,7 +322,7 @@ function renderPreviewHTML(items){
 
   const groups = new Map(); // topic -> items[]
   for (const it of items){
-    const j = it.json || {};
+    const j = it.payload || it.json || {}; // fallback, falls alte Daten
     let topic = (j && typeof j === 'object' ? (j.topic || "") : "").trim();
     if (!topic) topic = "Allgemein";
     if (!groups.has(topic)) groups.set(topic, []);
@@ -236,7 +346,7 @@ function renderPreviewHTML(items){
     html += `<div class="preview-topic"><h4>${escapeHtml(topic)}${weightTxt}</h4>`;
     const arr = groups.get(topic);
     arr.forEach((it, idx) => {
-      const j = it.json || {};
+      const j = it.payload || it.json || {};
       const st = (it.schema_type || "default");
       let title = "", body = "";
 
@@ -252,7 +362,6 @@ function renderPreviewHTML(items){
           body  = (j.problem || "");
         } else {
           title = j.title || "Aufgabe";
-          // default schema: task ist string (dein Schema); fallback auf it.text
           body  = typeof j.task === "string" && j.task ? j.task : (it.text || "");
         }
       } else {
@@ -273,20 +382,27 @@ function renderPreviewHTML(items){
 }
 
 async function refreshPreview(){
+  if (!EXAM_ID){
+    elPreviewPanel.innerHTML = '<p class="muted">Noch keine Aufgaben übernommen.</p>';
+    btnExport.dataset.hasItems = "0";
+    btnExport.hidden = true;
+    return;
+  }
   try{
-    const r = await fetch("/api/task/accepted_list", {
+    const r = await fetchWithCsrf("/api/task/accepted_list", {
       method: "POST",
-      headers: {"Content-Type":"application/json","X-CSRFToken": window.CSRF_TOKEN},
-      body: JSON.stringify({ chat_id: CHAT_ID })
+      body: JSON.stringify({ chat_id: CHAT_ID, exam_id: EXAM_ID })
     });
-    const data = await r.json();
+    let data = {};
+    try { data = await r.json(); } catch {}
     if (!r.ok){
-      elPreviewPanel.innerHTML = `<p class="muted">Fehler: ${escapeHtml(data.error||"")}</p>`;
+      elPreviewPanel.innerHTML = `<p class="muted">Fehler: ${escapeHtml((data && (data.error || data.detail)) || "")}</p>`;
       btnExport.dataset.hasItems = "0";
+      btnExport.hidden = true;
+      console.error("accepted_list failed:", r.status, data);
       return;
     }
-    renderPreviewHTML(data.items || []);
-    // Export-Button nur zeigen, wenn Themen fertig markiert UND Items vorhanden
+    renderPreviewHTML((data && data.items) || []);
     const hasItems = (btnExport.dataset.hasItems === "1");
     btnExport.hidden = !(finishedTopics && hasItems);
   }catch(e){
@@ -296,17 +412,17 @@ async function refreshPreview(){
   }
 }
 
-// Export
+// ---------- Export ----------
 btnExport.addEventListener("click", async () => {
   elExportStatus.textContent = "Exportiere PDF…";
   try{
     const subject = (elSubject?.value || "").trim();
-    const title = subject || "Klausur";  // <-- Titel aus Fach
-    const r = await fetch("/api/task/export", {
+    const title = subject ? `Klausur: ${subject}` : "Klausur";
+    const r = await fetchWithCsrf("/api/task/export_pdf", {
       method: "POST",
-      headers: {"Content-Type":"application/json","X-CSRFToken": window.CSRF_TOKEN},
       body: JSON.stringify({
         chat_id: CHAT_ID,
+        exam_id: EXAM_ID,
         title,
         subject: subject || null,
         topics
@@ -314,7 +430,8 @@ btnExport.addEventListener("click", async () => {
     });
     const data = await r.json();
     if (!r.ok){
-      elExportStatus.textContent = data.error || "Fehler beim Export.";
+      elExportStatus.textContent = (data && (data.error || data.detail)) || "Fehler beim Export.";
+      console.error("export_pdf failed:", r.status, data);
       return;
     }
     elExportStatus.innerHTML = `✅ Export fertig: <code>${data.pdf_path}</code>`;
