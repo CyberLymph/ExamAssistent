@@ -4,6 +4,7 @@ const elPrompt = document.getElementById("prompt");
 const elResult = document.getElementById("result");
 const elActions = document.getElementById("actions");
 const elReadability = document.getElementById("readability");
+let elBloom = document.getElementById("bloomBadge"); // optional im DOM vorhanden
 const elStatus = document.getElementById("status");
 const btnGenerate = document.getElementById("btnGenerate");
 const btnAccept = document.getElementById("btnAccept");
@@ -53,20 +54,70 @@ ensureExamInitialized();
 // ---- State ----
 let current = { run_id: null, text: "", retried: false, json: null, schema: "default" };
 
+// ---- Bloom-Fallback (Client) ----
+function computeBloomFromText(text){
+  const t = (text || "").toLowerCase();
+
+  const L = [
+    {level:1, label:"Erinnern",   keys:["definiere","nennen","aufzählen","wiedergeben","benenne"]},
+    {level:2, label:"Verstehen",  keys:["erkläre","beschreibe","interpretiere","zusammenfassen","paraphrasiere"]},
+    // Für praktische Aufgaben (SQL „schreiben“, „erstelle eine Abfrage“) mappen wir auf Anwenden:
+    {level:3, label:"Anwenden",   keys:["berechne","nutze","anwenden","löse","implementiere","verwende","ermittle","schreibe","schreiben","formuliere","selektiere","query","erstelle eine abfrage","baue eine abfrage"]},
+    {level:4, label:"Analysieren",keys:["analysiere","vergleiche","untersuche","gliedere","leite ab","begründe (analyse)"]},
+    {level:5, label:"Bewerten",   keys:["bewerte","diskutiere","kritisiere","beurteile","prüfe","evaluiere"]},
+    {level:6, label:"Kreieren",   keys:["entwickle","entwirf","erstelle","konstruiere","generiere","plane"]},
+  ];
+
+  for (const entry of L){
+    if (entry.keys.some(k => t.includes(k))) {
+      return { level: entry.level, label: entry.label };
+    }
+  }
+  // Default: Verstehen
+  return { level: 2, label: "Verstehen" };
+}
+
 // ---- UI ----
-function showResult(text, rb){
+function ensureBloomBadge(){
+  if (!elBloom) {
+    elBloom = document.createElement("span");
+    elBloom.id = "bloomBadge";
+    elBloom.className = "badge";
+    elBloom.style.marginLeft = "6px"; // visueller Abstand zur Lesbarkeits-Badge
+    elBloom.textContent = "Bloom-Level: –";
+
+    if (elReadability && elReadability.parentNode) {
+      elReadability.insertAdjacentElement("afterend", elBloom);
+    } else if (elActions && elActions.parentNode) {
+      elActions.parentNode.insertBefore(elBloom, elActions);
+    } else {
+      (elResult || document.body).appendChild(elBloom);
+    }
+  }
+}
+
+function showResult(text, rb, bloomFromServer){
   elResult.innerHTML = "";
   const card = document.createElement("div");
   card.className = "msg msg--bot";
   card.style.whiteSpace = "pre-wrap";
-  card.textContent = text;
+  card.textContent = text || "";
   elResult.appendChild(card);
 
+  // Lesbarkeit
   if (elReadability){
-    const label = rb?.label || "";
-    const flesch = rb?.flesch != null ? ` (Flesch: ${rb.flesch})` : "";
-    elReadability.textContent = label ? `${label}${flesch}` : "";
+    const label = rb?.label || "–";
+    const flesch = (rb && rb.flesch != null) ? ` (Flesch: ${rb.flesch})` : "";
+    elReadability.textContent = `${label}${flesch}`;
   }
+
+  // Bloom (Server bevorzugt, sonst Fallback)
+  ensureBloomBadge();
+  if (elBloom){
+    const b = (bloomFromServer && bloomFromServer.label) ? bloomFromServer : computeBloomFromText(text);
+    elBloom.textContent = `Bloom-Level: ${b.label} (${b.level})`;
+  }
+
   if (elActions) elActions.style.display = "flex";
 }
 
@@ -101,7 +152,7 @@ async function generate(retry_of=null){
     current.json   = data.json || null;
     current.schema = data.schema || schema_type;
 
-    showResult(data.text, data.readability);
+    showResult(data.text, data.readability, data.bloom);
     elStatus.textContent = "Fertig.";
   }catch(e){
     elStatus.textContent = `Netzwerkfehler: ${e}`;
@@ -119,7 +170,7 @@ btnAccept?.addEventListener("click", async () => {
   if (!current.run_id){ elStatus.textContent = "Bitte zuerst generieren."; return; }
   if (!EXAM_ID){ await ensureExamInitialized(); }
 
-  // exam_id aus LocalStorage sicherstellen (falls anderer Tab sie geändert hat)
+  // exam_id aus LocalStorage sicherstellen
   EXAM_ID = (localStorage.getItem("exam_id") || EXAM_ID || "").trim();
   if (!EXAM_ID){
     elStatus.textContent = "Keine exam_id gesetzt.";
@@ -128,10 +179,10 @@ btnAccept?.addEventListener("click", async () => {
 
   const payload = {
     chat_id: CHAT_ID,
-    exam_id: EXAM_ID,            // <<< WICHTIG
+    exam_id: EXAM_ID,
     run_id: current.run_id,
     text: current.text,
-    payload: current.json,       // <<< nur NOCH 'payload' senden
+    payload: current.json,
     schema_type: current.schema
   };
   console.debug("[ACCEPT payload]", payload);
@@ -151,12 +202,13 @@ btnAccept?.addEventListener("click", async () => {
       console.error("Accept failed:", r.status, data);
       return;
     }
-    // Response „verschwindet“
+    // Response „weg“
     elResult.innerHTML = "";
     if (elActions) elActions.style.display = "none";
     if (elReadability) elReadability.textContent = "";
+    if (elBloom) elBloom.textContent = "";
     elStatus.textContent = `Hinzugefügt. Aktuell insgesamt: ${data.count}.`;
-    if (elPrompt) elPrompt.value = ""; // bereit für nächste Aufgabe
+    if (elPrompt) elPrompt.value = "";
   }catch(e){
     elStatus.textContent = `Netzwerkfehler: ${e}`;
   }
@@ -164,10 +216,10 @@ btnAccept?.addEventListener("click", async () => {
 
 btnDecline?.addEventListener("click", async () => {
   if (current.retried){
-    // zweite Ablehnung → keine weitere Alternative, zurück zum Prompt
     elResult.innerHTML = "";
     if (elActions) elActions.style.display = "none";
     if (elReadability) elReadability.textContent = "";
+    if (elBloom) elBloom.textContent = "";
     elStatus.textContent = "Nicht übernommen. Bitte neuen Prompt eingeben.";
     return;
   }
@@ -176,7 +228,7 @@ btnDecline?.addEventListener("click", async () => {
   await generate(current.run_id);
 });
 
-// Optionaler Export-Button auf der Generator-Seite
+// Optionaler Export-Button
 btnExport?.addEventListener("click", async () => {
   if (!EXAM_ID){ await ensureExamInitialized(); }
   elStatus.textContent = "Exportiere PDF…";
@@ -190,10 +242,10 @@ btnExport?.addEventListener("click", async () => {
       headers: {"Content-Type":"application/json","X-CSRFToken": window.CSRF_TOKEN},
       body: JSON.stringify({
         chat_id: CHAT_ID,
-        exam_id: EXAM_ID,           // <<< WICHTIG
+        exam_id: EXAM_ID,
         title,
         subject: subject || null,
-        topics: []                  // generator-Seite hat hier keine Liste; Wizard sendet sie
+        topics: []
       })
     });
     const data = await r.json();

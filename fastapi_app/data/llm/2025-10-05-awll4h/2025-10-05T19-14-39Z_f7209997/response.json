@@ -1,0 +1,6 @@
+{
+  "title": "SQL-Abfrage mit JOINs",
+  "topic": "Datenbanken",
+  "points_total": 15,
+  "task": "Schreiben Sie eine SQL-Abfrage, die alle Kunden mit ihren Bestellungen ausgibt. Verwenden Sie dabei mindestens zwei Tabellen und einen JOIN. Geben Sie die Kundennummer, den Kundenamen, die Bestellnummer und das Bestelldatum aus."
+}

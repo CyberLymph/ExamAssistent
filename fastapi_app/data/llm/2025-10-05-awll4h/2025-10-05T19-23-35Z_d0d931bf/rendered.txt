@@ -1,0 +1,2 @@
+Berechnung von Flächeninhalten
+Berechne den Flächeninhalt eines Dreiecks mit den Seitenlängen 5 cm, 7 cm und 9 cm. Verwende den Heronschen Satz.

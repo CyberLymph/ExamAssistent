@@ -12,7 +12,6 @@ function getCsrfToken() {
   return window.CSRF_TOKEN || _cookieGetter('csrftoken');
 }
 
-// einmalig: falls beim ersten Aufruf kein Cookie vorhanden war, Seite 1x neu laden
 (function ensureCsrfOnce() {
   const token = getCsrfToken();
   const didReload = sessionStorage.getItem('csrf_reload_done') === '1';
@@ -23,7 +22,7 @@ function getCsrfToken() {
   }
 })();
 
-// zentraler Fetch-Wrapper mit CSRF + Cookies + 403-Recovery
+// zentraler Fetch-Wrapper
 async function fetchWithCsrf(url, opts = {}) {
   const token = getCsrfToken();
   const headers = new Headers(opts.headers || {});
@@ -33,21 +32,17 @@ async function fetchWithCsrf(url, opts = {}) {
   if (token) headers.set('X-CSRFToken', token);
 
   const res = await fetch(url, {
-    credentials: 'same-origin', // Cookies IMMER mitsenden (gleiche Origin)
+    credentials: 'same-origin',
     ...opts,
     headers,
   });
 
   if (res.status === 403) {
-    // CSRF-Cookie fehlt/ist ungültig -> Cookie neu holen und neu laden
     console.warn('403 von Server – versuche CSRF-Cookie neu zu holen …');
     sessionStorage.removeItem('csrf_reload_done');
-    try {
-      await fetch(window.location.pathname, { credentials: 'same-origin' });
-    } catch {}
+    try { await fetch(window.location.pathname, { credentials: 'same-origin' }); } catch {}
     window.location.reload();
   }
-
   return res;
 }
 
@@ -66,6 +61,25 @@ const btnGenerate = document.getElementById("btnGenerate");
 const elGenText = document.getElementById("genText");
 const elGenMeta = document.getElementById("genMeta");
 const elReadability = document.getElementById("readabilityBadge");
+
+// Bloom-Badge
+let elBloom = document.getElementById("bloomBadge");
+
+function ensureBloomBadge(){
+  if (!elBloom && elGenMeta) {
+    elBloom = document.createElement("span");
+    elBloom.id = "bloomBadge";
+    elBloom.className = "badge";
+    elBloom.style.marginLeft = "6px";
+    elBloom.textContent = "Bloom-Level: –";
+    if (elReadability && elReadability.parentNode === elGenMeta) {
+      elReadability.insertAdjacentElement("afterend", elBloom);
+    } else {
+      elGenMeta.prepend(elBloom);
+    }
+  }
+}
+
 const btnAccept = document.getElementById("btnAccept");
 const btnDecline = document.getElementById("btnDecline");
 
@@ -76,10 +90,10 @@ const btnFinishTopics = document.getElementById("btnFinishTopics");
 const previewCard = document.getElementById("previewCard");
 const elPreviewPanel = document.getElementById("previewPanel");
 const btnExport = document.getElementById("btnExport");          // PDF
-const btnExportDocx = document.getElementById("btnExportDocx");  // DOCX (NEU)
+const btnExportDocx = document.getElementById("btnExportDocx");  // DOCX
 const elExportStatus = document.getElementById("exportStatus");
 
-// ---------- Chat/Exam IDs ----------
+// ---------- IDs ----------
 function ensureChatId(){
   let id = localStorage.getItem("chat_id");
   if (!id){
@@ -98,12 +112,11 @@ function newExamId(){
   return `${ts}_${rand}`;
 }
 
-// Persistente EXAM_ID (damit akzeptieren nie ohne exam_id passiert)
+// Persistente EXAM_ID
 let EXAM_ID = localStorage.getItem("exam_id");
 if (!EXAM_ID) {
   EXAM_ID = newExamId();
   localStorage.setItem("exam_id", EXAM_ID);
-  // neuen Lauf im Backend initialisieren
   fetchWithCsrf("/api/task/reset_exam", {
     method: "POST",
     body: JSON.stringify({ chat_id: CHAT_ID, exam_id: EXAM_ID })
@@ -117,9 +130,29 @@ let finishedTopics = false;
 
 let current = { run_id: null, text: "", json: null, schema_type: "default", retried: false };
 
+// ---------- Bloom-Fallback (Client) ----------
+function computeBloomFromText(text){
+  const t = (text || "").toLowerCase();
+
+  const L = [
+    {level:1, label:"Erinnern",   keys:["definiere","nennen","aufzählen","wiedergeben","benenne"]},
+    {level:2, label:"Verstehen",  keys:["erkläre","beschreibe","interpretiere","zusammenfassen","paraphrasiere"]},
+    {level:3, label:"Anwenden",   keys:["berechne","nutze","anwenden","löse","implementiere","verwende","ermittle","schreibe","schreiben","formuliere","selektiere","query","erstelle eine abfrage","baue eine abfrage"]},
+    {level:4, label:"Analysieren",keys:["analysiere","vergleiche","untersuche","gliedere","leite ab","begründe (analyse)"]},
+    {level:5, label:"Bewerten",   keys:["bewerte","diskutiere","kritisiere","beurteile","prüfe","evaluiere"]},
+    {level:6, label:"Kreieren",   keys:["entwickle","entwirf","erstelle","konstruiere","generiere","plane"]},
+  ];
+
+  for (const entry of L){
+    if (entry.keys.some(k => t.includes(k))) {
+      return { level: entry.level, label: entry.label };
+    }
+  }
+  return { level: 2, label: "Verstehen" };
+}
+
 // ---------- Schritt-Navigation ----------
 btnToStep2.addEventListener("click", async () => {
-  // explizit neue Klausur starten (neuer Lauf)
   EXAM_ID = newExamId();
   localStorage.setItem("exam_id", EXAM_ID);
   try{
@@ -127,7 +160,7 @@ btnToStep2.addEventListener("click", async () => {
       method: "POST",
       body: JSON.stringify({ chat_id: CHAT_ID, exam_id: EXAM_ID })
     });
-  }catch(_e){ /* Reset-Fehler ist nicht fatal für UI */ }
+  }catch(_e){}
 
   document.getElementById("step1").hidden = true;
   document.getElementById("step2").hidden = false;
@@ -149,7 +182,6 @@ btnBuildTopics.addEventListener("click", () => {
 });
 
 btnToStep3.addEventListener("click", () => {
-  // Themen einsammeln
   topics = Array.from(elTopicsList.querySelectorAll(".row")).map((row, idx) => {
     const name = row.querySelector(".t-name").value.trim() || `Thema ${idx+1}`;
     const weight = parseInt(row.querySelector(".t-weight").value || "0", 10) || 0;
@@ -162,11 +194,10 @@ btnToStep3.addEventListener("click", () => {
   document.getElementById("step2").hidden = true;
   document.getElementById("step3").hidden = false;
 
-  // Preview erst jetzt zeigen, initial leer und export verstecken
   previewCard.hidden = false;
   elPreviewPanel.innerHTML = '<p class="muted">Noch keine Aufgaben übernommen.</p>';
   btnExport.hidden = true;
-  if (btnExportDocx) btnExportDocx.hidden = true;  // NEU: Word-Button initial verbergen
+  if (btnExportDocx) btnExportDocx.hidden = true;
   btnExport.dataset.hasItems = "0";
 });
 
@@ -175,15 +206,29 @@ function setTopicHeading(){
   elTopicTitle.textContent = t ? `${t.name}` : `Thema ${currentTopicIndex+1}`;
   btnPrevTopic.disabled = currentTopicIndex === 0;
   btnNextTopic.disabled = currentTopicIndex >= topics.length - 1;
-  // "Fertig mit Themen" nur beim letzten Thema anzeigen
   btnFinishTopics.hidden = (currentTopicIndex !== topics.length - 1);
 }
 
 // ---------- Generieren/Annehmen/Ablehnen ----------
-function showResult(text, rb){
+function setBadge(el, text){
+  if (!el) return;
+  el.textContent = text || "–";
+}
+
+function showResult(text, rb, bloomFromServer){
   elGenText.textContent = text || "";
   elGenMeta.hidden = !text;
-  elReadability.textContent = rb?.label ? `${rb.label}${rb.flesch?` (Flesch: ${rb.flesch})`:''}` : "–";
+
+  // Lesbarkeit
+  const rbTxt = rb?.label ? `${rb.label}${rb.flesch?` (Flesch: ${rb.flesch})`:''}` : "–";
+  elReadability.textContent = rbTxt;
+
+  // Bloom
+  ensureBloomBadge();
+  if (elBloom){
+    const b = (bloomFromServer && bloomFromServer.label) ? bloomFromServer : computeBloomFromText(text);
+    setBadge(elBloom, `Bloom-Level: ${b.label} (${b.level})`);
+  }
 }
 
 async function generate(retry_of=null){
@@ -214,7 +259,8 @@ async function generate(retry_of=null){
     current.json   = data.json || null;
     current.schema_type = data.schema || schema_type;
     current.retried = !!retry_of;
-    showResult(data.text, data.readability);
+
+    showResult(data.text, data.readability, data.bloom);
   }catch(e){
     elGenText.textContent = `Netzwerkfehler: ${e}`;
     elGenMeta.hidden = true;
@@ -230,26 +276,23 @@ btnAccept.addEventListener("click", async () => {
     elGenText.textContent = "Bitte zuerst eine Aufgabe generieren.";
     return;
   }
-  // exam_id aus LocalStorage sicherstellen
   EXAM_ID = (localStorage.getItem("exam_id") || EXAM_ID || "").trim();
   if (!EXAM_ID){
     alert("Bitte Schritt 1 ausfüllen, damit eine Klausur-ID gesetzt wird.");
     return;
   }
 
-  // >>> aktuelles Wizard-Thema als Pflicht-Topic setzen <<<
   const forcedTopic = (topics[currentTopicIndex]?.name || "").trim() || `Thema ${currentTopicIndex+1}`;
 
-  // Robust: vorhandenes JSON klonen und Topic überschreiben
   const mergedJson = (current.json && typeof current.json === "object") ? { ...current.json } : {};
-  mergedJson.topic = forcedTopic;                 // <-- HIER passiert die Magie
+  mergedJson.topic = forcedTopic;
 
   const body = {
     chat_id: CHAT_ID,
     exam_id: EXAM_ID,
     run_id: current.run_id,
     text: current.text,
-    payload: mergedJson,                          // statt current.json
+    payload: mergedJson,
     schema_type: current.schema_type
   };
   console.debug("[WIZARD ACCEPT body]", body);
@@ -271,8 +314,9 @@ btnAccept.addEventListener("click", async () => {
     elGenPrompt.value = "";
     elGenText.textContent = "";
     elGenMeta.hidden = true;
+    if (elReadability) elReadability.textContent = "";
+    if (elBloom) elBloom.textContent = "";
 
-    // Preview aktualisieren (jetzt gruppiert nach deinem Namen)
     await refreshPreview();
   }catch(e){
     elGenText.textContent = `Netzwerkfehler: ${e}`;
@@ -280,11 +324,10 @@ btnAccept.addEventListener("click", async () => {
 });
 
 btnDecline.addEventListener("click", async () => {
-  // Einmalige Alternative anfordern
   await generate(current.run_id || null);
 });
 
-// Themenwechsel manuell
+// Themenwechsel
 btnPrevTopic.addEventListener("click", () => {
   if (currentTopicIndex > 0){
     currentTopicIndex--;
@@ -298,13 +341,13 @@ btnNextTopic.addEventListener("click", () => {
   }
 });
 
-// Themen sind fertig
+// Themen fertig
 btnFinishTopics.addEventListener("click", async () => {
   finishedTopics = true;
-  await refreshPreview(); // setzt Export-Sichtbarkeit abhängig von Items
+  await refreshPreview();
   const hasItems = (btnExport.dataset.hasItems === "1");
   btnExport.hidden = !(finishedTopics && hasItems);
-  if (btnExportDocx) btnExportDocx.hidden = !(finishedTopics && hasItems); // NEU
+  if (btnExportDocx) btnExportDocx.hidden = !(finishedTopics && hasItems);
 });
 
 // ---------- Preview rendering ----------
@@ -323,16 +366,15 @@ function renderPreviewHTML(items){
   }
   btnExport.dataset.hasItems = "1";
 
-  const groups = new Map(); // topic -> items[]
+  const groups = new Map();
   for (const it of items){
-    const j = it.payload || it.json || {}; // fallback, falls alte Daten
+    const j = it.payload || it.json || {};
     let topic = (j && typeof j === 'object' ? (j.topic || "") : "").trim();
     if (!topic) topic = "Allgemein";
     if (!groups.has(topic)) groups.set(topic, []);
     groups.get(topic).push(it);
   }
 
-  // sortiere topics nach Eingabe-Reihenfolge (falls vorhanden)
   const order = topics.map(t => t.name);
   const sortedTopics = Array.from(groups.keys()).sort((a, b) => {
     const ia = order.indexOf(a), ib = order.indexOf(b);
@@ -365,7 +407,7 @@ function renderPreviewHTML(items){
           body  = (j.problem || "");
         } else {
           title = j.title || "Aufgabe";
-          body  = typeof j.task === "string" && j.task ? j.task : (it.text || "");
+          body  = (typeof j.task === "string" && j.task) ? j.task : (it.text || "");
         }
       } else {
         title = `Aufgabe ${idx+1}`;
@@ -389,7 +431,7 @@ async function refreshPreview(){
     elPreviewPanel.innerHTML = '<p class="muted">Noch keine Aufgaben übernommen.</p>';
     btnExport.dataset.hasItems = "0";
     btnExport.hidden = true;
-    if (btnExportDocx) btnExportDocx.hidden = true; // NEU
+    if (btnExportDocx) btnExportDocx.hidden = true;
     return;
   }
   try{
@@ -403,19 +445,19 @@ async function refreshPreview(){
       elPreviewPanel.innerHTML = `<p class="muted">Fehler: ${escapeHtml((data && (data.error || data.detail)) || "")}</p>`;
       btnExport.dataset.hasItems = "0";
       btnExport.hidden = true;
-      if (btnExportDocx) btnExportDocx.hidden = true; // NEU
+      if (btnExportDocx) btnExportDocx.hidden = true;
       console.error("accepted_list failed:", r.status, data);
       return;
     }
     renderPreviewHTML((data && data.items) || []);
     const hasItems = (btnExport.dataset.hasItems === "1");
     btnExport.hidden = !(finishedTopics && hasItems);
-    if (btnExportDocx) btnExportDocx.hidden = !(finishedTopics && hasItems); // NEU
+    if (btnExportDocx) btnExportDocx.hidden = !(finishedTopics && hasItems);
   }catch(e){
     elPreviewPanel.innerHTML = `<p class="muted">Netzwerkfehler: ${escapeHtml(e)}</p>`;
     btnExport.dataset.hasItems = "0";
     btnExport.hidden = true;
-    if (btnExportDocx) btnExportDocx.hidden = true; // NEU
+    if (btnExportDocx) btnExportDocx.hidden = true;
   }
 }
 
@@ -459,9 +501,9 @@ if (btnExportDocx) {
         body: JSON.stringify({
           chat_id: CHAT_ID,
           exam_id: EXAM_ID,
-          title,
-          subject: subject || null,
-          topics
+        title,
+        subject: subject || null,
+        topics
         })
       });
       const data = await r.json();

@@ -1,0 +1,2 @@
+SQL-Abfrage zur Datenbankanalyse
+Schreiben Sie eine SQL-Abfrage, die die durchschnittliche Bewertung aller Produkte in einer Tabelle 'Produkte' berechnet, die nach dem 01.01.2023 hinzugefügt wurden. Berücksichtigen Sie nur Produkte mit mindestens 5 Bewertungen.

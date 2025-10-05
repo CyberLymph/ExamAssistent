@@ -18,3 +18,24 @@ def readability(text: str) -> dict:
     else:
         label = "Lesbarkeit ist schwer"
     return {"flesch": round(score, 1), "label": label}
+
+
+def bloom_level(text: str) -> dict:
+    """
+    Sehr einfache Heuristik oder LLM-basierte Analyse des kognitiven Niveaus
+    nach Bloom (1–6).
+    Gibt z. B. zurück: {"level": 3, "label": "Anwenden"}
+    """
+    levels = [
+        (1, "Erinnern", ["definiere", "nennen", "aufzählen"]),
+        (2, "Verstehen", ["erkläre", "beschreibe", "interpretiere"]),
+        (3, "Anwenden", ["berechne", "nutze", "anwenden"]),
+        (4, "Analysieren", ["analysiere", "vergleiche", "untersuche"]),
+        (5, "Bewerten", ["bewerte", "diskutiere", "kritisiere"]),
+        (6, "Kreieren", ["entwickle", "entwirf", "erstelle"]),
+    ]
+    text_low = text.lower()
+    for num, label, keywords in levels:
+        if any(k in text_low for k in keywords):
+            return {"level": num, "label": label}
+    return {"level": 2, "label": "Verstehen"}  # Default

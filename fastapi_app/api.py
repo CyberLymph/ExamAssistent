@@ -9,7 +9,7 @@ from datetime import datetime
 import json
 
 
-from analysis import readability
+from analysis import readability, bloom_level
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 
@@ -540,6 +540,7 @@ def task_generate(body: TaskPrompt):
     (llm_run_dir / "rendered.txt").write_text(preview_text, encoding="utf-8")
 
     rb = readability(preview_text)
+    bloom = bloom_level(preview_text)
 
     # 9) Log
     chat_log_path = Path("data") / "chats" / body.chat_id / "log.jsonl"
@@ -561,6 +562,7 @@ def task_generate(body: TaskPrompt):
         "json": obj,
         "text": preview_text,
         "readability": rb,
+        "bloom": bloom,  # NEU
         "prompt_path": str(prompt_path),
         "llm_run_dir": str(llm_run_dir),
         "rendered_path": str(llm_run_dir / "rendered.txt"),

@@ -1,0 +1,2 @@
+Berechnung der kinetischen Energie
+Ein Auto mit einer Masse von 1200 kg fährt mit einer Geschwindigkeit von 30 m/s. Berechnen Sie die kinetische Energie des Autos in Joule.
