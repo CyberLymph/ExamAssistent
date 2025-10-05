@@ -1,0 +1,29 @@
+{
+  "title": "Verbundsoperatoren in der Logik",
+  "topic": "Mathematik",
+  "points_total": 1,
+  "question": "Welcher Verbundsoperator verbindet zwei Aussagen so, dass das Ergebnis wahr ist, wenn mindestens eine der Aussagen wahr ist?",
+  "options": [
+    {
+      "id": "A",
+      "text": "Konjunktion",
+      "correct": false
+    },
+    {
+      "id": "B",
+      "text": "Disjunktion",
+      "correct": true
+    },
+    {
+      "id": "C",
+      "text": "Negation",
+      "correct": false
+    },
+    {
+      "id": "D",
+      "text": "Implikation",
+      "correct": false
+    }
+  ],
+  "explanation": "Die Disjunktion (logisches ODER) ist wahr, wenn mindestens eine der beiden Aussagen wahr ist."
+}

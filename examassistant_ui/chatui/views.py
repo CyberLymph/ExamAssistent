@@ -104,6 +104,18 @@ def api_task_export(request):
     return JsonResponse(data)
 
 @require_POST
+def api_task_export_docx(request):
+    body = json.loads(request.body.decode("utf-8"))
+    r = requests.post(f"{FASTAPI_BASE}/task/export_docx", json=body, timeout=60)
+    try:
+        data = r.json()
+    except ValueError:
+        return JsonResponse({"error": "Invalid JSON from FastAPI", "raw": r.text}, status=502)
+    if r.status_code >= 400:
+        return JsonResponse(data, status=r.status_code, safe=isinstance(data, dict))
+    return JsonResponse(data)
+
+@require_POST
 def api_task_accepted_list(request):
     body = json.loads(request.body.decode("utf-8"))
     r = requests.post(f"{FASTAPI_BASE}/task/accepted_list", json=body, timeout=15)

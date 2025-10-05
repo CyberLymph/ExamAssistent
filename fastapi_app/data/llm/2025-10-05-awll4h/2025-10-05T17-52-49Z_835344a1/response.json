@@ -1,0 +1,29 @@
+{
+  "title": "SQL Joins - Grundlagen",
+  "topic": "Datenbanken",
+  "points_total": 5,
+  "question": "Welcher SQL-Join verbindet alle Zeilen aus beiden Tabellen, auch wenn keine Übereinstimmung besteht?",
+  "options": [
+    {
+      "id": "A",
+      "text": "INNER JOIN",
+      "correct": false
+    },
+    {
+      "id": "B",
+      "text": "LEFT JOIN",
+      "correct": false
+    },
+    {
+      "id": "C",
+      "text": "RIGHT JOIN",
+      "correct": false
+    },
+    {
+      "id": "D",
+      "text": "FULL OUTER JOIN",
+      "correct": true
+    }
+  ],
+  "explanation": "Der FULL OUTER JOIN verbindet alle Zeilen aus beiden Tabellen, unabhängig von Übereinstimmungen."
+}

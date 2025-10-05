@@ -1,0 +1,29 @@
+{
+  "title": "Scheduling-Algorithmen: Prioritätsbasierte Planung",
+  "topic": "Betriebssysteme",
+  "points_total": 5,
+  "question": "Welcher Scheduling-Algorithmus wählt die Aufgabe mit der höchsten Priorität für die nächste Ausführung aus?",
+  "options": [
+    {
+      "id": "A",
+      "text": "Round Robin",
+      "correct": false
+    },
+    {
+      "id": "B",
+      "text": "First-Come-First-Served",
+      "correct": false
+    },
+    {
+      "id": "C",
+      "text": "Priority Scheduling",
+      "correct": true
+    },
+    {
+      "id": "D",
+      "text": "Shortest Job First",
+      "correct": false
+    }
+  ],
+  "explanation": "Priority Scheduling wählt die Aufgabe mit der höchsten Priorität für die nächste Ausführung aus."
+}

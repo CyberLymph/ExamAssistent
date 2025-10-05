@@ -13,3 +13,5 @@ reportlab
 lib
 pdfgen
 jsonschema
+python-docx
+docx

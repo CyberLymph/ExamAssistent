@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Verbundoperatoren in SQL",
+  "topic": "Datenbanken",
+  "points_total": 5,
+  "question": "Welcher SQL-Operator verbindet zwei Tabellen basierend auf einer Bedingung?",
+  "options": [
+    {
+      "id": "A",
+      "text": "UNION",
+      "correct": false
+    },
+    {
+      "id": "B",
+      "text": "JOIN",
+      "correct": true
+    },
+    {
+      "id": "C",
+      "text": "WHERE",
+      "correct": false
+    },
+    {
+      "id": "D",
+      "text": "GROUP BY",
+      "correct": false
+    }
+  ],
+  "explanation": "Der JOIN-Operator verbindet Tabellen basierend auf einer gemeinsamen Spalte oder Bedingung."
+}

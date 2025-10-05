@@ -1,0 +1,12 @@
+{
+  "title": "Mendelsche Vererbung: Genotypen berechnen",
+  "topic": "Genetik",
+  "points_total": 5,
+  "problem": "Ein heterozygoter Elternteil (Aa) kreuzt mit einem homozygoten rezessiven Elternteil (aa). Berechne die Wahrscheinlichkeit für den Nachwuchs, homozygot dominant (AA) zu sein.",
+  "expected_steps": [
+    "Punnett-Quadrat erstellen",
+    "Alle Genotypen auflisten",
+    "Wahrscheinlichkeit berechnen"
+  ],
+  "solution": "0%"
+}

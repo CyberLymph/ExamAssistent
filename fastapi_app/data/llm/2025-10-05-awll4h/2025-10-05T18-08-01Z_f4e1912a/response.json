@@ -1,0 +1,6 @@
+{
+  "title": "Isomorphie von Gruppen beweisen",
+  "topic": "Klassische algebraische Strukturen",
+  "points_total": 25,
+  "task": "Gegeben seien die Gruppen (ℤ, +) und (2ℤ, +). Zeigen Sie, dass diese Gruppen isomorph sind, indem Sie einen Isomorphismus explizit angeben und die Gruppenaxiome überprüfen."
+}

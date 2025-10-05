@@ -1,0 +1,2 @@
+Schwierige Frage zu SQL-Joins
+Erkläre den Unterschied zwischen einem INNER JOIN und einem LEFT JOIN anhand eines konkreten Beispiels. Gehe dabei auf die Auswirkungen auf die Ergebnismenge und die Performance ein.

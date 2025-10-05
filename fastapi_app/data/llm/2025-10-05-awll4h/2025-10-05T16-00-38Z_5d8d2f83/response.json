@@ -1,0 +1,13 @@
+{
+  "title": "Berechnung der Ableitung einer komplexen Funktion",
+  "topic": "Mathematik - Analysis",
+  "points_total": 15,
+  "problem": "Berechne die Ableitung der Funktion f(x) = (3x^2 + 2x - 1) * e^(x^3) mit der Produktregel.",
+  "expected_steps": [
+    "Produktregel anwenden",
+    "Ableitung des Polynoms berechnen",
+    "Ableitung der Exponentialfunktion berechnen",
+    "Ergebnisse kombinieren"
+  ],
+  "solution": "f'(x) = (6x + 2) * e^(x^3) + (3x^2 + 2x - 1) * 3x^2 * e^(x^3)"
+}

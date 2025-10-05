@@ -1,0 +1,6 @@
+Transaktionen in PostgreSQL mit pgAdmin
+Welcher Befehl startet eine explizite Transaktion in PostgreSQL?
+1) BEGIN TRANSACTION
+2) START TRANSACTION
+3) COMMIT TRANSACTION
+4) ROLLBACK TRANSACTION

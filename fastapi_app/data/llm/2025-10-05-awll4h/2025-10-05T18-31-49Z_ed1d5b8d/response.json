@@ -1,0 +1,29 @@
+{
+  "title": "Zelltypen und ihre Funktionen",
+  "topic": "Biologie",
+  "points_total": 5,
+  "question": "Welcher Zelltyp ist für die Speicherung von Fett verantwortlich?",
+  "options": [
+    {
+      "id": "A",
+      "text": "Erythrozyten",
+      "correct": false
+    },
+    {
+      "id": "B",
+      "text": "Adipozyten",
+      "correct": true
+    },
+    {
+      "id": "C",
+      "text": "Neurozyten",
+      "correct": false
+    },
+    {
+      "id": "D",
+      "text": "Fibroblasten",
+      "correct": false
+    }
+  ],
+  "explanation": "Adipozyten speichern Fett und sind Teil des Bindegewebes."
+}

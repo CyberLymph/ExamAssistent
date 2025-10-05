@@ -1,0 +1,6 @@
+Grundlagen der Physik: Beschleunigung
+Welche Einheit hat die Beschleunigung im internationalen Einheitensystem?
+1) Meter pro Sekunde (m/s)
+2) Meter pro Sekunde zum Quadrat (m/s²)
+3) Kilometer pro Stunde (km/h)
+4) Newton (N)

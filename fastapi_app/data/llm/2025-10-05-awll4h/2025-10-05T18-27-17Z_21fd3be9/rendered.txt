@@ -1,0 +1,2 @@
+Komplexe SQL-Join-Aufgabe mit mehreren Tabellen
+Gegeben sind drei Tabellen: Kunden (ID, Name, Stadt), Bestellungen (BestellID, KundeID, Datum) und Produkte (ProduktID, Name, Preis). Schreibe eine SQL-Abfrage, die für jeden Kunden die Gesamtzahl der Bestellungen, die Gesamtzahl der Produkte und den durchschnittlichen Produktpreis pro Bestellung ausgibt. Berücksichtige nur Bestellungen aus dem Jahr 2023.

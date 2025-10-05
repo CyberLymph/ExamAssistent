@@ -1,0 +1,6 @@
+{
+  "title": "Optimierung von Datenbank-Scheduling-Algorithmen",
+  "topic": "Datenbanken",
+  "points_total": 25,
+  "task": "Erkläre die Unterschiede zwischen dem Two-Phase-Locking-Protokoll und dem Timestamp-Ordering-Protokoll im Kontext von Datenbank-Scheduling. Analysiere die Vor- und Nachteile beider Ansätze und begründe, in welchen Szenarien welches Protokoll besser geeignet ist."
+}

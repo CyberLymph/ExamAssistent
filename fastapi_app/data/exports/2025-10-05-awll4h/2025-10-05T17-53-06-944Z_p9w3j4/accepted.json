@@ -1,0 +1,73 @@
+[
+  {
+    "run_id": "2025-10-05T17-53-50Z_70b5cc84",
+    "text": "Komplexe SQL-Joins in relationalen Datenbanken\nErkläre den Unterschied zwischen INNER JOIN, LEFT JOIN und FULL OUTER JOIN anhand eines Beispiels mit drei Tabellen. Zeige jeweils die resultierende Tabelle auf und beschreibe, wann welcher Join-Typ sinnvoll ist.",
+    "json": {
+      "title": "Komplexe SQL-Joins in relationalen Datenbanken",
+      "topic": "Datenbanken",
+      "points_total": 20,
+      "task": "Erkläre den Unterschied zwischen INNER JOIN, LEFT JOIN und FULL OUTER JOIN anhand eines Beispiels mit drei Tabellen. Zeige jeweils die resultierende Tabelle auf und beschreibe, wann welcher Join-Typ sinnvoll ist."
+    },
+    "schema_type": "default",
+    "accepted_at": "2025-10-05T17:53:55Z"
+  },
+  {
+    "run_id": "2025-10-05T17-54-14Z_df56411d",
+    "text": "Verbundsoperatoren in der Logik\nWelcher Verbundsoperator verbindet zwei Aussagen so, dass das Ergebnis wahr ist, wenn mindestens eine der Aussagen wahr ist?\n1) Konjunktion\n2) Disjunktion\n3) Negation\n4) Implikation",
+    "json": {
+      "title": "Verbundsoperatoren in der Logik",
+      "topic": "Mathematik",
+      "points_total": 1,
+      "question": "Welcher Verbundsoperator verbindet zwei Aussagen so, dass das Ergebnis wahr ist, wenn mindestens eine der Aussagen wahr ist?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Konjunktion",
+          "correct": false
+        },
+        {
+          "id": "B",
+          "text": "Disjunktion",
+          "correct": true
+        },
+        {
+          "id": "C",
+          "text": "Negation",
+          "correct": false
+        },
+        {
+          "id": "D",
+          "text": "Implikation",
+          "correct": false
+        }
+      ],
+      "explanation": "Die Disjunktion (logisches ODER) ist wahr, wenn mindestens eine der beiden Aussagen wahr ist."
+    },
+    "schema_type": "mc",
+    "accepted_at": "2025-10-05T17:54:21Z"
+  },
+  {
+    "run_id": "2025-10-05T17-55-51Z_f42de9f5",
+    "text": "Normalisierung von Datenbanken\nErläutern Sie die drei Normalformen (1NF, 2NF, 3NF) und geben Sie jeweils ein Beispiel für eine nicht normalisierte Tabelle sowie deren Normalisierung in die entsprechende Normalform. Diskutieren Sie die Vor- und Nachteile der Normalisierung.",
+    "json": {
+      "title": "Normalisierung von Datenbanken",
+      "topic": "Datenbanken",
+      "points_total": 20,
+      "task": "Erläutern Sie die drei Normalformen (1NF, 2NF, 3NF) und geben Sie jeweils ein Beispiel für eine nicht normalisierte Tabelle sowie deren Normalisierung in die entsprechende Normalform. Diskutieren Sie die Vor- und Nachteile der Normalisierung."
+    },
+    "schema_type": "default",
+    "accepted_at": "2025-10-05T17:55:58Z"
+  },
+  {
+    "run_id": "2025-10-05T17-56-33Z_711392bd",
+    "text": "Optimierung von Datenbank-Scheduling-Algorithmen\nErkläre die Unterschiede zwischen dem Two-Phase-Locking-Protokoll und dem Timestamp-Ordering-Protokoll im Kontext von Datenbank-Scheduling. Analysiere die Vor- und Nachteile beider Ansätze und begründe, in welchen Szenarien welches Protokoll besser geeignet ist.",
+    "json": {
+      "title": "Optimierung von Datenbank-Scheduling-Algorithmen",
+      "topic": "Datenbanken",
+      "points_total": 25,
+      "task": "Erkläre die Unterschiede zwischen dem Two-Phase-Locking-Protokoll und dem Timestamp-Ordering-Protokoll im Kontext von Datenbank-Scheduling. Analysiere die Vor- und Nachteile beider Ansätze und begründe, in welchen Szenarien welches Protokoll besser geeignet ist."
+    },
+    "schema_type": "default",
+    "accepted_at": "2025-10-05T17:56:39Z"
+  }
+]

@@ -75,7 +75,8 @@ const btnFinishTopics = document.getElementById("btnFinishTopics");
 
 const previewCard = document.getElementById("previewCard");
 const elPreviewPanel = document.getElementById("previewPanel");
-const btnExport = document.getElementById("btnExport");
+const btnExport = document.getElementById("btnExport");          // PDF
+const btnExportDocx = document.getElementById("btnExportDocx");  // DOCX (NEU)
 const elExportStatus = document.getElementById("exportStatus");
 
 // ---------- Chat/Exam IDs ----------
@@ -165,6 +166,7 @@ btnToStep3.addEventListener("click", () => {
   previewCard.hidden = false;
   elPreviewPanel.innerHTML = '<p class="muted">Noch keine Aufgaben übernommen.</p>';
   btnExport.hidden = true;
+  if (btnExportDocx) btnExportDocx.hidden = true;  // NEU: Word-Button initial verbergen
   btnExport.dataset.hasItems = "0";
 });
 
@@ -302,6 +304,7 @@ btnFinishTopics.addEventListener("click", async () => {
   await refreshPreview(); // setzt Export-Sichtbarkeit abhängig von Items
   const hasItems = (btnExport.dataset.hasItems === "1");
   btnExport.hidden = !(finishedTopics && hasItems);
+  if (btnExportDocx) btnExportDocx.hidden = !(finishedTopics && hasItems); // NEU
 });
 
 // ---------- Preview rendering ----------
@@ -386,6 +389,7 @@ async function refreshPreview(){
     elPreviewPanel.innerHTML = '<p class="muted">Noch keine Aufgaben übernommen.</p>';
     btnExport.dataset.hasItems = "0";
     btnExport.hidden = true;
+    if (btnExportDocx) btnExportDocx.hidden = true; // NEU
     return;
   }
   try{
@@ -399,16 +403,19 @@ async function refreshPreview(){
       elPreviewPanel.innerHTML = `<p class="muted">Fehler: ${escapeHtml((data && (data.error || data.detail)) || "")}</p>`;
       btnExport.dataset.hasItems = "0";
       btnExport.hidden = true;
+      if (btnExportDocx) btnExportDocx.hidden = true; // NEU
       console.error("accepted_list failed:", r.status, data);
       return;
     }
     renderPreviewHTML((data && data.items) || []);
     const hasItems = (btnExport.dataset.hasItems === "1");
     btnExport.hidden = !(finishedTopics && hasItems);
+    if (btnExportDocx) btnExportDocx.hidden = !(finishedTopics && hasItems); // NEU
   }catch(e){
     elPreviewPanel.innerHTML = `<p class="muted">Netzwerkfehler: ${escapeHtml(e)}</p>`;
     btnExport.dataset.hasItems = "0";
     btnExport.hidden = true;
+    if (btnExportDocx) btnExportDocx.hidden = true; // NEU
   }
 }
 
@@ -439,3 +446,33 @@ btnExport.addEventListener("click", async () => {
     elExportStatus.textContent = `Netzwerkfehler: ${e}`;
   }
 });
+
+// ---------- Export (DOCX) ----------
+if (btnExportDocx) {
+  btnExportDocx.addEventListener("click", async () => {
+    elExportStatus.textContent = "Exportiere Word…";
+    try{
+      const subject = (elSubject?.value || "").trim();
+      const title = subject ? `Klausur: ${subject}` : "Klausur";
+      const r = await fetchWithCsrf("/api/task/export_docx", {
+        method: "POST",
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          exam_id: EXAM_ID,
+          title,
+          subject: subject || null,
+          topics
+        })
+      });
+      const data = await r.json();
+      if (!r.ok){
+        elExportStatus.textContent = (data && (data.error || data.detail)) || "Fehler beim Word-Export.";
+        console.error("export_docx failed:", r.status, data);
+        return;
+      }
+      elExportStatus.innerHTML = `✅ Word fertig: <code>${data.docx_path}</code>`;
+    }catch(e){
+      elExportStatus.textContent = `Netzwerkfehler: ${e}`;
+    }
+  });
+}

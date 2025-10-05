@@ -1,0 +1,6 @@
+Verbundoperatoren in SQL
+Welcher SQL-Operator verbindet zwei Tabellen basierend auf einer Bedingung?
+1) UNION
+2) JOIN
+3) WHERE
+4) GROUP BY

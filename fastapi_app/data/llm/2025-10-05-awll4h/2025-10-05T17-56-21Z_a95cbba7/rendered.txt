@@ -1,0 +1,2 @@
+Optimale Ablaufplanung mit Ressourcenbeschränkungen
+Ein Unternehmen produziert drei Produkte A, B und C mit unterschiedlichen Bearbeitungszeiten und Ressourcenanforderungen. Formulieren Sie ein mathematisches Modell zur optimalen Ablaufplanung unter Berücksichtigung von Maschinenkapazitäten und Lieferterminen. Gehen Sie dabei auf die Modellierung der Nebenbedingungen ein.

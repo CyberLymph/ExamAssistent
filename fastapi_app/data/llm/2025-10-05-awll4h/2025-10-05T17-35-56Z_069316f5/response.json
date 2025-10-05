@@ -1,0 +1,29 @@
+{
+  "title": "SQL JOINs verstehen",
+  "topic": "Datenbanken",
+  "points_total": 5,
+  "question": "Welcher JOIN-Typ gibt alle Zeilen der linken Tabelle zurück, auch wenn keine Übereinstimmung in der rechten Tabelle existiert?",
+  "options": [
+    {
+      "id": "A",
+      "text": "INNER JOIN",
+      "correct": false
+    },
+    {
+      "id": "B",
+      "text": "LEFT JOIN",
+      "correct": true
+    },
+    {
+      "id": "C",
+      "text": "RIGHT JOIN",
+      "correct": false
+    },
+    {
+      "id": "D",
+      "text": "FULL JOIN",
+      "correct": false
+    }
+  ],
+  "explanation": "Der LEFT JOIN (oder LEFT OUTER JOIN) gibt alle Zeilen der linken Tabelle zurück, auch wenn keine passende Zeile in der rechten Tabelle existiert."
+}

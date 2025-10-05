@@ -1,0 +1,6 @@
+{
+  "title": "SQL-Joins verstehen",
+  "topic": "Datenbanken",
+  "points_total": 5,
+  "task": "Erkläre den Unterschied zwischen INNER JOIN und LEFT JOIN anhand eines Beispiels mit zwei Tabellen."
+}

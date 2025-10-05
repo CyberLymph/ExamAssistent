@@ -1,0 +1,6 @@
+{
+  "title": "Grundlagen von SQL: Datenbank-Schemas und Konzepte",
+  "topic": "Datenbanken",
+  "points_total": 15,
+  "task": "Erkläre die Unterschiede zwischen relationalen und nicht-relationalen Datenbanken. Beschreibe jeweils ein typisches Anwendungsbeispiel und nenne Vor- und Nachteile der beiden Ansätze."
+}

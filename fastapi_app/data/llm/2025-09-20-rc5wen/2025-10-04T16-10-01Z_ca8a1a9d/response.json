@@ -1,0 +1,6 @@
+{
+  "title": "Schwierige Frage zu SQL-Joins",
+  "topic": "Datenbanken",
+  "points_total": 15,
+  "task": "Erkläre den Unterschied zwischen einem INNER JOIN und einem LEFT JOIN anhand eines konkreten Beispiels. Gehe dabei auf die Auswirkungen auf die Ergebnismenge und die Performance ein."
+}

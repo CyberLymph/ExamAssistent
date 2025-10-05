@@ -1,0 +1,126 @@
+[
+  {
+    "run_id": "2025-10-05T18-31-19Z_f2e649e2",
+    "text": "Aufbau und Funktion von Zellen\nBeschreiben Sie den grundlegenden Aufbau einer tierischen Zelle und erklären Sie die Funktionen der Zellmembran, des Zellkerns und der Mitochondrien. Erläutern Sie zudem, wie die Zellatmung in den Mitochondrien abläuft.",
+    "json": {
+      "title": "Aufbau und Funktion von Zellen",
+      "topic": "Zellbiologie",
+      "points_total": 15,
+      "task": "Beschreiben Sie den grundlegenden Aufbau einer tierischen Zelle und erklären Sie die Funktionen der Zellmembran, des Zellkerns und der Mitochondrien. Erläutern Sie zudem, wie die Zellatmung in den Mitochondrien abläuft."
+    },
+    "schema_type": "default",
+    "accepted_at": "2025-10-05T18:31:24Z"
+  },
+  {
+    "run_id": "2025-10-05T18-31-49Z_ed1d5b8d",
+    "text": "Zelltypen und ihre Funktionen\nWelcher Zelltyp ist für die Speicherung von Fett verantwortlich?\n1) Erythrozyten\n2) Adipozyten\n3) Neurozyten\n4) Fibroblasten",
+    "json": {
+      "title": "Zelltypen und ihre Funktionen",
+      "topic": "Zellbiologie",
+      "points_total": 5,
+      "question": "Welcher Zelltyp ist für die Speicherung von Fett verantwortlich?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Erythrozyten",
+          "correct": false
+        },
+        {
+          "id": "B",
+          "text": "Adipozyten",
+          "correct": true
+        },
+        {
+          "id": "C",
+          "text": "Neurozyten",
+          "correct": false
+        },
+        {
+          "id": "D",
+          "text": "Fibroblasten",
+          "correct": false
+        }
+      ],
+      "explanation": "Adipozyten speichern Fett und sind Teil des Bindegewebes."
+    },
+    "schema_type": "mc",
+    "accepted_at": "2025-10-05T18:31:54Z"
+  },
+  {
+    "run_id": "2025-10-05T18-32-12Z_84d94b55",
+    "text": "Genetische Vererbung und Mutation\nErläutern Sie die Unterschiede zwischen homologer Rekombination und nicht-homologer Endverknüpfung (NHEJ) bei der DNA-Reparatur. Diskutieren Sie die Konsequenzen beider Prozesse für die genetische Vielfalt und die Entstehung von Mutationen.",
+    "json": {
+      "title": "Genetische Vererbung und Mutation",
+      "topic": "Genetik",
+      "points_total": 20,
+      "task": "Erläutern Sie die Unterschiede zwischen homologer Rekombination und nicht-homologer Endverknüpfung (NHEJ) bei der DNA-Reparatur. Diskutieren Sie die Konsequenzen beider Prozesse für die genetische Vielfalt und die Entstehung von Mutationen."
+    },
+    "schema_type": "default",
+    "accepted_at": "2025-10-05T18:32:18Z"
+  },
+  {
+    "run_id": "2025-10-05T18-32-37Z_b2583981",
+    "text": "Mendelsche Vererbung: Genotypen berechnen\nEin heterozygoter Elternteil (Aa) kreuzt mit einem homozygoten rezessiven Elternteil (aa). Berechne die Wahrscheinlichkeit für den Nachwuchs, homozygot dominant (AA) zu sein.",
+    "json": {
+      "title": "Mendelsche Vererbung: Genotypen berechnen",
+      "topic": "Genetik",
+      "points_total": 5,
+      "problem": "Ein heterozygoter Elternteil (Aa) kreuzt mit einem homozygoten rezessiven Elternteil (aa). Berechne die Wahrscheinlichkeit für den Nachwuchs, homozygot dominant (AA) zu sein.",
+      "expected_steps": [
+        "Punnett-Quadrat erstellen",
+        "Alle Genotypen auflisten",
+        "Wahrscheinlichkeit berechnen"
+      ],
+      "solution": "0%"
+    },
+    "schema_type": "calc",
+    "accepted_at": "2025-10-05T18:32:42Z"
+  },
+  {
+    "run_id": "2025-10-05T18-33-49Z_aa14c7c9",
+    "text": "Evolutionäre Mechanismen und ihre Auswirkungen\nErläutern Sie die Rolle von Mutationen, genetischer Drift und natürlicher Selektion bei der Entstehung neuer Arten. Gehen Sie dabei auf die Unterschiede zwischen allopatrischer und sympatrischer Artbildung ein und diskutieren Sie, welche Faktoren die Geschwindigkeit der Artbildung beeinflussen können.",
+    "json": {
+      "title": "Evolutionäre Mechanismen und ihre Auswirkungen",
+      "topic": "Evolution",
+      "points_total": 20,
+      "task": "Erläutern Sie die Rolle von Mutationen, genetischer Drift und natürlicher Selektion bei der Entstehung neuer Arten. Gehen Sie dabei auf die Unterschiede zwischen allopatrischer und sympatrischer Artbildung ein und diskutieren Sie, welche Faktoren die Geschwindigkeit der Artbildung beeinflussen können."
+    },
+    "schema_type": "default",
+    "accepted_at": "2025-10-05T18:33:56Z"
+  },
+  {
+    "run_id": "2025-10-05T18-34-14Z_bcf67ffb",
+    "text": "Evolution: Anpassung von Lebewesen\nWelcher Prozess beschreibt die Anpassung von Lebewesen an ihre Umwelt über Generationen?\n1) Mutation\n2) Selektion\n3) Vererbung\n4) Reproduktion",
+    "json": {
+      "title": "Evolution: Anpassung von Lebewesen",
+      "topic": "Evolution",
+      "points_total": 1,
+      "question": "Welcher Prozess beschreibt die Anpassung von Lebewesen an ihre Umwelt über Generationen?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Mutation",
+          "correct": false
+        },
+        {
+          "id": "B",
+          "text": "Selektion",
+          "correct": true
+        },
+        {
+          "id": "C",
+          "text": "Vererbung",
+          "correct": false
+        },
+        {
+          "id": "D",
+          "text": "Reproduktion",
+          "correct": false
+        }
+      ],
+      "explanation": "Selektion beschreibt, wie sich Lebewesen mit vorteilhaften Merkmalen fortpflanzen und diese an die nächste Generation weitergeben."
+    },
+    "schema_type": "mc",
+    "accepted_at": "2025-10-05T18:34:20Z"
+  }
+]

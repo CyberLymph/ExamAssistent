@@ -1,0 +1,2 @@
+SQL-Joins: Komplexe Datenabfrage
+Erkläre den Unterschied zwischen INNER JOIN, LEFT JOIN und FULL OUTER JOIN. Gib jeweils ein Beispiel mit Tabellenstruktur und Abfrage an, das die Besonderheiten der Joins verdeutlicht.

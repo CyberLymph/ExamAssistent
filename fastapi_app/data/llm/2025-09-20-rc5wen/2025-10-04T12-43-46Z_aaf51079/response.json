@@ -1,0 +1,29 @@
+{
+  "title": "Grundlagen der Physik: Beschleunigung",
+  "topic": "Physik",
+  "points_total": 5,
+  "question": "Welche Einheit hat die Beschleunigung im internationalen Einheitensystem?",
+  "options": [
+    {
+      "id": "A",
+      "text": "Meter pro Sekunde (m/s)",
+      "correct": false
+    },
+    {
+      "id": "B",
+      "text": "Meter pro Sekunde zum Quadrat (m/s²)",
+      "correct": true
+    },
+    {
+      "id": "C",
+      "text": "Kilometer pro Stunde (km/h)",
+      "correct": false
+    },
+    {
+      "id": "D",
+      "text": "Newton (N)",
+      "correct": false
+    }
+  ],
+  "explanation": "Die Beschleunigung wird in Metern pro Sekunde zum Quadrat (m/s²) gemessen."
+}

@@ -1,0 +1,2 @@
+Normalisierung von Datenbanken
+Erläutern Sie die drei Normalformen (1NF, 2NF, 3NF) und geben Sie jeweils ein Beispiel für eine nicht normalisierte Tabelle sowie deren Normalisierung in die entsprechende Normalform. Diskutieren Sie die Vor- und Nachteile der Normalisierung.

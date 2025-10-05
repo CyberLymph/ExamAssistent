@@ -1,0 +1,6 @@
+{
+  "title": "SQL Joins - Daten aus mehreren Tabellen kombinieren",
+  "topic": "Datenbanken",
+  "points_total": 20,
+  "task": "Gegeben sind zwei Tabellen: 'Kunden' (KundenID, Name, Stadt) und 'Bestellungen' (BestellID, KundenID, Betrag, Datum). Schreiben Sie eine SQL-Abfrage, die für jeden Kunden die Anzahl seiner Bestellungen und die Summe der Bestellbeträge anzeigt. Verwenden Sie dabei einen JOIN. Erklären Sie kurz, warum Sie den gewählten Jointyp verwendet haben."
+}

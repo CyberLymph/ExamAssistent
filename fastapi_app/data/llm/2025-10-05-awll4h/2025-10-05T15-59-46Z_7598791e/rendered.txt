@@ -1,0 +1,6 @@
+Scheduling-Algorithmen: Prioritätsbasierte Planung
+Welcher Scheduling-Algorithmus wählt die Aufgabe mit der höchsten Priorität für die nächste Ausführung aus?
+1) Round Robin
+2) First-Come-First-Served
+3) Priority Scheduling
+4) Shortest Job First

@@ -1,0 +1,2 @@
+Schwierige Aufgabe zu den Verbundsoperatoren
+Erkläre den Unterschied zwischen INNER JOIN und FULL OUTER JOIN anhand eines Beispiels mit drei Tabellen. Zeige, welche Zeilen in jedem Fall zurückgegeben werden und wann welcher Operator sinnvoll ist.

@@ -1,0 +1,2 @@
+Verständnis von Joins in SQL
+Erkläre den Unterschied zwischen einem INNER JOIN und einem LEFT JOIN in SQL. Gib jeweils ein Beispiel an.
