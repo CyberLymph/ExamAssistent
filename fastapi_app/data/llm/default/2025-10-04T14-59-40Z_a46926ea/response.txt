@@ -1,0 +1,52 @@
+Hier ist eine Analyse des PDF-Auszugs:
+
+### **1. Struktur und Inhalt**
+- **Themen & Gewichtungen**:
+  - **SQL (10 Punkte)**: Enthält eine SQL-Aufgabe (Aufgabe 5).
+  - **Grundlagen (20 Punkte)**: Enthält eine Physikfrage (Aufgabe 6).
+  - **Scheduling (25 Punkte)**: Enthält eine Aufgabenplanungsfrage (Aufgabe 7).
+  - Die restlichen Aufgaben (1–4) scheinen allgemeines Wissen abzufragen, aber keine klare Zuordnung zu den Gewichtungen ist erkennbar.
+
+### **2. Aufgabenanalyse**
+#### **Aufgabe 1 & 2 (Allgemeinwissen)**
+- **Aufgabe 1**: Aktuell schnellstes Auto (z. B. **SSC Tuatara** oder **Bugatti Chiron Super Sport 300+**).
+  - Technische Merkmale: Turbolader, Aerodynamik, Leichtbauweise, Hochleistungsmotor.
+- **Aufgabe 2**: Größter Planet (Jupiter).
+  - Begründung: Größte Masse und Volumen im Sonnensystem.
+
+#### **Aufgabe 3 (Philosophie/Kreativität)**
+- **Beispiel einer "unbeantwortbaren" Frage**:
+  *"Was war vor dem Urknall?"* (Begründung: Keine empirische Evidenz, da Zeit und Raum erst mit dem Urknall entstanden).
+
+#### **Aufgabe 4 (Geografie)**
+- **Richtige Antwort**: **4) Challenger Deep** (tiefster Punkt im Marianengraben).
+  - *Dead Sea* und *Totes Meer* sind synonym (Korrektur: Nur eine Option sollte stehen).
+
+#### **Aufgabe 5 (SQL)**
+- **Lösung**:
+  ```sql
+  SELECT k.Kundennummer, k.Kundenname, b.Bestellnummer, b.Bestelldatum
+  FROM Kunden k
+  INNER JOIN Bestellungen b ON k.Kundennummer = b.Kundennummer;
+  ```
+  - Annahme: Tabellen `Kunden` und `Bestellungen` mit passenden Spalten.
+
+#### **Aufgabe 6 (Physik)**
+- **Richtige Antwort**: **2) m/s²** (Beschleunigung = Änderung der Geschwindigkeit pro Zeit).
+
+#### **Aufgabe 7 (Scheduling)**
+- **Lösungsansatz**:
+  1. **Priorisierung**: Deadlines, Ressourcenbedarf, Projektkritikalität.
+  2. **Zeitplan**: Gantt-Diagramm oder Kanban-Board.
+  3. **Konflikte**: Ressourcenengpässe → Priorisierung nach Deadlines oder Ressourcenumverteilung.
+  4. **Lösungen**: Pufferzeiten einplanen, Teamkommunikation, Agile Methoden.
+
+### **3. Kritik & Verbesserungsvorschläge**
+- **Klarheit**: Die Gewichtung bezieht sich nicht auf alle Aufgaben (z. B. Aufgabe 3–4).
+- **SQL-Aufgabe**: Fehlende Tabellendefinitionen erschweren die Beantwortung.
+- **Aufgabe 4**: Doppelte Optionen (*Totes Meer* und *Dead Sea*).
+
+### **4. Fazit**
+Der Auszug enthält eine Mischung aus **Technik (SQL, Scheduling)**, **Naturwissenschaften (Physik, Astronomie)** und **Allgemeinwissen**. Die Aufgaben sind teilweise klar, aber einige Formulierungen (z. B. Gewichtung) sind unpräzise. Die SQL-Aufgabe ist praxisnah, während die Scheduling-Frage komplexer ist.
+
+**Empfehlung**: Bei Prüfungen auf klare Zuordnung der Aufgaben zu den Themen achten und bei SQL konkrete Tabellen definieren.

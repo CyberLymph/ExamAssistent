@@ -1,0 +1,13 @@
+{
+  "chat_id": "default",
+  "doc_id": "Klausur Sommer 22_0a7f9eba",
+  "file_name": "Klausur Sommer 22.pdf",
+  "paths": {
+    "pdf": "data/uploads/default/Klausur Sommer 22_0a7f9eba/source.pdf",
+    "extract": "data/uploads/default/Klausur Sommer 22_0a7f9eba/extract.txt"
+  },
+  "preview": {
+    "pdf_preview_chars": 6960
+  },
+  "created_at": "2025-10-05T16:51:11Z"
+}

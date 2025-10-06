@@ -1,0 +1,48 @@
+Hier ist eine Analyse des PDF-Auszugs einer Klausur zum Thema **Datenbankmanagementsysteme (DBMS)**:
+
+### **1. Allgemeine Informationen**
+- **Themen & Gewichtungen**:
+  - **SQL (45 Punkte)** – Schwerpunkt der Klausur
+  - **Grundlagen (15 Punkte)** – Basiskonzepten
+  - **Scheduling (20 Punkte)** – Transaktions- oder Query-Scheduling
+
+### **2. Aufgabenanalyse**
+#### **Aufgabe 1: SQL JOINs verstehen**
+- **Frage**: Welcher JOIN-Typ gibt alle Zeilen der linken Tabelle zurück, auch wenn keine Übereinstimmung in der rechten Tabelle existiert?
+- **Antwortmöglichkeiten**:
+  1) **INNER JOIN** (nur übereinstimmende Zeilen)
+  2) **LEFT JOIN** (korrekt – gibt alle Zeilen der linken Tabelle zurück, auch ohne Match in der rechten)
+  3) **RIGHT JOIN** (alle Zeilen der rechten Tabelle, auch ohne Match in der linken)
+  4) **FULL JOIN** (alle Zeilen beider Tabellen, unabhängig von Übereinstimmungen)
+- **Erwartete Antwort**: **2) LEFT JOIN**
+
+#### **Aufgabe 2: JSON-Schema für Datenbanktabellen**
+- **Frage**: Beschreibung der wichtigsten Komponenten eines JSON-Schemas zur Definition von Datenbanktabellen.
+- **Erwartete Inhalte**:
+  - **Datentypen** (z. B. `string`, `number`, `boolean`, `array`, `object`)
+  - **Constraints** (z. B. `required`, `minLength`, `maxLength`, `pattern`)
+  - **Beziehungen** (z. B. Referenzen auf andere Tabellen via `ref` oder `foreignKey`)
+
+#### **Aufgabe 3: Transaktionen in PostgreSQL mit pgAdmin**
+- **Frage**: Welcher Befehl startet eine explizite Transaktion in PostgreSQL?
+- **Antwortmöglichkeiten**:
+  1) **BEGIN TRANSACTION** (korrekt – Standardbefehl in PostgreSQL)
+  2) **START TRANSACTION** (auch gültig, aber weniger gebräuchlich)
+  3) **COMMIT TRANSACTION** (beendet eine Transaktion)
+  4) **ROLLBACK TRANSACTION** (setzt eine Transaktion zurück)
+- **Erwartete Antwort**: **1) BEGIN TRANSACTION** (oder 2) START TRANSACTION, falls akzeptiert)
+
+### **3. Bewertung & Hinweise**
+- **Schwerpunkt**: SQL (45%) dominiert, gefolgt von Scheduling (20%) und Grundlagen (15%).
+- **Typische Prüfungsinhalte**:
+  - SQL-Abfragen (JOINs, Aggregationen, Subqueries)
+  - Transaktionsmanagement (BEGIN/COMMIT/ROLLBACK)
+  - NoSQL-Konzepte (JSON-Schema)
+  - Grundlagen (z. B. ACID-Eigenschaften, Normalformen)
+
+### **4. Empfehlungen für die Prüfungsvorbereitung**
+- **SQL-Praxis**: Üben mit JOINs, Aggregationen und Transaktionen.
+- **PostgreSQL-Kenntnisse**: Befehle wie `BEGIN TRANSACTION` und `COMMIT` verinnerlichen.
+- **JSON-Schema**: Verständnis von Datentypen und Constraints in NoSQL-Datenbanken.
+
+Falls weitere Details oder vertiefende Erklärungen benötigt werden, gerne nachfragen!

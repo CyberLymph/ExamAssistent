@@ -1,0 +1,243 @@
+{% load static %}
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ExamAssistant · Wizard</title>
+    <link rel="stylesheet" href="{% static 'chatui/styles.css' %}" />
+    <style>
+      :root {
+        --gap: 16px;
+        --card: #f9f9f9;
+        --border: #ddd;
+        --muted: #666;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      }
+      .page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fafafa;
+        padding: 24px;
+      }
+      .wizard {
+        width: min(920px, 96vw);
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .title {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0;
+      }
+      .progress {
+        width: 240px;
+        height: 8px;
+        background: #eee;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .progress > div {
+        height: 100%;
+        width: 0;
+        background: #007bff;
+        transition: width 0.25s;
+      }
+      .step {
+        border: 1px solid var(--border);
+        background: var(--card);
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 14px;
+      }
+      .step h2 {
+        margin: 0 0 8px 0;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .badge {
+        background: #0056b3;
+        color: #fff;
+        border-radius: 999px;
+        padding: 2px 8px;
+        font-size: 12px;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .feedback {
+        font-size: 13px;
+        color: #198754;
+      }
+      .btn {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+      .btn[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .btn:hover {
+        background: #0056b3;
+      }
+      .btn-success {
+        background: #198754;
+      }
+      .btn-success:hover {
+        background: #146c43;
+      }
+      .btn-danger {
+        background: #dc3545;
+      }
+      .btn-danger:hover {
+        background: #b02a37;
+      }
+      .btn-ghost {
+        background: transparent;
+        color: #007bff;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-ghost:hover {
+        text-decoration: underline;
+      }
+      .preview {
+        border: 1px solid var(--border);
+        background: #fff;
+        border-radius: 6px;
+        padding: 10px;
+        margin-top: 10px;
+        max-height: 40vh;
+        overflow: auto;
+        white-space: pre-wrap;
+        font-size: 14px;
+      }
+      .nav {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="page">
+      <section class="wizard" id="wizardRoot">
+        <div class="header">
+          <h1 class="title">Einseitiger Wizard</h1>
+          <div class="progress"><div id="progressBar"></div></div>
+        </div>
+
+        <!-- STEP 1: Lösung-Generator -->
+        <div class="step" id="step1">
+          <h2><span class="badge">1</span> Lösung-Generator</h2>
+          <p class="muted">
+            Willkommen zum Lösung-Generator. Bitte unten die Aufgaben als PDF hochladen.
+          </p>
+
+          <div class="row" style="margin-top:8px;">
+            <input id="genFile" type="file" accept="application/pdf" />
+            <span id="genFeedback" class="feedback"></span>
+          </div>
+
+          <!-- Buttons für Vorschau, Export, Löschen -->
+          <div class="row" style="margin-top:8px;">
+            <button id="btnGenPreview" class="btn" type="button">Vorschau erzeugen</button>
+            <button id="btnGenExport" class="btn btn-success hidden" type="button">
+              Als PDF exportieren
+            </button>
+            <button id="btnDeletePdf" class="btn btn-danger hidden" type="button">
+              🗑️ PDF löschen
+            </button>
+            <a id="genDownloadLink" class="btn-ghost hidden" href="#" download>📄 Download</a>
+          </div>
+
+          <div id="genPreview" class="preview hidden"></div>
+          <div id="genInfo" class="muted" style="margin-top:6px;"></div>
+
+          <div class="nav">
+            <button id="toStep2" class="btn" type="button" disabled>Weiter ➜</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Vergleichsanalyse -->
+        <div class="step hidden" id="step2">
+          <h2><span class="badge">2</span> Vergleichsanalyse</h2>
+          <p class="muted">
+            Lade bitte 2 PDFs hoch: Studenten-Antwort und Musterlösung.
+          </p>
+
+          <div class="row">
+            <input id="cmpFile1" type="file" accept="application/pdf" />
+            <span id="cmpFb1" class="feedback"></span>
+          </div>
+          <div class="row">
+            <input id="cmpFile2" type="file" accept="application/pdf" />
+            <span id="cmpFb2" class="feedback"></span>
+          </div>
+
+          <!-- Vergleichs-Buttons -->
+          <div class="row" style="margin-top:12px; gap:12px;">
+            <button id="btnQuickCompare" class="btn" type="button">
+              ⚡ Quick Vergleich
+            </button>
+            <button id="btnDetailedCompare" class="btn btn-success" type="button">
+              🔍 Detaillierte Analyse
+            </button>
+          </div>
+
+          <!-- Ergebnis -->
+          <div id="compareResult" class="preview hidden"></div>
+
+          <div class="nav">
+            <button id="backTo1" class="btn-ghost" type="button">⬅️ Zurück</button>
+            <button id="finish" class="btn btn-success" type="button">Fertig ✔️</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      function getCookie(name) {
+        const v = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
+        return v ? decodeURIComponent(v[1]) : null;
+      }
+      window.CSRF_TOKEN = getCookie('csrftoken');
+    </script>
+    <script defer src="{% static 'chatui/compare.js' %}?v=20251005"></script>
+  </body>
+</html>

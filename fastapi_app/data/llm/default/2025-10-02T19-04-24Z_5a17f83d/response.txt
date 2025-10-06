@@ -1,0 +1,87 @@
+Hier ist die Analyse des PDF-Auszugs:
+
+### **Aufgabe 1: Fehlersuche**
+#### **(a) Fehler: Groß-/Kleinschreibung von `True`**
+- **Fehler:** `bestanden = true` (Python ist case-sensitive, `True` muss großgeschrieben werden).
+- **Korrektur:** `bestanden = True`
+
+#### **(b) Fehler: Längeninkonsistenz zwischen Listen**
+- **Fehler:** `stadt` hat 4 Elemente, `einwohner` nur 3 → IndexError bei `stadt[3]`.
+- **Korrektur:** Anpassung der Listenlängen oder Fehlerbehandlung.
+
+#### **(c) Fehler: Kein Basisfall in rekursiver Funktion**
+- **Fehler:** `fakultaet(n)` ruft sich selbst auf, ohne Abbruchbedingung (Endlosrekursion).
+- **Korrektur:** Basisfall hinzufügen, z. B. `if n <= 1: return 1`.
+
+#### **(d) Fehler: Uninitialisierte Variable `i`**
+- **Fehler:** `i` wird nicht definiert, bevor es in der `while`-Schleife verwendet wird.
+- **Korrektur:** `i = 0` vor der Schleife initialisieren.
+
+#### **(e) Fehler: Division durch Null**
+- **Fehler:** `b = 0.6` wird zu `int(b) = 0` → Division durch Null.
+- **Korrektur:** `b` auf einen Wert ≠ 0 setzen oder Fehlerbehandlung.
+
+---
+
+### **Aufgabe 2: Ausgabeanalyse**
+#### **(a) Ausgabe: `True`**
+- `vier * vier == zwei` → `2 * 2 == 4` → `4 == 4` → `True`.
+
+#### **(b) Ausgabe: `3`**
+- `range(3, 4)` → nur `i = 3` wird gedruckt.
+
+#### **(c) Ausgabe: `i`, `j`, `k`**
+- Schleife durchläuft die Liste `l` und druckt jedes Element.
+
+#### **(d) Ausgabe: `machtallenSpaß`**
+- Indizes: `16` (m), `17` (a), `18` (c), `19` (h), `5` (a), `9` (l), `2` (e), `18` (c), `16` (m), `4` (t).
+
+#### **(e) Ausgabe: `1`, `2`, `3`, `4`, `5`**
+- Rekursion von `k(1)` bis `k(5)` druckt `i` bei jedem Aufruf.
+
+---
+
+### **Aufgabe 3: Run Length Encoding (RLE)**
+#### **(a) `encode(text)`**
+- **Aufgabe:** Komprimiere Text mit RLE, max. 9 gleiche Zeichen.
+- **Beispiel:** `"AAAAAAAAAAABBBCDDDDD"` → `"9A2A3B1C5D"`.
+
+#### **(b) `decode(text)`**
+- **Aufgabe:** Dekomprimiere RLE-Text zurück in Originaltext.
+
+#### **(c) Worst-Case-Szenario**
+- **Bedingung:** Wenn der Text bereits kurz oder zufällig ist (z. B. `"ABC"` → `"1A1B1C"`), wird die Länge erhöht.
+
+#### **(d) `checkRLE(text)`**
+- **Aufgabe:** Prüfe, ob RLE die Länge reduziert (z. B. durch Vergleich der Längen vor/nach Komprimierung).
+
+---
+
+### **Aufgabe 4: Schimpfwortfilter**
+#### **(a) `readSwearwordData(filename)`**
+- **Aufgabe:** Lies eine Datei mit Schimpfwörtern und deren Schweregrad ein.
+- **Beispiel:** `"Fuck 1"` → `['Fuck', 1]`.
+
+#### **(b) `checkText(message, swearwords)`**
+- **Aufgabe:** Ersetze Schimpfwörter durch `***`, lösche Nachricht bei Summe > 7.
+- **Beispiel:** `"Du bist kein Idiot"` → `"Du bist kein ***"` (falls `"Idiot"` Schweregrad 3 hat).
+
+#### **(c) Hauptprogramm**
+- **Aufgabe:** Nutze die Funktionen, um `"Du bist natürlich kein Idiot"` mit `swearwords.txt` zu prüfen.
+
+---
+
+### **Aufgabe 5: Java-Klasse `Moebel`**
+- **Aufgabe:** Erstelle eine Klasse mit Konstruktor und `toString()`.
+- **Beispielausgabe:** `Moebel regal = new Moebel("Yllib", 40);` → `"Yllib (40 €)"`.
+
+---
+
+### **Zusammenfassung**
+- **Fehleranalyse:** Typische Python-Fehler (Syntax, Logik, Initialisierung).
+- **Ausgabeanalyse:** Verständnis von Schleifen, Rekursion und String-Indizierung.
+- **RLE:** Komprimierungsalgorithmus mit Grenzen.
+- **Schimpfwortfilter:** Textverarbeitung mit Datei-I/O und String-Manipulation.
+- **Java:** OOP-Grundlagen (Klassen, Konstruktor, `toString()`).
+
+Die Aufgaben decken grundlegende Programmiertechniken in Python und Java ab.

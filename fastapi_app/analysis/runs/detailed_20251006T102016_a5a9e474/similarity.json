@@ -1,0 +1,18 @@
+{
+  "similarity_score": 0.28039371967315674,
+  "tasks": [
+    {
+      "task_id": "A1",
+      "feedback": "[LLM Fehler: API error occurred: Status 429\n{\"object\":\"error\",\"message\":\"Service tier capacity exceeded for this model.\",\"type\":\"service_tier_capacity_exceeded\",\"param\":null,\"code\":\"3505\"}]\n\nEcho:\nDu bist ein deutschsprachiger Korrekturassistent. Vergleiche die Studentenantwort mit der Musterlösung. Erkläre präzise, wo sie richtig oder unvollständig ist. Gib nur sachliches Feedback, keine Punktevergabe.\n\nStudentenantwort:\n<<<\nKlausur: Biologie Name: _________________________________ Vorname: ______________________________ Matrikelnummer: _______________________ Erstellt am: 05.10.2025 18:34 UTC Themen & Gewichtungen – Zellbiologie (25 Punkte) – Genetik (30 Punkte) – Evolution (40 Punkte) Thema: Zellbiologie Gewichtung: 25 Punkte Aufgabe 1 Aufbau und Funktion von Zellen Beschreiben Sie den grundlegenden Aufbau einer tierischen Zelle und erklären Sie die Funktionen der Zellmembran, des Zellkerns und der Mitochondrien. Erläutern Sie zudem, wie die Zellatmung in den Mitochondrien abläuft. Das ist ein Prozess wo ATP hergestellt wird. Also kleinste Energiekonzerne in Zellen. Zellmembran nimmt benötigte Stoffe rein und bearbeitet sie. Aufgabe 2 Zelltypen und ihre Funktionen Welcher Zelltyp ist für die Speicherung von Fett verantwortlich? 3) Neurozyten Thema: Genetik Gewichtung: 30 Punkte Aufgabe 1 Genetische Vererbung und Mutation Erläutern Sie die Unterschiede zwischen homologer R",
+      "similarity": 0.2804
+    }
+  ],
+  "matrix": [
+    [
+      0.5451472997665405,
+      0.1954023540019989,
+      0.10468557476997375,
+      0.27633970975875854
+    ]
+  ]
+}

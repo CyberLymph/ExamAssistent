@@ -1,0 +1,18 @@
+{
+  "similarity_score": 0.28039371967315674,
+  "tasks": [
+    {
+      "task_id": "A1",
+      "feedback": "Hier ist eine präzise Gegenüberstellung der Studentenantwort mit der Musterlösung, inklusive sachlicher Hinweise zu Richtigkeit und Unvollständigkeiten:\n\n### **Zellbiologie (Aufgabe 1)**\n**Studentenantwort:**\n- **Aufbau der Zelle:** Unvollständig. Fehlen detaillierte Beschreibungen der Zellmembran, des Zellkerns und der Mitochondrien.\n- **Zellmembran:** Unpräzise. Die Funktion als \"selektive Barriere\" (Musterlösung) wird nicht genannt.\n- **Zellkern:** Fehlt die Erwähnung der Steuerung der Zellaktivitäten.\n- **Mitochondrien:** Unvollständig. Die Zellatmung wird nur grob als ATP-Herstellung erwähnt, aber die genauen Schritte (Glykolyse, Citratzyklus, Atmungskette) fehlen.\n- **Zellatmung:** Unpräzise Formulierung (\"kleinste Energiekonzerne\" ist falsch; korrekt: \"Energieträger ATP\").\n\n**Musterlösung:**\n- Vollständig und präzise. Nimmt alle relevanten Punkte auf.\n\n---\n\n### **Zellbiologie (Aufgabe 2)**\n**Studentenantwort:**\n- **Falsche Antwort:** \"Neurozyten\" sind nicht für die Fettspeicherung zuständig (korrekt: Adipozyten).\n\n---\n\n### **Genetik (Aufgabe 1)**\n**Studentenantwort:**\n- **Homologe Rekombination vs. NHEJ:** Fehlt eine klare Abgrenzung der Prozesse.\n- **Konsequenzen für Mutationen:** Unvollständig. Die Musterlösung fehlt, aber die Antwort enthält keine präzisen Erklärungen zu genetischer Vielfalt oder Mutationen.\n- **Fehlerhafte Aussage:** \"Mutation wird nicht zu den kinder übertragen\" ist falsch (Mutationen können vererbt werden, z. B. bei Keimzellen).\n\n---\n\n### **Genetik (Aufgabe 2)**\n**Studentenantwort:**\n- **Falsche Berechnung:** Die Wahrscheinlichkeit für \"AA\" beträgt 0 % (da ein Elternteil homozygot rezessiv ist, kann kein \"A\"-Allel weitergegeben werden).\n\n---\n\n### **Evolution (Aufgabe 1)**\n**Studentenantwort:**\n- **Unvollständig:** Fehlen präzise Erklärungen zu Mutationen, genetischer Drift und natürlicher Selektion.\n- **Allopatrische vs. sympatrische Artbildung:** Keine Differenzierung.\n- **Geschwindigkeit der Artbildung:** Keine Faktoren genannt.\n\n---\n\n### **Evolution (Aufgabe 2)**\n**Studentenantwort:**\n- **Korrekt:** \"Selektion\" ist die richtige Antwort.\n\n---\n\n### **Zusammenfassung der Mängel:**\n1. **Unvollständige Erklärungen** (z. B. Zellatmung, DNA-Reparatur).\n2. **Falsche Antworten** (Neurozyten, Mendel-Rechnung).\n3. **Fehlende Präzision** (z. B. bei evolutionären Mechanismen).\n4. **Fehlerhafte Aussagen** (Vererbung von Mutationen).\n\nDie Musterlösung ist in allen Punkten korrekt und vollständig.",
+      "similarity": 0.2804
+    }
+  ],
+  "matrix": [
+    [
+      0.5451472997665405,
+      0.1954023540019989,
+      0.10468557476997375,
+      0.27633970975875854
+    ]
+  ]
+}

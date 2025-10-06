@@ -1,0 +1,64 @@
+Hier ist eine Analyse des PDF-Auszugs:
+
+### **1. Struktur und Inhalt**
+- **Themen & Gewichtungen**:
+  - **SQL (10 Punkte)**: Enthält eine SQL-Aufgabe (Aufgabe 5).
+  - **Grundlagen (20 Punkte)**: Enthält eine Physikfrage (Aufgabe 6).
+  - **Scheduling (25 Punkte)**: Enthält eine Aufgabenplanungsfrage (Aufgabe 7).
+  - **Allgemeinwissen (keine Punkteangabe)**: Aufgaben 1–4 und 8 (nicht im Auszug) scheinen allgemeines Wissen abzufragen.
+
+### **2. Aufgabenanalyse**
+#### **Aufgabe 1 (Allgemeinwissen)**
+- **Frage**: Schnellstes Auto der Welt.
+- **Erwartete Antwort**: Aktuell (Stand 2025) könnte es sich um ein Hyperschallauto (z. B. Bloodhound LSR) oder ein Elektroauto (z. B. Rimac Nevera) handeln.
+- **Technische Merkmale**: Turbinenantrieb, Aerodynamik, Leichtbauweise, Reifenhaftung.
+
+#### **Aufgabe 2 (Allgemeinwissen)**
+- **Frage**: Größter Planet im Sonnensystem.
+- **Erwartete Antwort**: Jupiter (durch Masse und Volumen).
+- **Begründung**: Größte Masse (318 Erdmassen), Gasplanet, dominanter Einfluss auf das Sonnensystem.
+
+#### **Aufgabe 3 (Philosophie/Logik)**
+- **Frage**: Unbeantwortbare Frage.
+- **Mögliche Antworten**:
+  - *"Was war vor dem Urknall?"* (keine empirische Beweismöglichkeit).
+  - *"Kann ein unendlicher Regress existieren?"* (logische Paradoxie).
+
+#### **Aufgabe 4 (Geografie)**
+- **Frage**: Tiefster Punkt der Welt.
+- **Korrekte Antwort**: **4) Challenger Deep** (Mariana-Graben, ~11.000 m Tiefe).
+- **Hinweis**: "Dead Sea" und "Totes Meer" sind identisch (3. Option ist redundant).
+
+#### **Aufgabe 5 (SQL)**
+- **Frage**: SQL-Abfrage mit INNER JOIN.
+- **Lösung**:
+  ```sql
+  SELECT k.Kundennummer, k.Kundenname, b.Bestellnummer, b.Bestelldatum
+  FROM Kunden k
+  INNER JOIN Bestellungen b ON k.Kundennummer = b.Kundennummer;
+  ```
+
+#### **Aufgabe 6 (Physik)**
+- **Frage**: Einheit der Beschleunigung.
+- **Korrekte Antwort**: **2) m/s²** (Beschleunigung = Geschwindigkeitsänderung pro Zeit).
+
+#### **Aufgabe 7 (Scheduling)**
+- **Frage**: Projektpriorisierung mit Deadlines.
+- **Lösungsansatz**:
+  1. **Priorisierung**: Deadlines, Ressourcenbedarf, Projektkritikalität.
+  2. **Zeitplan**: Gantt-Diagramm, kritischer Pfad.
+  3. **Konflikte**: Ressourcenengpässe → Priorisierung nach Dringlichkeit oder Wert.
+  4. **Lösungen**: Pufferzeiten, Teamaufteilung, externe Unterstützung.
+
+### **3. Bewertungskriterien (vermutet)**
+- **SQL**: Korrekte Syntax, JOIN-Anwendung.
+- **Physik**: Richtige Einheit.
+- **Scheduling**: Logische Argumentation, Konfliktlösung.
+
+### **4. Kritikpunkte**
+- **Aufgabe 3**: Subjektiv (keine eindeutige "schwerste" Frage).
+- **Aufgabe 4**: Redundante Optionen ("Dead Sea" und "Totes Meer").
+- **Fehlende Aufgaben**: Aufgabe 8 ist nicht im Auszug enthalten.
+
+### **Fazit**
+Der Auszug kombiniert **technische Fragen (SQL, Physik, Scheduling)** mit **Allgemeinwissen**. Die Gewichtung deutet auf einen Fokus auf **Datenbankkonzepte** hin, während die anderen Aufgaben eher als "Warm-up" dienen. Die Aufgaben sind klar formuliert, aber einige (wie Aufgabe 3) sind subjektiv.

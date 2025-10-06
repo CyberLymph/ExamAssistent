@@ -1,0 +1,47 @@
+Hier ist eine Analyse des PDF-Auszugs:
+
+### **1. Allgemeine Informationen**
+- **Thema**: Datenbankmanagementsysteme (DBMS)
+- **Prüfungsformat**: Klausur mit drei Aufgaben
+- **Themen & Gewichtungen**:
+  - **SQL (45 Punkte)** – Schwerpunkt auf JOINs und JSON-Schema
+  - **Grundlagen (15 Punkte)** – Vermutlich allgemeine DBMS-Konzepte
+  - **Scheduling (20 Punkte)** – Wahrscheinlich Transaktionssteuerung oder Query-Optimierung
+
+### **2. Aufgabenanalyse**
+#### **Aufgabe 1: SQL JOINs verstehen**
+- **Frage**: Welcher JOIN-Typ gibt alle Zeilen der linken Tabelle zurück, auch bei fehlender Übereinstimmung?
+- **Antwortoptionen**:
+  1) **INNER JOIN** → Nur übereinstimmende Zeilen (falsch)
+  2) **LEFT JOIN** → **Richtig** (behält alle Zeilen der linken Tabelle, füllt fehlende Werte mit NULL)
+  3) **RIGHT JOIN** → Behält alle Zeilen der rechten Tabelle (falsch)
+  4) **FULL JOIN** → Behält alle Zeilen beider Tabellen (falsch)
+- **Erwartete Antwort**: **2) LEFT JOIN**
+
+#### **Aufgabe 2: JSON-Schema für Datenbanktabellen**
+- **Frage**: Beschreibung der Komponenten eines JSON-Schemas für Tabellen.
+- **Mögliche Antwortpunkte**:
+  - **Datentypen**: `string`, `number`, `boolean`, `object`, `array`
+  - **Constraints**:
+    - `required`: Pflichtfelder
+    - `minLength`, `maxLength`: String-Längenbeschränkungen
+    - `enum`: Zulässige Werte
+  - **Beziehungen**:
+    - Verweise auf andere Tabellen (z. B. `foreignKey`)
+    - Einbettung von Objekten (z. B. `items` für Arrays)
+
+#### **Aufgabe 3: Transaktionen in PostgreSQL mit pgAdmin**
+- **Frage**: Welcher Befehl startet eine explizite Transaktion?
+- **Antwortoptionen**:
+  1) **BEGIN TRANSACTION** → **Richtig** (Standard-Syntax in PostgreSQL)
+  2) **START TRANSACTION** → Auch korrekt (Synonym zu BEGIN)
+  3) **COMMIT TRANSACTION** → Beendet eine Transaktion (falsch)
+  4) **ROLLBACK TRANSACTION** → Setzt eine Transaktion zurück (falsch)
+- **Erwartete Antwort**: **1) BEGIN TRANSACTION** (oder 2) START TRANSACTION)
+
+### **3. Fazit**
+- Die Klausur prüft grundlegende SQL-Kenntnisse (JOINs, Transaktionen) und moderne Datenbankkonzepte (JSON-Schema).
+- **Schwerpunkt**: SQL (45%) mit Fokus auf JOINs und Transaktionen.
+- **Hinweis**: Die Klausur ist auf das Jahr **2025** datiert, was auf eine hypothetische oder zukünftige Prüfung hindeutet.
+
+Falls du eine detailliertere Erklärung zu einer der Aufgaben benötigst, lass es mich wissen!

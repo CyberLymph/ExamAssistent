@@ -1,0 +1,44 @@
+DBMS
+Fach: DBMS
+Erstellt am: 04.10.2025 12:45 UTC
+Themen & Gewichtungen
+– SQL (10 Punkte)
+– Grundlagen (20 Punkte)
+– Scheduling (25 Punkte)
+
+Aufgabe 1
+Das schnellste Auto der Welt
+Nenne das aktuell schnellste Auto der Welt und erkläre kurz, welche technischen Merkmale es besonders
+schnell machen.
+Aufgabe 2
+Größter Planet im Sonnensystem
+Nennen Sie den größten Planeten unseres Sonnensystems und begründen Sie kurz, warum er diese
+Bezeichnung trägt.
+Aufgabe 3
+Die schwerste Frage der Welt
+Formulieren Sie eine Frage, die so schwer ist, dass sie nicht beantwortet werden kann. Begründen Sie
+Ihre Wahl.
+Aufgabe 4
+Tiefster Punkt der Welt
+Welcher Punkt ist der tiefste Ort der Welt?
+1) Mariana-Graben
+2) Totes Meer
+3) Dead Sea
+4) Challenger Deep
+Aufgabe 5
+SQL-Abfrage mit JOINs
+Schreiben Sie eine SQL-Abfrage, die alle Kunden mit ihren Bestellungen ausgibt. Verwenden Sie dabei
+mindestens zwei Tabellen und einen INNER JOIN. Geben Sie die Kundennummer, den Kundenamen, die
+Bestellnummer und das Bestelldatum aus.
+Aufgabe 6
+Grundlagen der Physik: Beschleunigung
+Welche Einheit hat die Beschleunigung im internationalen Einheitensystem?
+1) Meter pro Sekunde (m/s)
+2) Meter pro Sekunde zum Quadrat (m/s²)
+3) Kilometer pro Stunde (km/h)
+4) Newton (N)
+Aufgabe 7
+Aufgabenplanung mit Deadlines
+Ein Unternehmen hat drei Projekte mit unterschiedlichen Deadlines und Ressourcenanforderungen.
+Beschreiben Sie, wie Sie die Projekte priorisieren und einen Zeitplan erstellen würden, um alle Deadlines
+einzuhalten. Gehen Sie dabei auf mögliche Konflikte und Lösungsansätze ein.

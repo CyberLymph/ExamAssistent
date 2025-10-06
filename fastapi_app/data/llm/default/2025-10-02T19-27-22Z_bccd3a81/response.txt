@@ -1,0 +1,127 @@
+Hier ist eine detaillierte Analyse des PDF-Auszugs, der eine Klausur mit verschiedenen Python- und Java-Aufgaben enthält:
+
+---
+
+### **Aufgabe 1: Fehlersuche**
+**Ziel:** Fehler in Python-Code identifizieren und erklären.
+
+#### (a) Fehler:
+- **Fehler:** `bestanden = true` (Groß-/Kleinschreibung)
+- **Erklärung:** In Python müssen boolesche Werte als `True` (mit großem `T`) geschrieben werden, nicht `true`.
+
+#### (b) Fehler:
+- **Fehler:** Die Listen `stadt` und `einwohner` haben unterschiedliche Längen (4 vs. 3).
+- **Erklärung:** Bei Zugriff auf `einwohner[3]` gibt es einen `IndexError`, da die Liste nur 3 Elemente hat.
+
+#### (c) Fehler:
+- **Fehler:** Keine Basisbedingung in der rekursiven Funktion `fakultaet(n)`.
+- **Erklärung:** Die Funktion ruft sich selbst auf, ohne einen Abbruch (z. B. `if n <= 1: return 1`), was zu einem `RecursionError` führt.
+
+#### (d) Fehler:
+- **Fehler:** Variable `i` wurde nicht initialisiert.
+- **Erklärung:** `i` muss vor der `while`-Schleife definiert werden (z. B. `i = 0`).
+
+#### (e) Fehler:
+- **Fehler:** Division durch `0` in `a / int(b)`.
+- **Erklärung:** `b = 0.6` wird zu `0` konvertiert, was zu einer `ZeroDivisionError` führt.
+
+---
+
+### **Aufgabe 2: Ausgabe**
+**Ziel:** Vorhersage der Ausgabe von Python-Code.
+
+#### (a) Ausgabe:
+- `print(vier*vier == zwei)` → `print(2*2 == 4)` → `True`.
+
+#### (b) Ausgabe:
+- `range(a, b)` → `range(3, 4)` → Ausgabe: `3`.
+
+#### (c) Ausgabe:
+- Schleife durchläuft die Liste `l` → Ausgabe: `i`, `j`, `k`.
+
+#### (d) Ausgabe:
+- Zeichen an den Indizes `16, 17, 18, 19, 5, 9, 2, 18, 16, 4` → `"allesklar"`.
+
+#### (e) Ausgabe:
+- Rekursive Funktion `k(i)` gibt `1, 2, 3, 4, 5` aus.
+
+---
+
+### **Aufgabe 3: Run Length Encoding (RLE)**
+**Ziel:** Implementierung von RLE-Komprimierung und -Dekomprimierung.
+
+#### (a) `encode(text)`:
+- **Anforderung:** Komprimiere Text mit RLE, aber maximal 9 aufeinanderfolgende Zeichen.
+- **Beispiel:** `"AAAAAAAAAAABBBCDDDDD"` → `"9A2A3B1C5D"`.
+
+#### (b) `decode(text)`:
+- **Anforderung:** Dekomprimiere RLE-Text zurück in den Originaltext.
+
+#### (c) Nachteile von RLE:
+- **Fälle, wo RLE ineffizient ist:**
+  - Wenn der Text bereits keine langen Wiederholungen enthält (z. B. `"abcabc"` → `"1a1b1c1a1b1c"`).
+  - Wenn die Komprimierung die Datenlänge erhöht (z. B. `"a"` → `"1a"`).
+
+#### (d) `checkRLE(text)`:
+- **Anforderung:** Prüfe, ob RLE für den Text sinnvoll ist (z. B. durch Vergleich der Längen vor/nach Komprimierung).
+
+---
+
+### **Aufgabe 4: Schimpfwortfilter**
+**Ziel:** Implementierung eines Filters für unangemessene Wörter.
+
+#### (a) `readSwearwordData(filename)`:
+- **Anforderung:** Lies eine Datei mit Schimpfwörtern und deren Schweregrad ein.
+- **Beispiel:** `"Fuck 1"` → `['Fuck', 1]`.
+
+#### (b) `checkText(message, swearwords)`:
+- **Anforderung:**
+  - Ersetze Schimpfwörter durch `***`.
+  - Lösche die Nachricht, wenn die Summe der Schweregrade > 7 ist.
+  - Groß-/Kleinschreibung ignorieren.
+
+#### (c) Hauptprogramm:
+- **Anforderung:** Nutze die Funktionen, um eine Beispielnachricht zu filtern.
+
+---
+
+### **Aufgabe 5: Java-Klasse für Möbel**
+**Ziel:** Implementierung einer Java-Klasse `Moebel`.
+
+#### Anforderungen:
+- **Konstruktor:** Initialisiere `name` und `preis`.
+- **`toString()`:** Gib eine beschreibende Zeichenkette zurück (z. B. `"Yllib (40 €)"`).
+
+#### Beispielcode:
+```java
+public class Moebel {
+    private String name;
+    private double preis;
+
+    public Moebel(String name, double preis) {
+        this.name = name;
+        this.preis = preis;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + preis + " €)";
+    }
+
+    public static void main(String[] args) {
+        Moebel regal = new Moebel("Yllib", 40);
+        System.out.println(regal); // Ausgabe: "Yllib (40.0 €)"
+    }
+}
+```
+
+---
+
+### **Zusammenfassung**
+Die Klausur deckt grundlegende Python- und Java-Konzepte ab, darunter:
+- Fehleranalyse,
+- String-Manipulation,
+- Rekursion,
+- Dateioperationen,
+- Objektorientierung in Java.
+Die Aufgaben sind praxisnah und testen sowohl theoretisches Verständnis als auch praktische Implementierung.

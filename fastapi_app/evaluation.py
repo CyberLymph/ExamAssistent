@@ -1,7 +1,7 @@
 import csv
 import os
 import pandas as pd # type: ignore
-from didactic_critiria import CRITERIA  # <-- nimmt die Kriterien aus deinem Modul
+from didactic_criteria import CRITERIA  # <-- nimmt die Kriterien aus deinem Modul
 
 class EvaluationSystem:
     def __init__(self, criteria: dict = None, output_dir="evaluations"):

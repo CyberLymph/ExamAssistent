@@ -1,0 +1,13 @@
+{
+  "chat_id": "default",
+  "doc_id": "KlausurAufgaben_20a2a505",
+  "file_name": "KlausurAufgaben.pdf",
+  "paths": {
+    "pdf": "data/uploads/default/KlausurAufgaben_20a2a505/source.pdf",
+    "extract": "data/uploads/default/KlausurAufgaben_20a2a505/extract.txt"
+  },
+  "preview": {
+    "pdf_preview_chars": 884
+  },
+  "created_at": "2025-10-05T18:21:19Z"
+}

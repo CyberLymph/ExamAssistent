@@ -1,0 +1,91 @@
+Hier ist die Analyse des PDF-Auszugs, aufgeteilt nach den einzelnen Aufgaben und Teilaufgaben:
+
+---
+
+### **Aufgabe 1: Grundlagen – Fehlersuche**
+#### **(a) Fehler: Groß-/Kleinschreibung von `True`**
+- **Fehler**: `true` (klein) statt `True` (groß).
+- **Begründung**: In Python müssen boolesche Werte mit Großbuchstaben (`True`, `False`) geschrieben werden.
+
+#### **(b) Fehler: Längeninkonsistenz zwischen Listen**
+- **Fehler**: `stadt` hat 4 Elemente, `einwohner` nur 3.
+- **Begründung**: `einwohner[i]` führt bei `i=3` zu einem `IndexError`, da die Liste nur 3 Elemente hat.
+
+#### **(c) Fehler: Kein Basisfall in rekursiver Funktion**
+- **Fehler**: Keine Abbruchbedingung für `fakultaet(n)`.
+- **Begründung**: Bei `n=0` oder `n=1` sollte die Rekursion enden, sonst führt sie zu einem `RecursionError`.
+
+#### **(d) Fehler: Undefinierte Variable `i`**
+- **Fehler**: `i` wird nicht initialisiert.
+- **Begründung**: `while i <= 10` führt zu einem `NameError`, da `i` nicht existiert.
+
+#### **(e) Fehler: Division durch Null**
+- **Fehler**: `b = 0.6` wird zu `int(0.6) = 0`.
+- **Begründung**: `a / int(b)` führt zu einer `ZeroDivisionError`, da `int(0.6) = 0`.
+
+---
+
+### **Aufgabe 2: Grundlagen – Ausgabe**
+#### **(a) Ausgabe: `True`**
+- **Begründung**: `vier*vier == zwei` → `2*2 == 4` → `4 == 4` → `True`.
+
+#### **(b) Ausgabe: `3`**
+- **Begründung**: `range(3, 4)` → nur `i=3` wird ausgegeben.
+
+#### **(c) Ausgabe: `i`, `j`, `k`**
+- **Begründung**: Die Schleife durchläuft die Liste `l` und gibt jedes Element aus.
+
+#### **(d) Ausgabe: `rekursiv`**
+- **Begründung**: Die Indizes extrahieren die Buchstaben:
+  `a[16]='r'`, `a[17]='e'`, `a[18]='k'`, `a[19]='u'`, `a[5]='r'`, `a[9]='s'`, `a[2]='i'`, `a[18]='k'`, `a[16]='r'`, `a[4]='v'`.
+
+#### **(e) Ausgabe: `1`, `2`, `3`, `4`, `5`**
+- **Begründung**: Die Funktion `k(i)` gibt `i` aus und ruft sich rekursiv mit `i+1` auf, bis `i > 5`.
+
+---
+
+### **Aufgabe 3: Run Length Encoding (RLE)**
+#### **(a) `encode(text)`**
+- **Aufgabe**: Komprimieren Sie den Text mit RLE, aber maximal 9 aufeinanderfolgende Zeichen.
+- **Beispiel**: `"AAAAAAAAAAABBBCDDDDD"` → `"9A2A3B1C5D"`.
+
+#### **(b) `decode(text)`**
+- **Aufgabe**: Dekomprimieren Sie einen RLE-kodierten Text.
+- **Beispiel**: `"9A2A3B1C5D"` → `"AAAAAAAAAAABBBCDDDDD"`.
+
+#### **(c) Wann ist RLE ineffizient?**
+- **Antwort**: Wenn der Text bereits viele verschiedene Zeichen enthält (z. B. `"abcabcabc"` → `"1a1b1c1a1b1c1a1b1c"`), kann die Länge sogar zunehmen.
+
+#### **(d) `checkRLE(text)`**
+- **Aufgabe**: Prüfen Sie, ob RLE den Text verkürzt. Rückgabe: `True`, wenn die komprimierte Version kürzer ist als der Originaltext.
+
+---
+
+### **Aufgabe 4: Schimpfwortfilter**
+#### **(a) `readSwearwordData(filename)`**
+- **Aufgabe**: Lesen Sie eine Datei mit Schimpfwörtern und deren Schweregrad ein.
+- **Beispiel**: `"Fuck 1"` → `['Fuck', 1]`.
+
+#### **(b) `checkText(message, swearwords)`**
+- **Aufgabe**: Ersetze Schimpfwörter durch `***`, wenn die Summe der Schweregrade ≤ 7. Andernfalls: `"Nachricht wurde gelöscht"`.
+
+#### **(c) Hauptprogramm**
+- **Aufgabe**: Testen Sie die Funktionen mit dem Text `"Du bist natürlich kein Idiot"` und der Datei `swearwords.txt`.
+
+---
+
+### **Aufgabe 5: Java-Klasse `Moebel`**
+- **Aufgabe**: Implementieren Sie eine Java-Klasse mit:
+  - **Konstruktor**: `Moebel(String name, double preis)`
+  - **`toString()`**: Gibt `"Name: [name], Preis: [preis]"` zurück.
+- **Beispielausgabe**: `System.out.println(regal)` → `"Name: Yllib, Preis: 40.0"`.
+
+---
+
+### **Zusammenfassung**
+- **Fehleranalyse**: Typische Python-Fehler (Groß-/Kleinschreibung, Indexfehler, Rekursion, Division durch Null).
+- **RLE**: Komprimierung mit Begrenzung auf 9 Zeichen.
+- **Schimpfwortfilter**: Einlesen, Zensieren und Löschen bei schweren Verstößen.
+- **Java**: Einfache Klasse mit Konstruktor und `toString()`.
+
+Falls Sie zu einer bestimmten Aufgabe oder Teilaufgabe mehr Details benötigen, lassen Sie es mich wissen!

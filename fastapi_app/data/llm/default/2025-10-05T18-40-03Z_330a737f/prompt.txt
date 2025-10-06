@@ -1,0 +1,45 @@
+Analysiere das folgende Dokument und beantworte NUR die Aufgaben präzise.
+Formatiere das Ergebnis klar nach folgendem Muster:
+
+Aufgabe 1:
+[Antwort]
+
+Aufgabe 2:
+[Antwort]
+
+usw.
+
+Falls keine Fragen erkannt werden, gib nichts anderes zurück.
+
+PDF-Inhalt:
+<<<
+Klausur: DBMS
+Name: _________________________________
+Vorname: ______________________________
+Matrikelnummer: _______________________
+Erstellt am: 05.10.2025 17:37 UTC
+Themen & Gewichtungen
+– SQL (45 Punkte)
+– Grundlagen (15 Punkte)
+– Scheduling (20 Punkte)
+
+Aufgabe 1
+SQL JOINs verstehen
+Welcher JOIN-Typ gibt alle Zeilen der linken Tabelle zurück, auch wenn keine Übereinstimmung in der
+rechten Tabelle existiert?
+1) INNER JOIN
+2) LEFT JOIN
+3) RIGHT JOIN
+4) FULL JOIN
+Aufgabe 2
+Erkläre das JSON-Schema für Datenbanktabellen
+Beschreibe die wichtigsten Komponenten eines JSON-Schemas zur Definition von Datenbanktabellen.
+Gehe dabei auf Datentypen, Constraints und Beziehungen ein.
+Aufgabe 3
+Transaktionen in PostgreSQL mit pgAdmin
+Welcher Befehl startet eine explizite Transaktion in PostgreSQL?
+1) BEGIN TRANSACTION
+2) START TRANSACTION
+3) COMMIT TRANSACTION
+4) ROLLBACK TRANSACTION
+>>>

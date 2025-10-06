@@ -1,0 +1,11 @@
+Aufgabe 1:
+2) LEFT JOIN
+
+Aufgabe 2:
+Ein JSON-Schema zur Definition von Datenbanktabellen umfasst folgende Komponenten:
+- **Datentypen**: Definition der Spaltentypen (z. B. `string`, `number`, `boolean`, `object`).
+- **Constraints**: Regeln wie `required`, `minLength`, `maxLength`, `pattern` oder `enum` zur Validierung.
+- **Beziehungen**: Referenzen zu anderen Tabellen (z. B. über `foreignKey` oder `references`).
+
+Aufgabe 3:
+1) BEGIN TRANSACTION

@@ -1,0 +1,138 @@
+Hier ist die Analyse des PDF-Auszugs der Klausur "Grundlegende Programmiertechniken" (Winter 21/22):
+
+---
+
+### **Aufgabe 1: Grundlagen (15 Punkte)**
+**Teil (a):**
+```python
+pi = 3.1415926532
+e = 2.7182818283
+print(pi <= e)
+```
+- **Ausgabe:** `False` (da π ≈ 3.14 > e ≈ 2.72).
+
+**Teil (b):**
+```python
+l = ["010", 5, 7, 2]
+for i in range(len(l)):
+    print(int(i) + int(i))
+```
+- **Ausgabe:**
+  - `0 + 0 = 0` (für `i=0`)
+  - `1 + 1 = 2` (für `i=1`)
+  - `2 + 2 = 4` (für `i=2`)
+  - `3 + 3 = 6` (für `i=3`).
+- **Hinweis:** Die Liste `l` wird nicht verwendet, nur die Indizes `i` werden addiert.
+
+**Teil (c):**
+```python
+l = ["010", 5, 7, 2]
+for i in range(len(l)):
+    print(str(i) + str(i))
+```
+- **Ausgabe:**
+  - `"0" + "0" = "00"` (für `i=0`)
+  - `"1" + "1" = "11"` (für `i=1`)
+  - `"2" + "2" = "22"` (für `i=2`)
+  - `"3" + "3" = "33"` (für `i=3`).
+- **Hinweis:** Die Liste `l` wird ignoriert, nur die Indizes werden als Strings konkateniert.
+
+**Teil (d):**
+```python
+i = 42
+if str(i) > "100":
+    print("größer")
+if int(i) < 100:
+    print("kleiner")
+if float(i) == 100.0:
+    print("gleich")
+```
+- **Ausgabe:**
+  - `"42" > "100"` → `False` (lexikographischer Vergleich: `'4'` < `'1'`).
+  - `42 < 100` → `True` → `"kleiner"`.
+  - `42.0 == 100.0` → `False`.
+
+**Teil (e):**
+```python
+a = "VielGlückindieserKlausur"
+print(a[14], a[23], a[12], a[9], a[18])
+```
+- **Ausgabe:** `"i"`, `"u"`, `"i"`, `"e"`, `"u"` (Zeichen an den angegebenen Indizes).
+
+**Teil (f):**
+```python
+dieAntwort = 42*42 + 42/42 > 52
+if dieAntwort:
+    print("Ja")
+else:
+    print("Nein")
+```
+- **Berechnung:**
+  - `42*42 = 1764`
+  - `42/42 = 1.0`
+  - `1764 + 1.0 = 1765.0`
+  - `1765.0 > 52` → `True`.
+- **Ausgabe:** `"Ja"`.
+
+---
+
+### **Aufgabe 2: Wohnen und Coden (30 Punkte)**
+**Teil (a):**
+- **Funktion `readData(filename)`:**
+  - Liest eine Datei mit Zimmernamen, Länge und Breite.
+  - Gibt eine Liste von Listen zurück, z. B. `[['Wohnzimmer', 24.8], ['Bad', 8.4], ...]`.
+  - Bei Fehlern (Datei nicht vorhanden) → leere Liste.
+
+**Teil (b):**
+- **Funktion `largestRoom(rooms)`:**
+  - Bestimmt den Raum mit der größten Fläche und gibt dessen Namen zurück.
+
+**Teil (c):**
+- **Hauptprogramm:**
+  - Einzeiliger Aufruf: `print(largestRoom(readData("myHouse.txt")))`.
+
+---
+
+### **Aufgabe 3: Semantische Fehlersuche (16 Punkte)**
+**Teil (a):**
+- **Fehler in `listMin(a)`:**
+  - Initialisierung mit `minValue = 0` führt zu falschen Ergebnissen, wenn alle Werte in `a` positiv sind (z. B. `[1, 2, 3]` → `0`).
+  - **Korrektur:** `minValue = a[0]` (oder `float('inf')`).
+
+**Teil (b):**
+- **Fehler in `listSumRek(a, s, e)`:**
+  - Rekursiver Aufruf mit `listSumRek(a, s, m) + listSumRek(a, m+1, e)` summiert nur die linke Hälfte (`s` bis `m`) und die rechte Hälfte (`m+1` bis `e`), aber nicht das mittlere Element `a[m]`.
+  - **Korrektur:** `return a[s] + listSumRek(a, s+1, e)` (oder Anpassung der Rekursion).
+
+---
+
+### **Aufgabe 4: Quersumme (25 Punkte)**
+**Teil (a):**
+- **Funktion `quer(zahl)`:**
+  - Berechnet die Quersumme, z. B. `quer(32) = 5`.
+
+**Teil (b):**
+- **Funktion `querArray(arr)`:**
+  - Summiert die Quersummen aller Elemente in `arr` in linearer Zeit.
+
+**Teil (c):**
+- **Funktion `checkQuerElement(arr)`:**
+  - Prüft, ob die Summe der Quersummen im sortierten Array `arr` enthalten ist (z. B. `[5, 11, 23, 47]` → `5+1+1+2+3+4+7=23` → `True`).
+
+---
+
+### **Aufgabe 5: Python vs. Java (14 Punkte)**
+- **Umsetzung der Python-Funktion `isSublist(a, b)` in Java:**
+  - Java-Code muss die gleiche Logik implementieren (Prüfen, ob `b` eine Teilfolge von `a` ist).
+  - **Hinweis:** Java verwendet `&&` für logisches UND und `||` für ODER.
+
+---
+
+### **Zusammenfassung**
+- **Aufgabe 1:** Analyse von Python-Ausgaben (Vergleiche, Schleifen, Indizes).
+- **Aufgabe 2:** Dateiverarbeitung und Flächenberechnung.
+- **Aufgabe 3:** Fehler in rekursiven Funktionen.
+- **Aufgabe 4:** Quersummenberechnung und effiziente Suche.
+- **Aufgabe 5:** Übersetzung von Python nach Java.
+
+Die Klausur prüft grundlegende Python-Kenntnisse, Algorithmen und Fehleranalyse.

@@ -1,0 +1,167 @@
+Hier ist eine detaillierte Analyse des PDF-Auszugs, unterteilt nach den einzelnen Aufgaben:
+
+---
+
+### **Aufgabe 1: Fehlersuche**
+**Ziel:** Fehler in Python-3-Programmen identifizieren und erklären.
+
+#### (a) Fehler:
+```python
+1 bestanden = true  # Fehler: "true" muss "True" (Großschreibung) sein.
+2 if bestanden:
+3 print("Aufgabebestanden")
+4 else:
+5 print("Aufgabenicht bestanden")  # Fehler: Leerzeichen fehlt zwischen "Aufgabe" und "nicht".
+```
+
+#### (b) Fehler:
+```python
+1 stadt = ["Duisburg", "Essen", "Mülheim an der Ruhr", "Krefeld"]
+2 einwohner = [495885, 582415, 170739]  # Fehler: Die Liste hat nur 3 Elemente, aber 4 Städte.
+3 for i in range(len(stadt)):
+4 print(stadt[i],"hat", einwohner[i],"Einwohner")  # IndexError bei der 4. Stadt.
+```
+
+#### (c) Fehler:
+```python
+1 def fakultaet(n):
+2 return n * fakultaet(n - 1)  # Fehler: Keine Abbruchbedingung (unendliche Rekursion).
+3 n=5
+4 print("Fakultät =", fakultaet(n))
+```
+
+#### (d) Fehler:
+```python
+1 print("Countdown")
+2 while i <= 10:  # Fehler: Variable "i" nicht definiert.
+3 print("{10 - i}")  # Fehler: Formatierung falsch (f-String oder str() nötig).
+4 i += 1
+```
+
+#### (e) Fehler:
+```python
+1 a=5
+2 b = 0.6
+3 print(a / int(b))  # Fehler: Division durch 0 (int(0.6) = 0).
+```
+
+---
+
+### **Aufgabe 2: Ausgabe**
+**Ziel:** Vorhersage der Ausgabe von Python-Programmen.
+
+#### (a) Ausgabe:
+```python
+1 vier = 2
+2 zwei = 4
+3 print(vier*vier == zwei)  # Ausgabe: `True` (2*2 = 4).
+```
+
+#### (b) Ausgabe:
+```python
+1 a=3
+2 b=4
+3 for i in range(a,b):  # range(3,4) → nur i=3.
+4 print(i)  # Ausgabe: `3`.
+```
+
+#### (c) Ausgabe:
+```python
+1 l=["i","j","k"]
+2 i=0
+3 while i< len(l):
+4 print(l[i])  # Ausgabe: `i`, `j`, `k` (nacheinander).
+5 i += 1
+```
+
+#### (d) Ausgabe:
+```python
+1 a= "Rekursionmacht allen Spaß"
+2 print(a[16], a[17], a[18], a[19], a[5], a[9], a[2], a[18], a[16], a[4])
+   # Indizes: 16='a', 17='l', 18='l', 19='e', 5='m', 9='a', 2='e', 18='l', 16='a', 4='h'
+   # Ausgabe: `a l l e m a e l a h`.
+```
+
+#### (e) Ausgabe:
+```python
+1 def k(i):
+2 if i <= 5:
+3 print(i)  # Ausgabe: `1`, `2`, `3`, `4`, `5` (rekursiv).
+4 k(i+1)
+5 k(1)
+```
+
+---
+
+### **Aufgabe 3: Run Length Encoding (RLE)**
+**Ziel:** RLE-Algorithmus implementieren und analysieren.
+
+#### (a) `encode(text)`:
+- Komprimiert Text mit RLE, aber maximal 9 aufeinanderfolgende Zeichen.
+- Beispiel: `"AAAAAAAAAAABBBCDDDDD"` → `"9A2A3B1C5D"`.
+
+#### (b) `decode(text)`:
+- Dekomprimiert RLE-Text zurück in den Originaltext.
+
+#### (c) Nachteile von RLE:
+- **Ineffizient bei:** Texten mit vielen verschiedenen Zeichen (z. B. `"abcabcabc"` → `"1a1b1c1a1b1c1a1b1c"`).
+- **Erhöht Speicherbedarf**, wenn die Komprimierung nicht lohnt.
+
+#### (d) `checkRLE(text)`:
+- Prüft, ob RLE sinnvoll ist (z. B. durch Vergleich der Längen von Original und komprimiertem Text).
+
+---
+
+### **Aufgabe 4: Schimpfwortfilter**
+**Ziel:** Unangemessene Wörter in Texten ersetzen oder löschen.
+
+#### (a) `readSwearwordData(filename)`:
+- Liest eine Datei mit Schimpfwörtern und deren Schweregrad ein.
+- Beispiel: `"Fuck 1"` → `['Fuck', 1]`.
+
+#### (b) `checkText(message, swearwords)`:
+- Ersetzt Schimpfwörter durch `***` (Groß-/Kleinschreibung ignorieren).
+- Löscht Nachricht, wenn Summe der Schweregrade > 7.
+
+#### (c) Hauptprogramm:
+```python
+print(checkText("Du bist natürlich kein Idiot", readSwearwordData("swearwords.txt")))
+```
+
+---
+
+### **Aufgabe 5: Java-Klasse "Moebel"**
+**Ziel:** Java-Klasse für Möbel mit Konstruktor und `toString()` erstellen.
+
+#### Lösung:
+```java
+public class Moebel {
+    private String name;
+    private double preis;
+
+    public Moebel(String name, double preis) {
+        this.name = name;
+        this.preis = preis;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + preis + " €)";
+    }
+
+    public static void main(String[] args) {
+        Moebel regal = new Moebel("Yllib", 40);
+        System.out.println(regal);  // Ausgabe: "Yllib (40.0 €)"
+    }
+}
+```
+
+---
+
+### **Zusammenfassung**
+- **Fehleranalyse:** Typische Python-Fehler (Groß-/Kleinschreibung, Indizes, Rekursion).
+- **RLE:** Komprimierung mit Einschränkungen.
+- **Schimpfwortfilter:** Textverarbeitung mit Schweregradbewertung.
+- **Java:** Klasse mit Konstruktor und `toString()`.
+
+Die Aufgaben decken grundlegende Programmiertechniken in Python und Java ab.

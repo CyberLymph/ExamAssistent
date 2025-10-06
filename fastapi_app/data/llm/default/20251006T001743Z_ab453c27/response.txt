@@ -1,0 +1,11 @@
+Aufgabe 1:
+x = 5
+
+Aufgabe 2:
+4) x = 10
+
+Aufgabe 1:
+Ein Isomorphismus zwischen den Gruppen (■, +) und (2■, +) ist die Abbildung φ: (■, +) → (2■, +), definiert durch φ(x) = 2x. Diese Abbildung ist bijektiv und erhält die Gruppenoperation, da φ(x + y) = 2(x + y) = 2x + 2y = φ(x) + φ(y). Die Gruppenaxiome werden erfüllt, da φ die neutrale und inversen Elemente korrekt abbildet.
+
+Aufgabe 1:
+Die Eigenwerte der Matrix A = [[3, 2], [2, 6]] sind λ₁ = 7 und λ₂ = 1. Die zugehörigen normierten Eigenvektoren sind v₁ = [1/√5, 2/√5]ᵀ und v₂ = [-2/√5, 1/√5]ᵀ. Die Hauptachsentransformation ergibt die Diagonalmatrix D = [[7, 0], [0, 1]] und die Transformationsmatrix P = [v₁, v₂]. Die Diagonalisierung lautet A = PDP⁻¹.

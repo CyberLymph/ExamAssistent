@@ -1,0 +1,24 @@
+Aufgabe 1:
+x = 5
+
+Aufgabe 2:
+4) x = 10
+
+Aufgabe 1:
+Ein Isomorphismus zwischen (■, +) und (2■, +) ist die Abbildung φ: (■, +) → (2■, +), definiert durch φ(x) = 2x. Diese Abbildung ist bijektiv und erhält die Gruppenoperation:
+φ(x + y) = 2(x + y) = 2x + 2y = φ(x) + φ(y).
+Die Gruppenaxiome (Abgeschlossenheit, Assoziativität, Existenz von neutralem Element und Inversen) werden durch φ erhalten, da (■, +) und (2■, +) beide abelsche Gruppen sind.
+
+Aufgabe 1:
+Eigenwerte von A:
+λ₁ = 7, λ₂ = 2
+Eigenvektoren:
+v₁ = [1, 1], v₂ = [1, -2]
+Diagonalisierte Matrix:
+D = [[7, 0], [0, 2]]
+Transformationmatrix:
+P = [[1, 1], [1, -2]]
+Inverse von P:
+P⁻¹ = [[1/2, 1/4], [1/2, -1/4]]
+Hauptachsentransformation:
+A = P D P⁻¹

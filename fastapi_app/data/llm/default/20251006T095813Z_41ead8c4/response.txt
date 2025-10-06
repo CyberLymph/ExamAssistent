@@ -1,0 +1,11 @@
+Aufgabe 1:
+x = 5
+
+Aufgabe 2:
+4) x = 10
+
+Aufgabe 1:
+Ein Isomorphismus zwischen den Gruppen (G, +) und (2G, +) ist die Abbildung φ: G → 2G mit φ(g) = 2g für alle g ∈ G. Diese Abbildung ist bijektiv und erhält die Gruppenoperation, da φ(g₁ + g₂) = 2(g₁ + g₂) = 2g₁ + 2g₂ = φ(g₁) + φ(g₂).
+
+Aufgabe 1:
+Die Eigenwerte von A sind λ₁ = 7 und λ₂ = 2. Die zugehörigen normierten Eigenvektoren sind v₁ = [1/√5, 2/√5]ᵀ und v₂ = [-2/√5, 1/√5]ᵀ. Die diagonalisierte Matrix ist D = [[7, 0], [0, 2]]. Die Transformationsmatrix P ist die Matrix mit den Eigenvektoren als Spalten, also P = [[1/√5, -2/√5], [2/√5, 1/√5]]. Die Hauptachsentransformation ist dann A = P D P⁻¹.

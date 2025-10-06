@@ -1,0 +1,110 @@
+Hier ist eine detaillierte Analyse des PDF-Auszugs:
+
+### **Aufgabe 1: Fehlersuche**
+#### **(a) Fehler: Groß-/Kleinschreibung von `True`**
+- **Fehler:** `bestanden = true` (Python ist case-sensitive, `True` muss großgeschrieben werden).
+- **Korrektur:** `bestanden = True`
+
+#### **(b) Fehler: Längeninkonsistenz zwischen Listen**
+- **Fehler:** `stadt` hat 4 Elemente, `einwohner` nur 3 → IndexError bei `stadt[3]`.
+- **Korrektur:** Listen müssen gleich lang sein oder `range(len(einwohner))` verwenden.
+
+#### **(c) Fehler: Kein Basisfall in rekursiver Fakultätsfunktion**
+- **Fehler:** Keine Abbruchbedingung für `n = 0` oder `n = 1` → unendliche Rekursion.
+- **Korrektur:** `if n <= 1: return 1` hinzufügen.
+
+#### **(d) Fehler: Uninitialisierte Variable `i`**
+- **Fehler:** `i` wird nicht definiert, bevor es in der Schleife verwendet wird.
+- **Korrektur:** `i = 0` vor der Schleife initialisieren.
+
+#### **(e) Fehler: Division durch 0**
+- **Fehler:** `b = 0.6` wird zu `int(0.6) = 0` → Division durch 0.
+- **Korrektur:** `b` auf einen Wert ≠ 0 setzen (z. B. `b = 1.0`).
+
+---
+
+### **Aufgabe 2: Ausgabeanalyse**
+#### **(a) Ausgabe: `True`**
+- `vier * vier == zwei` → `2 * 2 == 4` → `4 == 4` → `True`.
+
+#### **(b) Ausgabe: `3`**
+- `range(3, 4)` → nur `i = 3` wird gedruckt.
+
+#### **(c) Ausgabe: `i`, `j`, `k`**
+- Schleife durchläuft `l` mit `i = 0, 1, 2`.
+
+#### **(d) Ausgabe: `allesklar`**
+- Buchstaben an Positionen: `16` (e), `17` (l), `18` (l), `19` (e), `5` (k), `9` (l), `2` (a), `18` (l), `16` (e), `4` (s).
+
+#### **(e) Ausgabe: `1 2 3 4 5`**
+- Rekursion von `k(1)` bis `k(5)` druckt `i` von 1 bis 5.
+
+---
+
+### **Aufgabe 3: Run Length Encoding (RLE)**
+#### **(a) `encode(text)`**
+- **Anforderung:** Komprimierung mit max. 9 aufeinanderfolgenden Zeichen.
+- **Beispiel:** `AAAAAAAAAAABBBCDDDDD` → `9A2A3B1C5D`.
+
+#### **(b) `decode(text)`**
+- **Anforderung:** Dekomprimierung von RLE-Format (z. B. `5A1B` → `AAAAAB`).
+
+#### **(c) Nachteile von RLE**
+- **Fälle, wo RLE ineffizient ist:**
+  - Keine wiederholten Zeichen (z. B. `abcdef` → `1a1b1c1d1e1f`).
+  - Lange, nicht-repetitive Sequenzen.
+  - Einzelne Zeichen mit hohen Zählern (z. B. `100A` → `100A` vs. `AAA...`).
+
+#### **(d) `checkRLE(text)`**
+- **Logik:** Prüfen, ob RLE die Länge reduziert (z. B. durch Zählen von Wiederholungen).
+
+---
+
+### **Aufgabe 4: Schimpfwortfilter**
+#### **(a) `readSwearwordData(filename)`**
+- **Aufgabe:** Einlesen einer Datei mit Wörtern und Schweregraden.
+- **Beispiel:** `Fuck 1` → `['Fuck', 1]`.
+
+#### **(b) `checkText(message, swearwords)`**
+- **Logik:**
+  1. Groß-/Kleinschreibung ignorieren (z. B. `Idiot` = `idiot`).
+  2. Unangemessene Wörter durch `***` ersetzen.
+  3. Bei Summe der Schweregrade > 7: `"Nachricht wurde gelöscht"`.
+
+#### **(c) Hauptprogramm**
+- **Beispielaufruf:**
+  ```python
+  print(checkText("Du bist natürlich kein Idiot", readSwearwordData("swearwords.txt")))
+  ```
+
+---
+
+### **Aufgabe 5: Java-Klasse `Moebel`**
+- **Lösung:**
+  ```java
+  public class Moebel {
+      private String name;
+      private double preis;
+
+      public Moebel(String name, double preis) {
+          this.name = name;
+          this.preis = preis;
+      }
+
+      @Override
+      public String toString() {
+          return name + " (" + preis + " €)";
+      }
+  }
+  ```
+- **Ausgabe:** `Yllib (40.0 €)`.
+
+---
+
+### **Zusammenfassung**
+- **Fehleranalyse:** Typische Python-Fehler (Syntax, Logik, Initialisierung).
+- **RLE:** Komprimierung mit Begrenzung auf 9 Zeichen.
+- **Schimpfwortfilter:** Groß-/Kleinschreibung ignorieren, Schweregrade summieren.
+- **Java:** Klasse mit Konstruktor und `toString()`-Methode.
+
+Falls weitere Details benötigt werden, gerne nachfragen!

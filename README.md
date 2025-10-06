@@ -52,6 +52,8 @@ source .venv/bin/activate
 
 pip install --upgrade pip
 
+cd fastapi_app
+
 pip install -r requirements.txt
 
 
@@ -117,3 +119,16 @@ Django runs on → http://127.0.0.1:8001/
 
 If you want to access the app from another device in your local network, use 0.0.0.0 instead of 127.0.0.1.
 
+----------------------------------------------------------------------------------------------------------
+
+In diesem Schritte kannst du dein Project auf ein mal starten (Frontend als auch Backend) --> Beide Server gleichzeitig laufen!
+
+cd /Users/kholoudjlilaty/Desktop/SS2025/BP/GitHub/ExamAssistent
+
+python -m fastapi_app.api
+
+source ../.venv/bin/activate
+
+chmod +x start_servers.sh
+
+./start_servers.sh

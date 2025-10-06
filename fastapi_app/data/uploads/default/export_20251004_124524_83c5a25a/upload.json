@@ -1,0 +1,13 @@
+{
+  "chat_id": "default",
+  "doc_id": "export_20251004_124524_83c5a25a",
+  "file_name": "export_20251004_124524.pdf",
+  "paths": {
+    "pdf": "data/uploads/default/export_20251004_124524_83c5a25a/source.pdf",
+    "extract": "data/uploads/default/export_20251004_124524_83c5a25a/extract.txt"
+  },
+  "preview": {
+    "pdf_preview_chars": 1560
+  },
+  "created_at": "2025-10-04T16:49:08Z"
+}

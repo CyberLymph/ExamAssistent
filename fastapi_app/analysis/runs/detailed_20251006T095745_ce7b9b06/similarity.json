@@ -1,0 +1,18 @@
+{
+  "similarity_score": 0.28039371967315674,
+  "tasks": [
+    {
+      "task_id": "A1",
+      "feedback": "Hier ist eine präzise Gegenüberstellung der Studentenantwort mit der Musterlösung:\n\n### **Aufgabe 1: Aufbau und Funktion von Zellen**\n**Studentenantwort:**\n- **Richtig:**\n  - Die Zellmembran wird als für die Aufnahme von Stoffen verantwortlich beschrieben.\n  - Die Mitochondrien werden als Ort der ATP-Herstellung genannt.\n- **Unvollständig/Fehlerhaft:**\n  - **Zellmembran:** Die Funktion wird unpräzise formuliert (\"bearbeitet sie\" ist unklar). Die Musterlösung betont die selektive Barriere-Funktion.\n  - **Zellkern:** Fehlt vollständig in der Beschreibung.\n  - **Zellatmung:** Der Prozess wird nur grob umrissen (\"Prozess wo ATP hergestellt wird\"). Die Musterlösung nennt die genauen Schritte (Glykolyse, Citratzyklus, Atmungskette).\n  - **ATP:** \"kleinste Energiekonzerne\" ist falsch (korrekt: Energieträger).\n\n**Aufgabe 2: Zelltypen und ihre Funktionen**\n- **Falsch:** \"Neurozyten\" sind nicht für Fett speicherung zuständig (korrekt: Adipozyten).\n\n### **Aufgabe 1: Genetische Vererbung und Mutation**\n- **Unvollständig:**\n  - **Homologe Rekombination & NHEJ:** Keine Erklärung der Unterschiede oder Konsequenzen.\n  - **Mutation:** \"Mutation wird nicht zu den kinder übertragen\" ist falsch (Mutationen können vererbt werden, wenn sie in Keimzellen auftreten).\n  - **Formulierung:** \"Erstellen einer Vererbung und mutatioenen\" ist unklar.\n\n**Aufgabe 2: Mendelsche Vererbung**\n- **Falsch:** Die Wahrscheinlichkeit für AA ist nicht 50% (korrekt: 0%, da ein Elternteil homozygot rezessiv ist).\n\n### **Aufgabe 1: Evolutionäre Mechanismen**\n- **Unvollständig:**\n  - Keine Erklärung der Unterschiede zwischen homologer Rekombination und NHEJ.\n  - Keine Diskussion der Konsequenzen für genetische Vielfalt oder Mutationen.\n  - **Allopatrische vs. sympatrische Artbildung:** Fehlt vollständig.\n  - **Formulierung:** \"Es sind sehr wichtig bei Entstehung neuer Arten\" ist unpräzise.\n\n**Aufgabe 2: Evolution: Anpassung von Lebewesen**\n- **Richtig:** \"Selektion\" ist korrekt.\n\n### **Zusammenfassung:**\nDie Studentenantwort enthält einige richtige Aussagen, ist aber in vielen Teilen unvollständig, unpräzise oder falsch. Besonders fehlen detaillierte Erklärungen zu biologischen Prozessen und Begriffen. Die Formulierungen sind oft unklar oder grammatikalisch fehlerhaft.",
+      "similarity": 0.2804
+    }
+  ],
+  "matrix": [
+    [
+      0.5451472997665405,
+      0.1954023540019989,
+      0.10468557476997375,
+      0.27633970975875854
+    ]
+  ]
+}

@@ -6,40 +6,146 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ExamAssistant · Chat</title>
     <link rel="stylesheet" href="{% static 'chatui/styles.css' %}" />
+    <style>
+      .layout {
+        display: flex;
+        gap: 20px;
+        height: 100vh;
+      }
+      .chat {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid #ccc;
+        padding-right: 20px;
+      }
+      .chat__messages {
+        flex: 1;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 10px;
+        background: #fdfdfd;
+        margin-bottom: 10px;
+      }
+      .chat__form {
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+      }
+      .sidebar {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .box {
+        flex: 1;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 15px;
+        background: #f9f9f9;
+        display: flex;
+        flex-direction: column;
+      }
+      .box h2 {
+        margin-top: 0;
+        font-size: 16px;
+      }
+      .box input[type="file"] {
+        margin-top: 5px;
+        font-size: 14px;
+      }
+      .feedback {
+        font-size: 13px;
+        color: green;
+        margin-top: 5px;
+      }
+      .preview-window {
+        border: 1px solid #ccc;
+        background: #fff;
+        padding: 8px;
+        margin-top: 10px;
+        font-size: 13px;
+        flex: 1;
+        overflow-y: auto;
+      }
+      .box button, .btn-link {
+        margin-top: 10px;
+        padding: 6px 10px;
+        font-size: 14px;
+        background: #007bff;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        align-self: flex-start;
+        text-decoration: none;
+      }
+      .box button:hover, .btn-link:hover {
+        background: #0056b3;
+      }
+      #btn-export {
+        background: green;
+      }
+      #btn-export:hover {
+        background: darkgreen;
+      }
+    </style>
   </head>
   <body>
-    <main class="container">
+    <main class="container layout">
+      <!-- Linke Seite: Chat -->
       <section class="chat">
         <header class="chat__header">
           <h1>ExamAssistant · Chat</h1>
-          <small>minimal: Text + PDF</small>
+          <small>Chat mit KI</small>
         </header>
 
         <div id="messages" class="chat__messages"></div>
 
         <form id="form" class="chat__form">
           <div class="row">
-            <label class="file">
-              <input id="file" type="file" accept="application/pdf" />
-              <span>PDF anhängen</span>
-            </label>
-            <span id="uploadStatus" class="muted"></span>
-          </div>
-
-          <div class="row">
-            <textarea id="input" placeholder="Frag mich etwas…"></textarea>
+            <textarea id="input" placeholder="Frag mich etwas…" style="width:80%; height:60px;"></textarea>
             <button id="send" type="submit">Senden</button>
           </div>
           {% csrf_token %}
         </form>
       </section>
+
+      <!-- Rechte Seite: Funktionen -->
+      <aside class="sidebar">
+        <!-- Box 1: Lösung generieren -->
+        <div class="box">
+          <h2>Lösung generieren</h2>
+          <input id="generate-file" type="file" accept="application/pdf" />
+          <div id="generateFeedback" class="feedback"></div>
+          <button id="btn-generate">Lösung generieren</button>
+
+          <!-- Preview -->
+          <div id="generatePreview" class="preview-window" style="display:none;"></div>
+
+          <!-- Export Button -->
+          <button id="btn-export" style="display:none;">Exportieren</button>
+
+          <!-- PDF-Link -->
+          <div id="generatePdfLink" class="muted"></div>
+        </div>
+
+        <!-- Box 2: Musterlösung vergleichen -->
+        <div class="box">
+          <h2>Musterlösung vergleichen</h2>
+          <p>Wechsle zur Vergleichsseite, um eine detaillierte Analyse zu machen:</p>
+          <a href="/compare" class="btn-link">➡️ Vergleich starten</a>
+        </div>
+      </aside>
     </main>
 
     <script>
-      function getCookie(name){const v=document.cookie.match('(?:^|; )'+name+'=([^;]*)');return v?decodeURIComponent(v[1]):null}
+      function getCookie(name){
+        const v=document.cookie.match('(?:^|; )'+name+'=([^;]*)');
+        return v?decodeURIComponent(v[1]):null;
+      }
       window.CSRF_TOKEN = getCookie('csrftoken');
     </script>
-    <!-- Cache-Busting via Version-Query + sicheres Laden via static -->
-    <script defer src="{% static 'chatui/chat.js' %}?v=20250920-2"></script>
+    <script defer src="{% static 'chatui/chat.js' %}?v=20251002-2"></script>
   </body>
 </html>
