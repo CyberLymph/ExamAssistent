@@ -1,117 +1,142 @@
-(async function () {
-  // ===============================
-  // Parameter aus URL lesen
-  // ===============================
+(function () {
   const params = new URLSearchParams(window.location.search);
   const chat_id = params.get("chat_id");
   const run_id = params.get("run_id");
 
   const loading = document.getElementById("loading");
-  const container = document.getElementById("analysis");
+  const progressBar = document.getElementById("progressBar");
+  const meta = document.getElementById("meta");
+  const simScoreEl = document.getElementById("simScore");
+  const readLevelEl = document.getElementById("readLevel");
 
-  // ===============================
-  // Helper
-  // ===============================
-  function el(tag, cls, html) {
-    const e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (html) e.innerHTML = html;
-    return e;
+  const pager = document.getElementById("pager");
+  const btnPrev = document.getElementById("btnPrev");
+  const btnNext = document.getElementById("btnNext");
+  const pageNowEl = document.getElementById("pageNow");
+  const pageMaxEl = document.getElementById("pageMax");
+
+  const grid = document.getElementById("grid");
+  const colML = document.getElementById("colML");
+  const colSL = document.getElementById("colSL");
+  const endMsg = document.getElementById("endMsg");
+
+  // Einstellungen
+  const PAGE_SIZE = 3; // 3 Aufgabenpaare pro Seite
+
+  // Zustand
+  let tasks = [];
+  let page = 1;
+  let pageMax = 1;
+
+  function setProgress(pct) {
+    if (progressBar) progressBar.style.width = pct;
   }
 
-  // ===============================
-  // Analyse laden
-  // ===============================
-  try {
-    const res = await fetch(`/api/detailed-analysis?chat_id=${chat_id}&run_id=${run_id}`);
-    if (!res.ok) throw new Error("Analyse konnte nicht geladen werden.");
-    const data = await res.json();
-    const s = data.summary;
+  function chunk(arr, size) {
+    const out = [];
+    for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+    return out;
+  }
 
-    loading.classList.add("hidden");
-    container.classList.remove("hidden");
+  function fmtPercent(v) {
+    if (typeof v !== "number") return "–";
+    return (v * 100).toFixed(1) + " %";
+  }
 
-    // ===============================
-    // Header
-    // ===============================
-    const header = el("div", "p-4 border-b mb-4", `
-      <h2>🧠 Detaillierte Analyse</h2>
-      <p><b>Chat-ID:</b> ${chat_id} | <b>Run-ID:</b> ${run_id}</p>
-      <p><b>Gesamtähnlichkeit:</b> ${(s.similarity_score * 100).toFixed(2)}%</p>
-    `);
-    container.appendChild(header);
+  function renderPage() {
+    // Seiteninfo
+    pageMaxEl.textContent = pageMax;
+    pageNowEl.textContent = page;
 
-    // ===============================
-    // Bloom-Taxonomie Info
-    // ===============================
-    const bloomInfo = el("div", "bg-gray-50 p-3 rounded mb-4");
-    bloomInfo.innerHTML = `
-      <h3>🌱 Bloom-Taxonomie</h3>
-      <p>Ein Klassifikationssystem für Lernziele, das hilft, Aufgaben und Materialien auf verschiedene kognitive Niveaus abzustimmen.</p>
-      <ol>
-        <li><b>Erinnern</b> – Fakten wiedergeben („Definieren Sie ...“)</li>
-        <li><b>Verstehen</b> – Konzepte erklären („Beschreiben Sie ...“)</li>
-        <li><b>Anwenden</b> – Wissen in neuen Situationen nutzen („Lösen Sie ...“)</li>
-        <li><b>Analysieren</b> – Strukturen und Zusammenhänge erkennen („Vergleichen Sie ...“)</li>
-        <li><b>Bewerten</b> – Urteile fällen, Kriterien anwenden („Beurteilen Sie ...“)</li>
-        <li><b>Erschaffen</b> – Neues entwickeln („Entwerfen Sie ...“)</li>
-      </ol>
-    `;
-    container.appendChild(bloomInfo);
+    // Buttons aktivieren/deaktivieren
+    btnPrev.disabled = page <= 1;
+    btnNext.disabled = page >= pageMax;
 
-    // ===============================
-    // Lesbarkeitsinfo
-    // ===============================
-    const readInfo = el("div", "bg-blue-50 p-3 rounded mb-4");
-    const r = s.readability_metrics || {};
-    readInfo.innerHTML = `
-      <h3>📖 Flesch Reading Ease (Lesbarkeitsindex)</h3>
-      <p>Ein Maß für die Verständlichkeit von Texten (Deutsch: 180 – ASL – (58,5 × ASW))</p>
-      <p><b>Lesbarkeitsgrad:</b> ${r.lesbarkeitsgrad || "–"}</p>
-      <p><b>Flesch-Wert:</b> ${r.flesch_reading_ease ? r.flesch_reading_ease.toFixed(2) : "-"}</p>
-      <p><b>Satzanzahl:</b> ${r.sentence_count || "-"}</p>
-      <p><b>Ø Satzlänge:</b> ${r.avg_sentence_length || "-"}</p>
-      <p><b>Didaktische Relevanz:</b> Hilft, Texte für Zielgruppen passend zu gestalten. Für Unterrichtsmaterial sollte je nach Lernstand ein mittlerer bis hoher Wert angestrebt werden.</p>
-    `;
-    container.appendChild(readInfo);
+    // Inhalte
+    colML.innerHTML = "";
+    colSL.innerHTML = "";
 
-    // ===============================
-    // Aufgabenanalyse
-    // ===============================
-    const tasksContainer = el("div", "tasks");
-    container.appendChild(tasksContainer);
+    const groups = chunk(tasks, PAGE_SIZE);
+    const slice = groups[page - 1] || [];
 
-    let index = 0;
-
-    function renderTask(task) {
-      const block = el("div", "border rounded p-4 mb-4 shadow-sm");
-      block.innerHTML = `
-        <h4>🧩 Aufgabe ${task.task_id}</h4>
-        <p><b>Ähnlichkeit:</b> ${(task.similarity * 100).toFixed(1)}%</p>
-        <p><b>Studentenlösung (SL):</b><br><pre>${task.student_answer}</pre></p>
-        <p><b>Analyse (Unterschiede zu ML):</b><br><pre>${task.feedback}</pre></p>
+    slice.forEach((t) => {
+      // linke Spalte (ML)
+      const ml = document.createElement("div");
+      ml.className = "mb-3 p-2 border rounded bg-white";
+      ml.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center">
+          <b>${t.task_id}</b>
+          <span class="badge bg-secondary">${fmtPercent(t.similarity)}</span>
+        </div>
+        <div class="mt-2"><pre class="m-0" style="white-space:pre-wrap">${t.model_solution || "(Keine ML verfügbar)"}</pre></div>
       `;
-      const btn = el("button", "btn btn-primary mt-2", "➡️ Nächste Aufgabe analysieren");
-      btn.addEventListener("click", () => showNextTask());
-      block.appendChild(btn);
-      return block;
-    }
+      colML.appendChild(ml);
 
-    function showNextTask() {
-      if (index < s.tasks.length) {
-        tasksContainer.appendChild(renderTask(s.tasks[index]));
-        index++;
-        if (index === s.tasks.length) {
-          const end = el("p", "mt-4 text-green-700 font-bold", "✅ Alle Aufgaben wurden analysiert.");
-          tasksContainer.appendChild(end);
-        }
-      }
-    }
+      // rechte Spalte (SL + Feedback)
+      const sl = document.createElement("div");
+      sl.className = "mb-3 p-2 border rounded bg-white";
+      sl.innerHTML = `
+        <b>${t.task_id}</b>
+        <div class="mt-2"><u>Studentenlösung:</u></div>
+        <pre class="m-0" style="white-space:pre-wrap">${t.student_answer || "(Keine SL verfügbar)"}</pre>
+        <div class="mt-2"><u>Feedback (detaillierter Vergleich):</u></div>
+        <pre class="m-0" style="white-space:pre-wrap">${t.feedback || "(Kein Feedback)"}</pre>
+      `;
+      colSL.appendChild(sl);
+    });
 
-    // Ersten Task anzeigen
-    showNextTask();
-
-  } catch (err) {
-    loading.textContent = "❌ Fehler: " + err.message;
+    // Ende-Hinweis
+    endMsg.classList.toggle("d-none", page < pageMax);
   }
+
+  async function init() {
+    try {
+      setProgress("90%");
+      const res = await fetch(`http://127.0.0.1:8000/detailed-analysis?chat_id=${encodeURIComponent(chat_id)}&run_id=${encodeURIComponent(run_id)}`);
+
+      const data = await res.json();
+      if (!res.ok || !data?.summary) throw new Error(data?.detail || "Analyse konnte nicht geladen werden.");
+
+      const s = data.summary;
+      tasks = Array.isArray(s.tasks) ? s.tasks : [];
+      if (tasks.length === 0) throw new Error("Keine Aufgaben gefunden.");
+
+      // Meta
+      simScoreEl.textContent = fmtPercent(s.similarity_score);
+      readLevelEl.textContent = s.readability_metrics?.lesbarkeitsgrad || "–";
+
+      // Anzeige
+      loading.classList.add("d-none");
+      meta.classList.remove("d-none");
+      grid.classList.remove("d-none");
+      pager.classList.remove("d-none");
+
+      // Pagination
+      pageMax = Math.max(1, Math.ceil(tasks.length / PAGE_SIZE));
+      page = 1;
+      renderPage();
+      setProgress("100%");
+    } catch (e) {
+      loading.textContent = "❌ Fehler: " + e.message;
+    }
+  }
+
+  // Pager
+  btnPrev?.addEventListener("click", () => {
+    if (page > 1) {
+      page -= 1;
+      renderPage();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
+  btnNext?.addEventListener("click", () => {
+    if (page < pageMax) {
+      page += 1;
+      renderPage();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
+
+  // Start
+  init();
 })();

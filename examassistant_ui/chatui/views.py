@@ -14,9 +14,7 @@ def compare(request):
     """Seite für den Vergleich (compare.html)"""
     return render(request, "chatui/compare.html")
 
-def detailed(request):
-    """Seite für die detaillierte Analyse (detailed.html)"""
-    return render(request, "chatui/detailed.html")
+
 
 
 
@@ -133,3 +131,30 @@ def api_compare_solutions(request):
         )
 
     return JsonResponse(r.json())
+
+
+@csrf_exempt
+def api_detailed_analysis(request):
+    chat_id = request.GET.get("chat_id")
+    run_id = request.GET.get("run_id")
+
+    if not chat_id or not run_id:
+        return JsonResponse({"error": "chat_id oder run_id fehlt"}, status=400)
+
+    try:
+        r = requests.get(
+            f"{FASTAPI_BASE}/detailed-analysis",
+            params={"chat_id": chat_id, "run_id": run_id},
+            timeout=(10, 120)
+        )
+    except Exception as e:
+        return JsonResponse({"error": f"FastAPI unreachable: {e}"}, status=502)
+
+    if r.status_code >= 400:
+        return JsonResponse(
+            {"error": f"FastAPI {r.status_code}", "details": r.text},
+            status=502
+        )
+
+    return JsonResponse(r.json())
+
