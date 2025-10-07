@@ -141,90 +141,64 @@
   });
 
   async function runCompare(mode) {
-    if (!cmpFile1.files.length || !cmpFile2.files.length) {
-      showCmpResult("⚠️ Bitte 2 PDFs auswählen (Muster & Student).");
+  if (!cmpFile1.files.length || !cmpFile2.files.length) {
+    showCmpResult("⚠️ Bitte 2 PDFs auswählen (Muster & Student).");
+    return;
+  }
+
+  const isQuick = mode === "quick";
+  showCmpResult(
+    isQuick
+      ? "⏳ Quick-Vergleich läuft..."
+      : "⏳ Detaillierte Analyse läuft..."
+  );
+
+  const fd = new FormData();
+  fd.append("file1", cmpFile1.files[0]);
+  fd.append("file2", cmpFile2.files[0]);
+  fd.append("mode", mode);
+
+  try {
+    const res = await fetch("/api/compare-solutions", {
+      method: "POST",
+      headers: { "X-CSRFToken": window.CSRF_TOKEN || "" },
+      body: fd,
+    });
+    const data = await res.json();
+
+    if (!res.ok || data.error)
+      throw new Error(data.error || `HTTP ${res.status}`);
+
+    // ---------- QUICK ----------
+    if (data.mode === "quick") {
+      let out = `
+        <b>⚡ Quick-Vergleich</b><br>
+        Ähnlichkeit: ${(data.quick_similarity * 100).toFixed(2)} %<br>
+        Lesbarkeitsgrad: ${data.readability?.lesbarkeitsgrad || "-"}<br>
+        Satzanzahl: ${data.readability?.satzanzahl || "-"}<br>
+        Ø Satzlänge: ${data.readability?.durchschnittliche_Satzlänge || "-"}<br>
+        <hr>${data.summary || ""}
+      `;
+      showCmpResult(out);
+      return; // bleibt auf Seite
+    }
+
+    // ---------- DETAILED ----------
+    if (data.mode === "detailed" && data.run_id) {
+      const url = `/detailed?chat_id=${data.chat_id}&run_id=${data.run_id}`;
+      window.location.href = url; // gehe zur Detailseite
       return;
     }
 
-    const isQuick = mode === "quick";
-    showCmpResult(
-      isQuick
-        ? "⏳ Quick-Vergleich läuft..."
-        : "⏳ Detaillierte Analyse läuft..."
-    );
-
-    const fd = new FormData();
-    fd.append("file1", cmpFile1.files[0]);
-    fd.append("file2", cmpFile2.files[0]);
-    fd.append("mode", mode);
-
-    try {
-      const res = await fetch("/api/compare-solutions", {
-        method: "POST",
-        headers: { "X-CSRFToken": window.CSRF_TOKEN || "" },
-        body: fd,
-      });
-
-      const data = await res.json();
-      if (!res.ok || data.error)
-        throw new Error(data.error || `HTTP ${res.status}`);
-
-      let out = "";
-      if (data.quick_similarity !== undefined) {
-        out += `⚡ Quick-Vergleich: ${(data.quick_similarity * 100).toFixed(
-          2
-        )} %<br>`;
-      }
-      if (data.similarity_score !== undefined) {
-        out += `🔗 Gesamt-Ähnlichkeit: ${(data.similarity_score * 100).toFixed(
-          2
-        )} %<br><br>`;
-      }
-
-      if (Array.isArray(data.tasks) && data.tasks.length) {
-        data.tasks.forEach((t) => {
-          out += `
-          <div style="margin-bottom:16px; border-bottom:1px solid #ddd; padding-bottom:10px;">
-            <b>${t.task_id}:</b><br>
-            <b style="color:#444;">Studentenantwort:</b><br>
-            ${t.student_answer?.replace(/\n/g, "<br>") || "(keine Antwort)"}<br><br>
-            <b style="color:#444;">Analyse:</b><br>
-            ${t.feedback?.replace(/\n/g, "<br>") || "(keine Analyse)"}<br>
-            <i>Ähnlichkeit: ${t.similarity || 0}%</i>
-          </div>`;
-        });
-      }
-
-      if (data.readability) {
-        out += `<hr><b>📖 Lesbarkeitsanalyse:</b><br>
-        Lesbarkeitsgrad: ${data.readability.lesbarkeitsgrad || "-"}<br>
-        Satzanzahl: ${data.readability.satzanzahl || "-"}<br>
-        Ø Satzlänge: ${
-          data.readability.durchschnittliche_Satzlänge || "-"
-        }<br>`;
-      }
-
-      if (data.summary)
-        out += `<hr><b>🧾 Zusammenfassung:</b><br>${data.summary}<br>`;
-
-      showCmpResult(out || "⚠️ Keine Ergebnisse gefunden.");
-    } catch (e) {
-      showCmpResult("❌ Fehler: " + e.message);
-    }
+    showCmpResult("⚠️ Keine Ergebnisse erhalten.");
+  } catch (e) {
+    showCmpResult("❌ Fehler: " + e.message);
   }
-document
-  .getElementById("btnDetailedCompare")
-  ?.addEventListener("click", async () => {
-    const result = await runCompare("detailed");
-    // Nach Abschluss → Redirect zur Detailansicht
-    const run_id_match = /([0-9TZ_]+_[a-f0-9]{8})/.exec(result?.summary || "");
-    if (run_id_match) {
-      window.location.href = `/detailed?chat_id=default&run_id=${run_id_match[1]}`;
-    }
-  });
+}
 
   // Buttons verbinden
   document
-    .getElementById("btnQuickCompare")
-    ?.addEventListener("click", () => runCompare("quick"));
+  .getElementById("btnDetailedCompare")
+  ?.addEventListener("click", () => runCompare("detailed"));
+
 })();

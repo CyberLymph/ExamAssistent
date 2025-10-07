@@ -11,16 +11,16 @@ from reportlab.pdfgen import canvas
 from PyPDF2 import PdfReader
 import uvicorn, os, uuid, re, json, tempfile, shutil, traceback
 from analysis.readability_module import analyze_german_readability, ReadabilityAnalyzer
-from analysis.answer_comparator import AnswerComparator
 from analysis.test_modules import TestModuleRunner
 
+# ============================================================
+# Initialisierung
+# ============================================================
+app = FastAPI(title="ExamAssistant API", version="3.1.0")
 
-# ============================================================
-# Setup
-# ============================================================
-app = FastAPI(title="ExamAssistant API", version="3.0.0")
 wrapper = MistralWrapper()
 comparator = AnswerComparator()
+readability = ReadabilityAnalyzer()
 
 # ============================================================
 # Hilfsfunktionen
@@ -41,6 +41,7 @@ def now_iso() -> str:
     return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
 def pdf_to_text(path: str, max_chars=10000) -> str:
+    """Extrahiert Text aus einer PDF-Datei (max_chars begrenzt Ausgabegröße)."""
     text = ""
     try:
         reader = PdfReader(path)
@@ -54,12 +55,13 @@ def pdf_to_text(path: str, max_chars=10000) -> str:
     return text[:max_chars] if text else ""
 
 def export_solution_as_pdf(text: str, export_path: Path):
-    """Speichert den generierten Lösungstext als PDF mit automatischem Zeilenumbruch."""
+    """Speichert generierten Lösungstext als PDF mit automatischem Zeilenumbruch."""
     export_path.parent.mkdir(parents=True, exist_ok=True)
     c = canvas.Canvas(str(export_path), pagesize=A4)
     width, height = A4
     x, y = 50, height - 50
     max_width = width - 100
+
     for line in text.split("\n"):
         words = line.split(" ")
         current_line = ""
@@ -113,7 +115,6 @@ async def generate_solution(chat_id: str = Form("default"), pdf: Optional[Upload
         if not text:
             raise HTTPException(status_code=400, detail="PDF enthält keinen lesbaren Text.")
 
-        # === Prompt: strukturierte Antwortgenerierung ===
         prompt = (
             "Analysiere das folgende PDF-Dokument und beantworte ausschließlich die erkannten Aufgaben.\n"
             "Formatiere das Ergebnis exakt so:\n\n"
@@ -127,7 +128,6 @@ async def generate_solution(chat_id: str = Form("default"), pdf: Optional[Upload
         ensure_dir(llm_dir)
         (llm_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
 
-        # === LLM-Aufruf ===
         reply = wrapper.send_request(prompt)
         (llm_dir / "response.txt").write_text(reply, encoding="utf-8")
 
@@ -163,18 +163,18 @@ async def delete_upload(chat_id: str = Query("default"), doc_id: str = Query(...
         traceback.print_exc()
         return JSONResponse({"ok": False, "error": str(e)}, status_code=500)
 
+# ============================================================
+# API: Vergleichsanalyse (Quick )
+# ============================================================
 @app.post("/compare-solutions")
 async def compare_solutions(
-    file1: UploadFile = File(...),  # Musterlösung (ML)
-    file2: UploadFile = File(...),  # Studentenlösung (SL)
-    mode: str = Form("quick"),      # "quick" oder "detailed"
+    file1: UploadFile = File(...),   # Musterlösung (ML)
+    file2: UploadFile = File(...),   # Studentenlösung (SL)
+    mode: str = Form("quick"),       # "quick" oder "detailed"
     chat_id: str = Form("default"),
 ):
-    import tempfile
-    from analysis.test_modules import TestModuleRunner
-
     try:
-        # 🧾 Temporär speichern
+        # PDFs speichern
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as t1:
             t1.write(await file1.read())
             path_ml = t1.name
@@ -183,18 +183,15 @@ async def compare_solutions(
             t2.write(await file2.read())
             path_sl = t2.name
 
-        # 🧠 Text aus PDFs
         model_text = pdf_to_text(path_ml)
         student_text = pdf_to_text(path_sl)
         if not model_text or not student_text:
             raise HTTPException(status_code=400, detail="Leere oder unlesbare PDFs.")
 
-        # 🆔 IDs
         run_id = make_run_id()
-        runner = TestModuleRunner(base_dir="analysis")
 
+        # --- QUICK ---
         if mode == "quick":
-            # Nur Kurzvergleich
             comp = AnswerComparator()
             quick_score = comp.quick_compare(student_text, model_text)
             readability = analyze_german_readability(student_text)
@@ -202,30 +199,76 @@ async def compare_solutions(
                 "mode": "quick",
                 "quick_similarity": quick_score,
                 "readability": readability,
-                "summary": f"Quick-Vergleich: {round(quick_score*100,2)}% Ähnlichkeit erkannt.",
+                "summary": f"Quick-Vergleich: {round(quick_score*100,2)}% Ähnlichkeit erkannt."
             }
+        if mode == "detailed":
+         runner = TestModuleRunner(base_dir="analysis")
+         summary = runner.run_analysis(student_text, model_text, chat_id, run_id)
+         return {
+        "mode": "detailed",
+        "chat_id": chat_id,
+        "run_id": run_id,
+        "summary_path": f"/analysis/{chat_id}/{run_id}/summary.json",
+        "summary": summary
+    }
 
-        # Vollanalyse
-        summary = runner.run_analysis(student_text, model_text, chat_id, run_id)
-        return {
-            "mode": "detailed",
-            "run_id": run_id,
-            "chat_id": chat_id,
-            "summary_path": f"/analysis/{chat_id}/{run_id}/summary.json",
-            "summary": summary,
-        }
 
     except Exception as e:
-        import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Fehler in compare_solutions: {e}")
+
+# ============================================================
+# API: Detaillierte Analyse abrufen (für detailed.html)
+# ============================================================
+@app.get("/detailed-analysis")
+async def detailed_analysis(chat_id: str = Query(...), run_id: str = Query(...)):
+    """
+    Lädt gespeicherte detaillierte Analyse (summary.json) aus analysis/<chat_id>/<run_id>/
+    """
+    try:
+        summary_path = Path("analysis") / chat_id / run_id / "summary.json"
+        if not summary_path.exists():
+            raise HTTPException(status_code=404, detail="Analyse-Datei nicht gefunden.")
+
+        with open(summary_path, "r", encoding="utf-8") as f:
+            summary = json.load(f)
+
+        return {
+            "chat_id": chat_id,
+            "run_id": run_id,
+            "summary": summary
+        }
+    
+
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Fehler beim Laden der Analyse: {e}")
 
 # ============================================================
 # Root
 # ============================================================
 @app.get("/")
 def index():
-    return {"status": "ExamAssistant API aktiv", "version": "3.0.0"}
+    return {"status": "ExamAssistant API aktiv", "version": "3.1.0"}
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
+
+# Templates und statische Dateien
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates/chatui")
+
+@app.get("/detailed", response_class=HTMLResponse)
+async def detailed_page(request: Request, chat_id: str = Query(...), run_id: str = Query(...)):
+    """
+    Rendert die Seite detailed.html, die per JS /api/detailed-analysis aufruft.
+    """
+    return templates.TemplateResponse(
+        "detailed.html",
+        {"request": request, "chat_id": chat_id, "run_id": run_id}
+    )
+
 
 # ============================================================
 # Main

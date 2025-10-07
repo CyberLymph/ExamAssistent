@@ -1,148 +1,140 @@
-{% load static %}
-<!doctype html>
-<html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Detaillierte Analyse · ExamAssistant</title>
-    <link rel="stylesheet" href="{% static 'chatui/styles.css' %}" />
-    <style>
-      body {
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        background: #f5f7fa;
-        margin: 0;
-        padding: 40px;
-      }
+{% extends "chatui/base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>🧠 Detaillierte Analyse</h2>
+  <p id="loading">⏳ Analyse wird geladen...</p>
 
-      .container {
-        max-width: 900px;
-        margin: 0 auto;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        padding: 30px 40px;
-      }
-
-      h1 {
-        font-size: 22px;
-        margin-bottom: 12px;
-      }
-
-      h2 {
-        border-bottom: 2px solid #007bff33;
-        padding-bottom: 4px;
-        margin-top: 30px;
-        font-size: 18px;
-      }
-
-      .metric {
-        display: flex;
-        justify-content: space-between;
-        padding: 6px 0;
-        border-bottom: 1px solid #eee;
-      }
-
-      .task {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 12px;
-        margin-top: 14px;
-        background: #fafafa;
-      }
-
-      .task h3 {
-        margin-top: 0;
-      }
-
-      .footer {
-        text-align: center;
-        margin-top: 30px;
-      }
-
-      .btn {
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 8px 16px;
-        cursor: pointer;
-        text-decoration: none;
-      }
-
-      .btn:hover {
-        background: #0056b3;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="container">
-      <h1>📊 Detaillierte Analyse</h1>
-      <p id="summaryInfo">Lade Ergebnisse...</p>
-
-      <h2>📖 Lesbarkeitsanalyse</h2>
-      <div id="readabilitySection"></div>
-
-      <h2>⚖️ Aufgabenanalyse</h2>
-      <div id="tasksSection"></div>
-
-      <h2>🔗 Gesamtbewertung</h2>
-      <div id="similaritySection"></div>
-
-      <div class="footer">
-        <a href="/compare" class="btn">⬅️ Zurück zum Vergleich</a>
-      </div>
+  <div id="analysis" class="hidden">
+    <!-- Ähnlichkeitsanalyse -->
+    <div id="similarity-section" class="mb-4">
+      <h4>📊 Ähnlichkeitsanalyse</h4>
+      <p><b>Gesamt-Score:</b> <span id="simScore"></span></p>
     </div>
 
-    <script>
-      async function loadAnalysis() {
-        const params = new URLSearchParams(window.location.search);
-        const chat_id = params.get("chat_id") || "default";
-        const run_id = params.get("run_id");
-        if (!run_id) {
-          document.getElementById("summaryInfo").textContent =
-            "❌ Keine Analyse-ID angegeben.";
-          return;
-        }
+    <!-- Bloom-Taxonomie -->
+    <div id="bloom-section" class="bg-light p-3 rounded mb-4 border">
+      <h4>🌱 Bloom-Taxonomie</h4>
+      <p>
+        Ein Klassifikationssystem für Lernziele, das hilft, Aufgaben und Materialien auf verschiedene kognitive Niveaus abzustimmen.
+      </p>
+      <ol>
+        <li><b>Erinnern</b> – Fakten wiedergeben („Definieren Sie ...“)</li>
+        <li><b>Verstehen</b> – Konzepte erklären („Beschreiben Sie ...“)</li>
+        <li><b>Anwenden</b> – Wissen in neuen Situationen nutzen („Lösen Sie ...“)</li>
+        <li><b>Analysieren</b> – Strukturen und Zusammenhänge erkennen („Vergleichen Sie ...“)</li>
+        <li><b>Bewerten</b> – Urteile fällen, Kriterien anwenden („Beurteilen Sie ...“)</li>
+        <li><b>Erschaffen</b> – Neues entwickeln („Entwerfen Sie ...“)</li>
+      </ol>
+    </div>
 
-        try {
-          const res = await fetch(`/analysis/${chat_id}/${run_id}/summary.json`);
-          const data = await res.json();
+    <!-- Lesbarkeitsmetriken -->
+    <div id="readability-section" class="bg-info-subtle p-3 rounded mb-4 border">
+      <h4>📘 Flesch Reading Ease (Lesbarkeitsindex)</h4>
+      <p>
+        Ein Maß für die Verständlichkeit von Texten (Deutsch: <code>180 – ASL – (58,5 × ASW)</code>)
+      </p>
+      <ul id="readability"></ul>
+      <p class="mt-2">
+        <b>Didaktische Relevanz:</b> Hilft, Texte für Zielgruppen passend zu gestalten.
+        Für Unterrichtsmaterial sollte je nach Lernstand ein mittlerer bis hoher Wert angestrebt werden.
+      </p>
+    </div>
 
-          document.getElementById("summaryInfo").textContent =
-            "Analyse erfolgreich geladen.";
+    <!-- Aufgabenanalyse -->
+    <div id="tasks-section">
+      <h4>🧩 Aufgabenanalyse (Bloom / Feedback)</h4>
+      <div id="tasks"></div>
+    </div>
+  </div>
+</div>
 
-          const r = data.readability_metrics || {};
-          let rHtml = "";
-          for (const [k, v] of Object.entries(r)) {
-            rHtml += `<div class="metric"><span>${k}</span><span>${v}</span></div>`;
-          }
-          document.getElementById("readabilitySection").innerHTML = rHtml;
+<script>
+(async function () {
+  const params = new URLSearchParams(window.location.search);
+  const chat_id = params.get("chat_id");
+  const run_id = params.get("run_id");
 
-          const t = data.tasks || [];
-          let tHtml = "";
-          t.forEach((task) => {
-            tHtml += `
-              <div class="task">
-                <h3>${task.task_id}</h3>
-                <b>Feedback:</b><br>${task.feedback || "(kein Feedback)"}<br><br>
-                <i>Ähnlichkeit: ${(task.similarity * 100).toFixed(2)}%</i>
-              </div>`;
-          });
-          document.getElementById("tasksSection").innerHTML =
-            tHtml || "<p>Keine Aufgaben gefunden.</p>";
+  const loading = document.getElementById("loading");
+  const analysis = document.getElementById("analysis");
+  const simScoreEl = document.getElementById("simScore");
+  const readabilityEl = document.getElementById("readability");
+  const tasksEl = document.getElementById("tasks");
 
-          const s = data.similarity_score || 0;
-          document.getElementById(
-            "similaritySection"
-          ).innerHTML = `<p>Gesamtähnlichkeit: <b>${(s * 100).toFixed(2)}%</b></p>`;
-        } catch (err) {
-          document.getElementById("summaryInfo").textContent =
-            "❌ Fehler beim Laden der Analyse.";
-        }
+  try {
+    const res = await fetch(`/api/detailed-analysis?chat_id=${chat_id}&run_id=${run_id}`);
+    if (!res.ok) throw new Error("Analyse konnte nicht geladen werden.");
+    const data = await res.json();
+    const s = data.summary || {};
+
+    // UI anzeigen
+    loading.classList.add("hidden");
+    analysis.classList.remove("hidden");
+
+    // Ähnlichkeitswert
+    simScoreEl.textContent = s.similarity_score
+      ? (s.similarity_score * 100).toFixed(2) + " %"
+      : "–";
+
+    // Lesbarkeitsmetriken
+    const r = s.readability_metrics || {};
+    const items = [
+      ["Lesbarkeitsgrad", r.lesbarkeitsgrad],
+      ["Flesch Reading Ease", r.flesch_reading_ease ? r.flesch_reading_ease.toFixed(2) : "-"],
+      ["Satzanzahl", r.sentence_count || "-"],
+      ["Ø Satzlänge", r.avg_sentence_length || "-"],
+      ["Wiener Sachtextformel", r.wiener_sachtextformel || "-"],
+      ["DEW-Index", r.dew_index || "-"],
+    ];
+    readabilityEl.innerHTML = items
+      .map(([k, v]) => `<li><b>${k}:</b> ${v}</li>`)
+      .join("");
+
+    // Aufgaben dynamisch anzeigen
+    let index = 0;
+    const tasks = s.tasks || [];
+
+    function renderTask(task) {
+      const el = document.createElement("div");
+      el.className = "border rounded p-3 mb-4 shadow-sm bg-white";
+      el.innerHTML = `
+        <h5>🧮 ${task.task_id}</h5>
+        <p><b>Ähnlichkeit:</b> ${(task.similarity * 100).toFixed(1)} %</p>
+        <p><b>Studentenlösung (SL):</b></p>
+        <pre class="bg-light p-2 rounded">${task.student_answer}</pre>
+        <p><b>Analyse (Unterschiede zu ML):</b></p>
+        <pre class="bg-light p-2 rounded">${task.feedback}</pre>
+      `;
+
+      // Button "Nächste Aufgabe"
+      if (index < tasks.length - 1) {
+        const btn = document.createElement("button");
+        btn.textContent = "➡️ Nächste Aufgabe analysieren";
+        btn.className = "btn btn-primary mt-2";
+        btn.addEventListener("click", showNextTask);
+        el.appendChild(btn);
+      } else {
+        const done = document.createElement("p");
+        done.className = "text-success fw-bold mt-3";
+        done.textContent = "✅ Alle Aufgaben wurden analysiert.";
+        el.appendChild(done);
       }
 
-      loadAnalysis();
-    </script>
-  </body>
-</html>
+      tasksEl.appendChild(el);
+    }
+
+    function showNextTask() {
+      if (index < tasks.length) {
+        renderTask(tasks[index]);
+        index++;
+      }
+    }
+
+    // Zeige erste Aufgabe
+    showNextTask();
+
+  } catch (err) {
+    loading.textContent = "❌ Fehler: " + err.message;
+  }
+})();
+</script>
+{% endblock %}
