@@ -1,5 +1,5 @@
 # ============================================================
-# fastapi_app/api.py  – korrigierte & erweiterte Version
+# fastapi_app/api.py – stabile, bereinigte Version (v3.2.4)
 # ============================================================
 from typing import Optional
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Query
@@ -19,21 +19,18 @@ from fastapi.middleware.cors import CORSMiddleware
 # ============================================================
 # Initialisierung
 # ============================================================
-app = FastAPI(title="ExamAssistant API", version="3.2.2")
+app = FastAPI(title="ExamAssistant API", version="3.2.4")
 
 wrapper = MistralWrapper()
 comparator = AnswerComparator()
 readability = ReadabilityAnalyzer()
 
 # ============================================================
-# CORS aktivieren (Frontend auf Port 8001 darf API ansprechen)
+# CORS (Frontend-Port 8001)
 # ============================================================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://127.0.0.1:8001",
-        "http://localhost:8001",
-    ],
+    allow_origins=["http://127.0.0.1:8001", "http://localhost:8001"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -46,13 +43,16 @@ def ensure_dir(p: Path) -> Path:
     p.mkdir(parents=True, exist_ok=True)
     return p
 
+
 def generate_doc_id(name: str) -> str:
     base = os.path.splitext(os.path.basename(name))[0][:50] or "upload"
     return f"{base}_{uuid.uuid4().hex[:8]}"
 
+
 def make_run_id() -> str:
     ts = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
     return f"{ts}_{uuid.uuid4().hex[:8]}"
+
 
 def pdf_to_text(path: str, max_chars=10000) -> str:
     """Extrahiert Text aus einer PDF-Datei."""
@@ -63,10 +63,11 @@ def pdf_to_text(path: str, max_chars=10000) -> str:
             content = page.extract_text()
             if content:
                 text += content + "\n"
-    except Exception as e:
-        print(f"⚠️ Fehler beim Lesen von {path}: {e}")
+    except Exception:
+        pass
     text = re.sub(r"\s+", " ", text).strip()
     return text[:max_chars] if text else ""
+
 
 def export_solution_as_pdf(text: str, export_path: Path):
     """Speichert generierten Lösungstext als PDF."""
@@ -97,6 +98,7 @@ def export_solution_as_pdf(text: str, export_path: Path):
                 y = height - 50
     c.save()
 
+
 # ============================================================
 # API: Lösung generieren
 # ============================================================
@@ -108,6 +110,7 @@ async def generate_solution(chat_id: str = Form("default"), pdf: Optional[Upload
         raw = await pdf.read()
         if not raw.startswith(b"%PDF"):
             raise HTTPException(status_code=400, detail="Ungültige PDF-Datei.")
+
         doc_id = generate_doc_id(pdf.filename)
         base_dir = Path("data") / "uploads" / chat_id / doc_id
         ensure_dir(base_dir)
@@ -130,6 +133,7 @@ async def generate_solution(chat_id: str = Form("default"), pdf: Optional[Upload
         llm_dir = Path("data") / "llm" / chat_id / run_id
         ensure_dir(llm_dir)
         (llm_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
+
         reply = wrapper.send_request(prompt)
         (llm_dir / "response.txt").write_text(reply, encoding="utf-8")
 
@@ -144,9 +148,11 @@ async def generate_solution(chat_id: str = Form("default"), pdf: Optional[Upload
             "export_pdf": str(export_path),
             "run_id": run_id,
         }
+
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Fehler in generate_solution: {e}")
+
 
 # ============================================================
 # API: Vergleichsanalyse
@@ -168,10 +174,6 @@ async def compare_solutions(
 
         model_text = pdf_to_text(path_ml)
         student_text = pdf_to_text(path_sl)
-
-        print("📘 MODE:", mode)
-        print("📄 Musterlösung Länge:", len(model_text))
-        print("📄 Studentenlösung Länge:", len(student_text))
         if not model_text or not student_text:
             raise HTTPException(status_code=400, detail="Leere oder unlesbare PDFs.")
 
@@ -179,42 +181,43 @@ async def compare_solutions(
 
         # === QUICK ===
         if mode == "quick":
-            print("⚡ QUICK Vergleich läuft...")
             comp = AnswerComparator()
             quick_score = comp.quick_compare(student_text, model_text)
-            readability = analyze_german_readability(student_text)
-            print("✅ QUICK erfolgreich:", quick_score)
+            readability_score = analyze_german_readability(student_text)
             return {
                 "mode": "quick",
                 "quick_similarity": quick_score,
-                "readability": readability,
+                "readability": readability_score,
                 "summary": f"Quick-Vergleich: {round(quick_score*100,2)}% Ähnlichkeit erkannt."
             }
 
         # === DETAILED ===
         elif mode == "detailed":
-            print("🧠 DETAILED Vergleich gestartet...")
             comp = AnswerComparator()
             summary = comp.detailed_compare(student_text, model_text)
             if not summary or not isinstance(summary, dict):
                 raise ValueError("Keine gültige summary-Daten erhalten.")
 
-            # --- Sicherstellen, dass Tasks immer Liste ist ---
+            # Fallbacks und Sicherstellung korrekter Struktur
             if "tasks" not in summary or not summary["tasks"]:
                 summary["tasks"] = [{
                     "task_id": "Gesamtanalyse",
-                    "similarity": summary.get("similarity_score"),
-                    "model_solution": model_text,
-                    "student_answer": student_text,
+                    "similarity": summary.get("similarity_score", 0.0),
+                    "model_solution": model_text or "(Keine Musterlösung gefunden)",
+                    "student_answer": student_text or "(Keine Studentenlösung gefunden)",
                     "feedback": summary.get("feedback", "(Kein Feedback verfügbar)")
                 }]
+            else:
+                for t in summary["tasks"]:
+                    t["task_id"] = t.get("task_id", "Unbekannte Aufgabe")
+                    t["model_solution"] = t.get("model_solution") or "(Keine Musterlösung gefunden)"
+                    t["student_answer"] = t.get("student_answer") or "(Keine Studentenlösung gefunden)"
+                    t["feedback"] = t.get("feedback") or "(Kein Feedback verfügbar)"
 
             outdir = Path("analysis") / chat_id / run_id
             outdir.mkdir(parents=True, exist_ok=True)
-            summary_path = outdir / "summary.json"
-            with open(summary_path, "w", encoding="utf-8") as f:
+            with open(outdir / "summary.json", "w", encoding="utf-8") as f:
                 json.dump(summary, f, indent=2, ensure_ascii=False)
-            print(f"💾 Summary gespeichert unter: {summary_path.absolute()}")
 
             return {
                 "mode": "detailed",
@@ -223,12 +226,12 @@ async def compare_solutions(
                 "summary": summary,
             }
 
-        else:
-            raise HTTPException(status_code=400, detail=f"Ungültiger Modus: {mode}")
+        raise HTTPException(status_code=400, detail=f"Ungültiger Modus: {mode}")
 
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Fehler in compare_solutions: {e}")
+
 
 # ============================================================
 # API: Detaillierte Analyse abrufen
@@ -238,33 +241,41 @@ async def detailed_analysis(chat_id: str = Query(...), run_id: str = Query(...))
     try:
         summary_path = Path("analysis") / chat_id / run_id / "summary.json"
         if not summary_path.exists():
-            raise HTTPException(status_code=404, detail=f"Analyse-Datei nicht gefunden unter {summary_path}")
+            raise HTTPException(status_code=404, detail="Analyse-Datei nicht gefunden.")
+
         with open(summary_path, "r", encoding="utf-8") as f:
             summary = json.load(f)
 
-        # --- Fallback: falls tasks fehlt, trotzdem anzeigen ---
+        # Struktur garantieren (Fallback)
         if "tasks" not in summary or not summary["tasks"]:
             summary["tasks"] = [{
                 "task_id": "Gesamtanalyse",
-                "similarity": summary.get("similarity_score"),
-                "model_solution": summary.get("model_solution", ""),
-                "student_answer": summary.get("student_answer", ""),
+                "similarity": summary.get("similarity_score", 0.0),
+                "model_solution": summary.get("model_solution", "(Keine Musterlösung gefunden)"),
+                "student_answer": summary.get("student_answer", "(Keine Studentenlösung gefunden)"),
                 "feedback": summary.get("feedback", "(Kein Feedback verfügbar)")
             }]
+        else:
+            for t in summary["tasks"]:
+                t["task_id"] = t.get("task_id", "Unbekannte Aufgabe")
+                t["model_solution"] = t.get("model_solution") or "(Keine Musterlösung gefunden)"
+                t["student_answer"] = t.get("student_answer") or "(Keine Studentenlösung gefunden)"
+                t["feedback"] = t.get("feedback") or "(Kein Feedback verfügbar)"
 
-        print(f"📂 detailed-analysis geladen: {summary_path.absolute()}")
         return {"chat_id": chat_id, "run_id": run_id, "summary": summary}
 
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Fehler beim Laden der Analyse: {e}")
 
+
 # ============================================================
 # Root
 # ============================================================
 @app.get("/")
 def index():
-    return {"status": "ExamAssistant API aktiv", "version": "3.2.2"}
+    return {"status": "ExamAssistant API aktiv", "version": "3.2.4"}
+
 
 # ============================================================
 # Main

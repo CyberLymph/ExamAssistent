@@ -1,0 +1,11 @@
+Aufgabe 1:
+x = 5
+
+Aufgabe 2:
+4) x = 10
+
+Aufgabe 1:
+Ein Isomorphismus zwischen den Gruppen (■, +) und (2■, +) ist die Abbildung f: (■, +) → (2■, +) mit f(x) = 2x. Diese Abbildung ist bijektiv und erhält die Gruppenoperation, da f(x + y) = 2(x + y) = 2x + 2y = f(x) + f(y). Die Gruppenaxiome (Abgeschlossenheit, Assoziativität, Existenz von neutralem Element und Inversen) werden durch die Isomorphie erhalten.
+
+Aufgabe 1:
+Die Eigenwerte der Matrix A = [[3, 2], [2, 6]] sind λ₁ = 7 und λ₂ = 1. Die zugehörigen Eigenvektoren sind v₁ = [1, 1]ᵀ und v₂ = [-2, 1]ᵀ. Die Diagonalmatrix D ist dann D = [[7, 0], [0, 1]]. Die Diagonalisierungsmatrix P ist P = [[1, -2], [1, 1]]. Die Hauptachsentransformation ergibt sich als P⁻¹AP = D.
