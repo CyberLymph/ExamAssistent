@@ -1,0 +1,25 @@
+{
+  "similarity_score": 0.6136,
+  "readability_metrics": {
+    "wortanzahl": 262,
+    "satzanzahl": 35,
+    "durchschnittliche_Satzlänge": 7.49,
+    "flesch_lesen_leicht": 45.87,
+    "wiener_sachtextformel": null,
+    "dew_index": null,
+    "lesbarkeitsgrad": "Mittelschwer",
+    "source": "textdescriptives+textstat"
+  },
+  "tasks": [
+    {
+      "task_id": "Aufgabe 4:",
+      "similarity": 0.6293,
+      "model_solution": "Isomorphie von Gruppen beweisen Gegeben seien die Gruppen (■, +) und (2■, +). Zeigen Sie, dass diese Gruppen isomorph sind, indem Sie einen Isomorphismus explizit angeben und die Gruppenaxiome überprüfen. Thema: Lineare Algebra Gewichtung: 25 Punkte Antwort 3: Der Isomorphismus ist die Abbildung φ: (■, +) → (2■, +), definiert durch φ(x) = 2x. Diese Abbildung ist bijektiv und erhält die Gruppenoperation, da φ(x + y) = 2(x + y) = 2x + 2y = φ(x) + φ(y). Die Gruppenaxiome (Abgeschlossenheit, Assoziativität, Existenz von neutralem Element und Inversen) werden durch φ erhalten, da (■, +) und (2■, +) beide additive Gruppen sind.",
+      "student_answer": "Hauptachsentransformation einer Matrix Gegeben sei die symmetrische Matrix A = [[3, 2], [2, 6]]. Berechne die Hauptachsentransformation, indem du die Eigenwerte und Eigenvektoren bestimmst und die Matrix diagonalisierst. Antwort 4: Eigenwerte: λ = 7, λ = 2 Eigenvektoren: v= [1, 1], v= [-2, 1] Diagonalisierte Matrix: D = [[7, 0], [0, 2]] Transformationsmatrix: P = [[1, -2], [1, 1]] Inverse Transformations matrix: P= [[1/3, 2/3], [1/3, -1/3]] Hauptachsen Transformation: A = P D P Thema: Genetik Gewichtung: 30 Punkte Aufgabe 1 Genetische Vererbung und Mutation Erläutern Sie die Unterschiede zwischen homologer Rekombination und nicht-homologer Endverknüpfung (NHEJ) bei der DNA-Reparatur. Diskutieren Sie die Konsequenzen beider Prozesse für die genetische Vielfalt und die Entstehung von Mutationen. Erstellen einer Vererbung und mutatioenen Durch DNA Schaden also durch Xrays oder radiation. Mutation wird nicht zu den kinder übertragen. Aufgabe 2 Mendelsche Vererbung: Genotypen berechnen Ein heterozygoter Elternteil (Aa) kreuzt mit einem homozygoten rezessiven Elternteil (aa). Berechne die Wahrscheinlichkeit für den Nachwuchs, homozygot dominant (AA) zu sein. %50 Thema: Evolution Gewichtung: 40 Punkte Aufgabe 1 Evolutionäre Mechanismen und ihre Auswirkungen Erläutern Sie die Rolle von Mutationen, genetischer Drift und natürlicher Selektion bei der Entstehung neuer Arten. Gehen Sie dabei auf die Unterschiede zwischen allopatrischer und sympatrischer Artbildung ein und diskutieren Sie, welche Faktoren die Geschwindigkeit der Artbildung beeinflussen können. Es sind sehr wichtig bei Entstehung neuer Arten. Aufgabe 2 Evolution: Anpassung von Lebewesen Welcher Prozess beschreibt die Anpassung von Lebewesen an ihre Umwelt über Generationen? 2) Selektion",
+      "feedback": "=== FEEDBACK ===\nDie Studentenantwort enthält mehrere Fehler und Unstimmigkeiten:\n1. **Inhaltliche Fehler**:\n   - Die Antwort zur Hauptachsentransformation ist korrekt, aber die Aufgabe wurde nicht vollständig bearbeitet (z. B. fehlt die Überprüfung der Diagonalisierbarkeit).\n   - Die Antwort zur Genetik (Aufgabe 1) ist unvollständig und enthält grammatikalische Fehler (z. B. \"Erstellen einer Vererbung und mutatioenen\").\n   - Die Mendelsche Vererbung (Aufgabe 2) ist falsch: Die Wahrscheinlichkeit für AA beträgt 0%, da ein Elternteil homozygot rezessiv (aa) ist.\n   - Die Evolutionsthemen (Aufgabe 1 und 2) sind oberflächlich und unpräzise formuliert.\n\n2. **Themenvermischung**:\n   - Die Antworten zu Lineare Algebra, Genetik und Evolution sind durcheinandergewürfelt, obwohl die Aufgaben unterschiedliche Themen betreffen.\n\n3. **Formale Fehler**:\n   - Die Antworten sind unstrukturiert und enthalten Rechtschreibfehler (z. B. \"mutatioenen\", \"Kinder übertragen\").\n\n=== BLOOM-TAXONOMIE ===\n- **Hauptachsentransformation**: *Anwenden* (Eigenwerte/Eigenvektoren berechnen, Diagonalisierung durchführen).\n- **Genetik (Aufgabe 1)**: *Verstehen* (Grundlagen von Rekombination und NHEJ werden genannt, aber nicht vertieft).\n- **Mendelsche Vererbung**: *Erinnern* (Grundprinzipien werden genannt, aber falsch angewendet).\n- **Evolution (Aufgabe 1)**: *Erinnern* (Begriffe werden genannt, aber nicht analysiert).\n- **Evolution (Aufgabe 2)**: *Erinnern* (Selektionsprozess wird benannt, aber nicht erklärt).\n\n=== LESBARKEITSBEURTEILUNG ===\n- Die Sprache ist teilweise unverständlich (z. B. \"Erstellen einer Vererbung und mutatioenen\").\n- Grammatikalische Fehler und unvollständige Sätze erschweren das Verständnis.\n- Fachbegriffe werden teilweise falsch verwendet (z. B. \"Inverse Transformations matrix\" statt \"Inverse Transformationsmatrix\").\n- Die Antworten wirken hastig formuliert und unüberlegt.\n\n**Empfehlung**:\n- Klare Trennung der Themen.\n- Präzisere Formulierungen und Überprüfung der Rechenwege.\n- Grammatikalische Korrektur und Fachbegriffe exakt verwenden.",
+      "readability": "Mittelschwer",
+      "satzanzahl": 23,
+      "satzlänge": "-"
+    }
+  ]
+}

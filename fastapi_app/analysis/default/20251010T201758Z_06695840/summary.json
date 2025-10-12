@@ -1,0 +1,25 @@
+{
+  "similarity_score": 0.6136,
+  "readability_metrics": {
+    "wortanzahl": 262,
+    "satzanzahl": 35,
+    "durchschnittliche_Satzlänge": 7.49,
+    "flesch_lesen_leicht": 45.87,
+    "wiener_sachtextformel": null,
+    "dew_index": null,
+    "lesbarkeitsgrad": "Mittelschwer",
+    "source": "textdescriptives+textstat"
+  },
+  "tasks": [
+    {
+      "task_id": "Aufgabe 4:",
+      "similarity": 0.6293,
+      "model_solution": "Isomorphie von Gruppen beweisen Gegeben seien die Gruppen (■, +) und (2■, +). Zeigen Sie, dass diese Gruppen isomorph sind, indem Sie einen Isomorphismus explizit angeben und die Gruppenaxiome überprüfen. Thema: Lineare Algebra Gewichtung: 25 Punkte Antwort 3: Der Isomorphismus ist die Abbildung φ: (■, +) → (2■, +), definiert durch φ(x) = 2x. Diese Abbildung ist bijektiv und erhält die Gruppenoperation, da φ(x + y) = 2(x + y) = 2x + 2y = φ(x) + φ(y). Die Gruppenaxiome (Abgeschlossenheit, Assoziativität, Existenz von neutralem Element und Inversen) werden durch φ erhalten, da (■, +) und (2■, +) beide additive Gruppen sind.",
+      "student_answer": "Hauptachsentransformation einer Matrix Gegeben sei die symmetrische Matrix A = [[3, 2], [2, 6]]. Berechne die Hauptachsentransformation, indem du die Eigenwerte und Eigenvektoren bestimmst und die Matrix diagonalisierst. Antwort 4: Eigenwerte: λ = 7, λ = 2 Eigenvektoren: v= [1, 1], v= [-2, 1] Diagonalisierte Matrix: D = [[7, 0], [0, 2]] Transformationsmatrix: P = [[1, -2], [1, 1]] Inverse Transformations matrix: P= [[1/3, 2/3], [1/3, -1/3]] Hauptachsen Transformation: A = P D P Thema: Genetik Gewichtung: 30 Punkte Aufgabe 1 Genetische Vererbung und Mutation Erläutern Sie die Unterschiede zwischen homologer Rekombination und nicht-homologer Endverknüpfung (NHEJ) bei der DNA-Reparatur. Diskutieren Sie die Konsequenzen beider Prozesse für die genetische Vielfalt und die Entstehung von Mutationen. Erstellen einer Vererbung und mutatioenen Durch DNA Schaden also durch Xrays oder radiation. Mutation wird nicht zu den kinder übertragen. Aufgabe 2 Mendelsche Vererbung: Genotypen berechnen Ein heterozygoter Elternteil (Aa) kreuzt mit einem homozygoten rezessiven Elternteil (aa). Berechne die Wahrscheinlichkeit für den Nachwuchs, homozygot dominant (AA) zu sein. %50 Thema: Evolution Gewichtung: 40 Punkte Aufgabe 1 Evolutionäre Mechanismen und ihre Auswirkungen Erläutern Sie die Rolle von Mutationen, genetischer Drift und natürlicher Selektion bei der Entstehung neuer Arten. Gehen Sie dabei auf die Unterschiede zwischen allopatrischer und sympatrischer Artbildung ein und diskutieren Sie, welche Faktoren die Geschwindigkeit der Artbildung beeinflussen können. Es sind sehr wichtig bei Entstehung neuer Arten. Aufgabe 2 Evolution: Anpassung von Lebewesen Welcher Prozess beschreibt die Anpassung von Lebewesen an ihre Umwelt über Generationen? 2) Selektion",
+      "feedback": "=== FEEDBACK ===\nDie Studentenantwort enthält mehrere Probleme:\n1. **Inhaltliche Abweichungen**: Die Antwort zur Hauptachsentransformation ist korrekt, aber die anschließenden Aufgaben (Genetik, Mendelsche Vererbung, Evolution) sind nicht mit der ursprünglichen Musterlösung (Isomorphie von Gruppen) verknüpft. Die Aufgaben scheinen aus unterschiedlichen Themenbereichen zu stammen und sind nicht kohärent.\n2. **Falsche Zuordnung**: Die Aufgaben 1 und 2 unter \"Genetik\" und \"Evolution\" sind nicht mit der Musterlösung (Lineare Algebra) vereinbar. Die Antwort zur Hauptachsentransformation ist zwar mathematisch korrekt, aber die weiteren Inhalte passen nicht zum Thema.\n3. **Unvollständige Antworten**: Bei der Mendelschen Vererbung (Aufgabe 2) wird die Wahrscheinlichkeit (50%) nicht begründet. Die Antwort zur Evolution (Aufgabe 1) ist zu vage (\"sehr wichtig\") und unstrukturiert.\n\n=== BLOOM-TAXONOMIE ===\n- **Hauptachsentransformation**: *Anwenden* (korrekte Berechnung von Eigenwerten, Eigenvektoren und Diagonalisierung).\n- **Genetik/Evolution**: *Erinnern* (Faktenwissen, aber ohne vertiefte Analyse).\n- **Mendelsche Vererbung**: *Anwenden* (Berechnung der Wahrscheinlichkeit, aber ohne Begründung).\n- **Evolutionäre Mechanismen**: *Verstehen* (Grundlagen genannt, aber keine differenzierte Diskussion).\n\n=== LESBARKEITSBEURTEILUNG ===\n- **Hauptachsentransformation**: Klare, präzise Formulierung.\n- **Genetik/Evolution**: Sprachliche Fehler (\"Erstellen einer Vererbung und mutatioenen\", \"Mutation wird nicht zu den kinder übertragen\") und unvollständige Sätze (\"Es sind sehr wichtig\").\n- **Mendelsche Vererbung**: Korrekt, aber zu knapp.\n- **Evolution**: Unpräzise und grammatikalisch fehlerhaft (\"2) Selektion\" ohne Kontext).\n\n**Empfehlung**: Die Antwort sollte thematisch konsistent sein und sprachlich überarbeitet werden. Bei mathematischen Aufgaben sind Begründungen und vollständige Sätze wichtig.",
+      "readability": "Mittelschwer",
+      "satzanzahl": 23,
+      "satzlänge": "-"
+    }
+  ]
+}

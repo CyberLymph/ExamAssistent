@@ -1,5 +1,5 @@
 # ============================================================
-# fastapi_app/api.py – stabile, bereinigte Version (v3.2.4)
+# fastapi_app/api.py – stabile, bereinigte Version (v3.3.0)
 # ============================================================
 from typing import Optional
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Query
@@ -11,15 +11,14 @@ from mistral import MistralWrapper
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from PyPDF2 import PdfReader
-import uvicorn, os, uuid, re, json, tempfile, shutil, traceback
+import uvicorn, os, uuid, re, json, tempfile, traceback
 from analysis.readability_module import analyze_german_readability, ReadabilityAnalyzer
-from analysis.test_modules import TestModuleRunner
 from fastapi.middleware.cors import CORSMiddleware
 
 # ============================================================
 # Initialisierung
 # ============================================================
-app = FastAPI(title="ExamAssistant API", version="3.2.4")
+app = FastAPI(title="ExamAssistant API", version="3.3.0")
 
 wrapper = MistralWrapper()
 comparator = AnswerComparator()
@@ -111,22 +110,49 @@ async def generate_solution(chat_id: str = Form("default"), pdf: Optional[Upload
         if not raw.startswith(b"%PDF"):
             raise HTTPException(status_code=400, detail="Ungültige PDF-Datei.")
 
+        # === Basisverzeichnis vorbereiten ===
         doc_id = generate_doc_id(pdf.filename)
         base_dir = Path("data") / "uploads" / chat_id / doc_id
         ensure_dir(base_dir)
         pdf_path = base_dir / "source.pdf"
         pdf_path.write_bytes(raw)
 
+        # === Text aus PDF extrahieren ===
         text = pdf_to_text(str(pdf_path))
         if not text:
             raise HTTPException(status_code=400, detail="PDF enthält keinen lesbaren Text.")
+        # 🔧 Fix 1 – zusätzliche Bereinigung für konsistente Regex-Erkennung
+        text = re.sub(r"\s+", " ", text).strip()
+
+        # === Aufgabenblöcke erkennen ===
+        aufgaben_raw = re.findall(
+            r"(Aufgabe\s*\d+[a-zA-Z]?[.:–-]?\s.*?)(?=(?:Aufgabe\s*\d+[a-zA-Z]?[.:–-]?|Frage\s*\d+[.:–-]?|$))",
+            text,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+
+        aufgaben = []
+        for a in aufgaben_raw:
+            clean = re.sub(r"^(?:Aufgabe|Frage)\s*\d+[a-zA-Z]?[.:–-]?\s*", "", a.strip(), flags=re.IGNORECASE)
+            aufgaben.append(clean.strip())
+
+        if not aufgaben:
+            aufgaben = [text]
+
+        # === Prompt dynamisch aufbauen ===
+        prompt_parts = []
+        for i, frage in enumerate(aufgaben, start=1):
+            prompt_parts.append(f"Aufgabe {i}:\n{frage}\n\nAntwort {i}:")
+        structured_prompt = "\n\n".join(prompt_parts)
 
         prompt = (
-            "Analysiere das folgende PDF-Dokument und beantworte ausschließlich die erkannten Aufgaben.\n"
-            "Formatiere das Ergebnis exakt so:\n\n"
-            "Aufgabe 1:\n[Antwort]\n\nAufgabe 2:\n[Antwort]\n\nusw.\n\n"
-            "Keine Einleitung, keine Kommentare.\n\n"
-            f"Inhalt:\n<<<\n{text}\n>>>"
+            "Beantworte präzise und sachlich nur die folgenden Aufgaben.\n"
+            "Formatiere das Ergebnis **genau** in diesem Stil:\n\n"
+            "Aufgabe 1:\n[Fragetext]\n\nAntwort 1:\n[Lösung]\n\n"
+            "Aufgabe 2:\n[Fragetext]\n\nAntwort 2:\n[Lösung]\n\n"
+            "usw.\n\n"
+            "Gib **nur** die Fragen und Antworten zurück — keine Einleitung, keine Kommentare.\n\n"
+            f"Hier sind die Aufgaben:\n<<<\n{structured_prompt}\n>>>"
         )
 
         run_id = make_run_id()
@@ -134,9 +160,16 @@ async def generate_solution(chat_id: str = Form("default"), pdf: Optional[Upload
         ensure_dir(llm_dir)
         (llm_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
 
-        reply = wrapper.send_request(prompt)
-        (llm_dir / "response.txt").write_text(reply, encoding="utf-8")
+        try:
+            reply = wrapper.send_request(prompt)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"LLM Fehler: {str(e)}")
 
+        if "Service tier capacity exceeded" in str(reply):
+            reply = "⚠️ Der LLM-Dienst ist derzeit ausgelastet. Bitte versuche es später erneut."
+
+        # === Speichern & PDF-Export ===
+        (llm_dir / "response.txt").write_text(reply, encoding="utf-8")
         export_dir = Path("exports") / "solutions" / chat_id
         export_path = export_dir / f"{run_id}.pdf"
         export_solution_as_pdf(reply, export_path)
@@ -144,9 +177,10 @@ async def generate_solution(chat_id: str = Form("default"), pdf: Optional[Upload
         return {
             "chat_id": chat_id,
             "doc_id": doc_id,
+            "run_id": run_id,
             "solution": reply,
             "export_pdf": str(export_path),
-            "run_id": run_id,
+            "aufgaben_gefunden": len(aufgaben),
         }
 
     except Exception as e:
@@ -178,10 +212,10 @@ async def compare_solutions(
             raise HTTPException(status_code=400, detail="Leere oder unlesbare PDFs.")
 
         run_id = make_run_id()
+        comp = AnswerComparator()
 
         # === QUICK ===
         if mode == "quick":
-            comp = AnswerComparator()
             quick_score = comp.quick_compare(student_text, model_text)
             readability_score = analyze_german_readability(student_text)
             return {
@@ -193,12 +227,15 @@ async def compare_solutions(
 
         # === DETAILED ===
         elif mode == "detailed":
-            comp = AnswerComparator()
             summary = comp.detailed_compare(student_text, model_text)
             if not summary or not isinstance(summary, dict):
                 raise ValueError("Keine gültige summary-Daten erhalten.")
 
-            # Fallbacks und Sicherstellung korrekter Struktur
+            # 🔧 Fix 2 – Lesbarkeitsanalyse der Musterlösung ergänzen
+            if "readability_metrics_model" not in summary:
+                summary["readability_metrics_model"] = analyze_german_readability(model_text)
+
+            # Struktur-Fallbacks
             if "tasks" not in summary or not summary["tasks"]:
                 summary["tasks"] = [{
                     "task_id": "Gesamtanalyse",
@@ -274,7 +311,7 @@ async def detailed_analysis(chat_id: str = Query(...), run_id: str = Query(...))
 # ============================================================
 @app.get("/")
 def index():
-    return {"status": "ExamAssistant API aktiv", "version": "3.2.4"}
+    return {"status": "ExamAssistant API aktiv", "version": "3.3.0"}
 
 
 # ============================================================

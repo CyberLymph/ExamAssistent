@@ -1,0 +1,75 @@
+{
+  "similarity_score": 0.5324,
+  "readability_metrics": {
+    "wortanzahl": 168,
+    "satzanzahl": 25,
+    "durchschnittliche_Satzlänge": 6.72,
+    "flesch_lesen_leicht": 66.67,
+    "wiener_sachtextformel": null,
+    "dew_index": null,
+    "lesbarkeitsgrad": "Leicht verständlich",
+    "source": "textdescriptives+textstat"
+  },
+  "readability_metrics_model": {
+    "wortanzahl": 217,
+    "satzanzahl": 33,
+    "durchschnittliche_Satzlänge": 6.58,
+    "flesch_lesen_leicht": 66.91,
+    "wiener_sachtextformel": null,
+    "dew_index": null,
+    "lesbarkeitsgrad": "Leicht verständlich",
+    "source": "textdescriptives+textstat"
+  },
+  "tasks": [
+    {
+      "task_id": "Aufgabe 1:",
+      "similarity": 0.5909,
+      "model_solution": "Gegeben sind die Mengen A = {1,2,3,4}. B = {3,4,5,6}. a) Bestimme A∪B , A∩B, A−B. b) Formuliere die logische Aussage: „Wenn ein Element in A, aber nicht in B ist, dann ist es kleiner als 3“ in Prädikatenlogik. Antwort 1: a) A∪B = {1,2,3,4,5,6}, A∩B = {3,4}, A−B = {1,2} b) ∀x (x ∈ A ∧ x ∉ B → x < 3)",
+      "student_answer": "Gegeben sind die Mengen A = {1,2,3,4}. B = {3,4,5,6}. a) Bestimme A∪B , A∩B, A−B. b) Formuliere die logische Aussage: „Wenn ein Element in A, aber nicht in B ist, dann ist es kleiner als 3“ in Prädikatenlogik. Antwort1: A∪B= {1,2,3,4,5,6}. A∩B= {3,4}. A−B= {1,2,3,4}. Aufgabe 2 Welche der folgenden Aussagen ist logisch äquivalent zu ¬(A ∧ B)? A) ¬A ∧ ¬B B) A ∨ B C) ¬A ∨ ¬B D) ¬A ∧ B Antwort2: C) ¬A ∨ ¬B",
+      "feedback": "### **Feedback mit Bloom-Taxonomie**\n\n#### **1. Mengenoperationen (Teil a)**\n**Studentenantwort:**\n- **A∪B = {1,2,3,4,5,6}** ✅ (korrekt)\n- **A∩B = {3,4}** ✅ (korrekt)\n- **A−B = {1,2,3,4}** ❌ (falsch, korrekt wäre **{1,2}**)\n\n**Bloom-Taxonomie-Einstufung:**\n- **Wissen (Remembering):** Die Studentin hat die Definitionen von Vereinigung und Schnitt korrekt angewendet.\n- **Anwenden (Applying):** Die Studentin hat die Mengenoperationen richtig auf die gegebenen Mengen angewendet, außer bei der Differenz **A−B**.\n- **Analysieren (Analyzing):** Die Studentin hat die Elemente der Mengen korrekt verglichen, aber bei der Differenz **A−B** nicht erkannt, dass **3 und 4** in **B** enthalten sind und daher nicht in **A−B** gehören.\n\n**Verbesserungsvorschlag:**\n- **A−B** bedeutet alle Elemente, die in **A** sind, aber **nicht** in **B**. Daher müssen **3 und 4** entfernt werden.\n\n---\n\n#### **2. Prädikatenlogik (Teil b)**\n**Studentenantwort:**\n- **∀x (x ∈ A ∧ x ∉ B → x < 3)** ✅ (korrekt)\n\n**Bloom-Taxonomie-Einstufung:**\n- **Verstehen (Understanding):** Die Studentin hat die logische Aussage korrekt in Prädikatenlogik übersetzt.\n- **Anwenden (Applying):** Sie hat die Implikation und Quantoren richtig eingesetzt.\n\n---\n\n#### **3. Logische Äquivalenz (Aufgabe 2)**\n**Studentenantwort:**\n- **C) ¬A ∨ ¬B** ✅ (korrekt)\n\n**Bloom-Taxonomie-Einstufung:**\n- **Anwenden (Applying):** Die Studentin hat die De-Morgan’schen Gesetze korrekt angewendet.\n- **Analysieren (Analyzing):** Sie hat erkannt, dass **¬(A ∧ B)** äquivalent zu **¬A ∨ ¬B** ist.\n\n---\n\n### **Gesamtfeedback**\nDie Studentin hat die meisten Aufgaben korrekt gelöst, außer bei der Differenz **A−B**, wo sie die Definition nicht vollständig verstanden hat. Ansonsten zeigt sie ein gutes Verständnis von Mengenoperationen, Prädikatenlogik und logischen Äquivalenzen.\n\n**Empfehlung:**\n- Wiederhole die Definition der **Differenz zweier Mengen (A−B)**.\n- Übe weitere Beispiele, um das Verständnis zu festigen.\n\n**Note:** **2 (gut)** – Die Studentin hat die meisten Aufgaben richtig gelöst, aber einen kleinen Fehler bei **A−B**.",
+      "readability": "Sehr leicht verständlich",
+      "satzanzahl": 12,
+      "satzlänge": "-"
+    },
+    {
+      "task_id": "Aufgabe 3:",
+      "similarity": 0.5204,
+      "model_solution": "Welche der folgenden Aussagen ist logisch äquivalent zu ¬(A ∧ B)? A) ¬A ∧ ¬B B) A ∨ B C) ¬A ∨ ¬B D) ¬A ∧ B Thema: Programmierung Gewichtung: 30 Punkte Antwort 2: B) A ∨ B",
+      "student_answer": "Schreibe ein Programm in Python, das alle geraden Zahlen zwischen 1 und 20 ausgibt und ihre Summe berechnet. Erwartete Ausgabe: 2 4 6 8 10 12 14 16 18 20 Summe = 110 Antwort 3: summe = 0 for i in range(2, 21, 2): print(i, end=\" \") summe += i print(\"\\nSumme =\", summe)",
+      "feedback": "### **Feedback mit Bloom-Taxonomie**\n\n#### **1. Wissensniveau (Remembering)**\n- **Musterlösung:** Die Aufgabe verlangte eine logische Äquivalenz zu ¬(A ∧ B).\n- **Studentenantwort:** Die Studentin hat stattdessen ein Python-Programm zur Summe gerader Zahlen geschrieben.\n  **Feedback:** Die Aufgabe wurde nicht korrekt verstanden. Es ging um logische Äquivalenz, nicht um Programmierung.\n\n#### **2. Verstehen (Understanding)**\n- **Musterlösung:** Die korrekte Antwort ist **C) ¬A ∨ ¬B** (De Morgansches Gesetz).\n- **Studentenantwort:** Die Studentin hat **B) A ∨ B** gewählt, was nicht äquivalent ist.\n  **Feedback:** Die logische Äquivalenz wurde nicht erkannt. Es fehlt das Verständnis für De Morgansche Gesetze.\n\n#### **3. Anwenden (Applying)**\n- **Musterlösung:** Die Studentin hätte die logische Äquivalenz anwenden müssen.\n- **Studentenantwort:** Stattdessen wurde ein Python-Programm geschrieben, das zwar korrekt funktioniert, aber nicht zur Aufgabe passt.\n  **Feedback:** Die Anwendung der Logik wurde vernachlässigt. Das Programm ist zwar richtig, aber irrelevant für die gestellte Frage.\n\n#### **4. Analysieren (Analyzing)**\n- **Musterlösung:** Die Studentin hätte analysieren müssen, welche Option äquivalent zu ¬(A ∧ B) ist.\n- **Studentenantwort:** Keine Analyse der logischen Äquivalenz erfolgt.\n  **Feedback:** Es fehlt die Fähigkeit, logische Aussagen zu vergleichen und zu analysieren.\n\n#### **5. Bewerten (Evaluating)**\n- **Musterlösung:** Die Studentin hätte bewerten müssen, welche Option korrekt ist.\n- **Studentenantwort:** Die Wahl von **B) A ∨ B** ist falsch.\n  **Feedback:** Die Bewertung der logischen Äquivalenz ist nicht gelungen.\n\n#### **6. Erstellen (Creating)**\n- **Musterlösung:** Nicht relevant, da es um logische Äquivalenz ging.\n- **Studentenantwort:** Das Python-Programm ist korrekt, aber nicht gefragt.\n  **Feedback:** Kreativität wurde in die falsche Richtung gelenkt. Die Aufgabe verlangte keine Programmierung.\n\n### **Zusammenfassung & Empfehlung**\n- **Fehler:** Die Studentin hat die Aufgabe falsch verstanden und stattdessen ein Programm geschrieben.\n- **Korrektur:** Die richtige Antwort ist **C) ¬A ∨ ¬B** (De Morgansches Gesetz).\n- **Verbesserung:** Die Studentin sollte sich mit logischen Äquivalenzen vertraut machen und Aufgaben genau lesen.\n\n**Note:** 0/30 Punkte (da die Aufgabe nicht bearbeitet wurde).",
+      "readability": "Sehr leicht verständlich",
+      "satzanzahl": 3,
+      "satzlänge": "-"
+    },
+    {
+      "task_id": "Aufgabe 4:",
+      "similarity": 0.5726,
+      "model_solution": "Schreibe ein Programm in Python, das alle geraden Zahlen zwischen 1 und 20 ausgibt und ihre Summe berechnet. Erwartete Ausgabe: 2 4 6 8 10 12 14 16 18 20 Summe = 110 Antwort 3: ```python summe = 0 for i in range(2, 21, 2): print(i, end=\" \") summe += i print(\"\\nSumme =\", summe) ```",
+      "student_answer": "Was gibt das folgende Python-Programm aus, und warum? x = 5 y = 2 if x > y: x = x + y else: y = y + x print(x, y) Antwort 4: X= 7, Y=2",
+      "feedback": "### **Feedback mit Bloom-Taxonomie**\n\n#### **1. Wissen (Remembering)**\n- **Musterlösung:** Der Student sollte die Aufgabe verstehen, ein Programm zu schreiben, das gerade Zahlen ausgibt und ihre Summe berechnet.\n- **Studentenantwort:** Der Student hat stattdessen ein anderes Programm analysiert, das nicht zur Aufgabe gehört. **Fehlende Übereinstimmung mit der Aufgabenstellung.**\n\n#### **2. Verstehen (Understanding)**\n- **Musterlösung:** Das Programm verwendet eine `for`-Schleife mit `range(2, 21, 2)` und berechnet die Summe der geraden Zahlen.\n- **Studentenantwort:** Der Student hat ein einfaches `if-else`-Programm analysiert, das nicht mit der Aufgabenstellung zusammenhängt. **Kein Bezug zur geforderten Logik.**\n\n#### **3. Anwenden (Applying)**\n- **Musterlösung:** Der Student sollte die Logik der geraden Zahlen und Summenberechnung anwenden.\n- **Studentenantwort:** Der Student hat stattdessen ein anderes Programm analysiert, ohne die geforderte Logik umzusetzen. **Keine Anwendung der richtigen Methode.**\n\n#### **4. Analysieren (Analyzing)**\n- **Musterlösung:** Der Student sollte erkennen, dass eine Schleife mit Schrittweite 2 nötig ist.\n- **Studentenantwort:** Der Student hat ein einfaches Bedingungsprogramm analysiert, ohne die Struktur der Musterlösung zu erkennen. **Fehlende Analyse der richtigen Programmstruktur.**\n\n#### **5. Bewerten (Evaluating)**\n- **Musterlösung:** Der Student sollte die Korrektheit des Programms bewerten (Ausgabe der geraden Zahlen und Summe).\n- **Studentenantwort:** Der Student hat ein falsches Programm bewertet, ohne die Aufgabenstellung zu erfüllen. **Keine Bewertung der geforderten Funktionalität.**\n\n#### **6. Erstellen (Creating)**\n- **Musterlösung:** Der Student sollte ein funktionierendes Programm erstellen.\n- **Studentenantwort:** Der Student hat kein Programm erstellt, sondern ein anderes analysiert. **Keine eigenständige Lösung erstellt.**\n\n### **Zusammenfassung des Feedbacks**\n- **Stärken:** Der Student hat ein einfaches `if-else`-Programm analysiert, was Grundkenntnisse zeigt.\n- **Schwächen:**\n  - **Keine Übereinstimmung mit der Aufgabenstellung** (gerade Zahlen und Summe).\n  - **Keine Anwendung der richtigen Schleifenlogik.**\n  - **Keine eigenständige Lösung erstellt.**\n\n### **Verbesserungsvorschlag**\n- **Aufgabenstellung genau lesen** und sicherstellen, dass das Programm die geforderten Funktionen erfüllt.\n- **Schleifen und Summenberechnung üben**, um die richtige Logik anzuwenden.\n- **Beispielprogramme analysieren**, um die Struktur zu verstehen.\n\n**Note:** **3/10** (Da die Aufgabenstellung nicht erfüllt wurde, aber Grundkenntnisse erkennbar sind.)",
+      "readability": "Sehr leicht verständlich",
+      "satzanzahl": 2,
+      "satzlänge": "-"
+    },
+    {
+      "task_id": "Aufgabe 5:",
+      "similarity": 0.48,
+      "model_solution": "Was gibt das folgende Python-Programm aus, und warum? x = 5 y = 2 if x > y: x = x + y else: y = y + x print(x, y) Thema: Software Gewichtung: 40 Punkte Antwort 4: Das Programm gibt `12 2` aus, weil `x > y` wahr ist, also wird `x = x + y` ausgeführt (5 + 2 = 7). Die `else`-Klausel wird nicht ausgeführt.",
+      "student_answer": "Welches der folgenden Modelle beschreibt den klassischen Ablauf der Softwareentwicklung in festen Phasen, bei dem erst nach Abschluss einer Phase die nächste beginnt? A) Agile Scrum-Modell B) Wasserfallmodell C) Spiralmodell D) Prototyping-Modell Antwort 5: D) Prototyping-Modell",
+      "feedback": "[LLM Fehler: API error occurred: Status 429\n{\"object\":\"error\",\"message\":\"Service tier capacity exceeded for this model.\",\"type\":\"service_tier_capacity_exceeded\",\"param\":null,\"code\":\"3505\"}]\n\nEcho:\nDu bist ein deutschsprachiger Korrekturassistent. Vergleiche die Studentenantwort mit der Musterlösung und gib ein Feedback mit Bloom-Taxonomie.\n\nMUSTERLÖSUNG:\nWas gibt das folgende Python-Programm aus, und warum? x = 5 y = 2 if x > y: x = x + y else: y = y + x print(x, y) Thema: Software Gewichtung: 40 Punkte Antwort 4: Das Programm gibt `12 2` aus, weil `x > y` wahr ist, also wird `x = x + y` ausgeführt (5 + 2 = 7). Die `else`-Klausel wird nicht ausgeführt.\n\nSTUDENTENANTWORT:\nWelches der folgenden Modelle beschreibt den klassischen Ablauf der Softwareentwicklung in festen Phasen, bei dem erst nach Abschluss einer Phase die nächste beginnt? A) Agile Scrum-Modell B) Wasserfallmodell C) Spiralmodell D) Prototyping-Modell Antwort 5: D) Prototyping-Modell",
+      "readability": "Schwierig",
+      "satzanzahl": 5,
+      "satzlänge": "-"
+    },
+    {
+      "task_id": "Aufgabe 6:",
+      "similarity": 0.4982,
+      "model_solution": "Frage: Welches der folgenden Modelle beschreibt den klassischen Ablauf der Softwareentwicklung in festen Phasen, bei dem erst nach Abschluss einer Phase die nächste beginnt? A) Agile Scrum-Modell B) Wasserfallmodell C) Spiralmodell D) Prototyping-Modell Antwort 5: B) Wasserfallmodell",
+      "student_answer": "Nenne und beschreibe die vier Hauptphasen des klassischen Wasserfallmodells der Softwareentwicklung. Antwort 6: 1. Anforderungsanalyse: Sammlung und Dokumentation der Anforderungen. 2. Design: Erstellung eines Systemdesigns und der Architektur. 3. Implementierung: Programmierung und Entwicklung der Software.",
+      "feedback": "Hier ist dein Feedback basierend auf der **Bloom-Taxonomie** (kognitiven Stufen des Lernens):\n\n### **1. Wissen (Remembering)**\n✅ **Stärken:**\n- Die Studentenantwort nennt korrekt die **vier Hauptphasen** des Wasserfallmodells.\n- Die Beschreibungen sind **grundlegend richtig** und entsprechen der Musterlösung.\n\n### **2. Verstehen (Understanding)**\n✅ **Stärken:**\n- Die Antwort zeigt, dass du die **Ablaufstruktur** des Wasserfallmodells verstehst (sequentiell, keine Rücksprünge).\n- Die Formulierungen sind **klar und präzise**.\n\n### **3. Anwenden (Applying)**\n⚠️ **Verbesserungspotenzial:**\n- Die Antwort bleibt auf **reiner Wiedergabe** (Wissen/Verstehen) und geht nicht über die Musterlösung hinaus.\n- **Fehlende Anwendung:** Kein Beispiel, kein Bezug zu realen Projekten oder eine kurze Erklärung, warum das Wasserfallmodell in bestimmten Fällen sinnvoll ist.\n\n### **4. Analysieren (Analyzing)**\n⚠️ **Verbesserungspotenzial:**\n- Keine **Vergleiche** mit anderen Modellen (z. B. Agile vs. Wasserfall).\n- Keine **kritische Bewertung** (Vorteile/Nachteile des Wasserfallmodells).\n\n### **5. Bewerten (Evaluating)**\n⚠️ **Verbesserungspotenzial:**\n- Keine **eigene Einschätzung**, wann das Wasserfallmodell sinnvoll ist (z. B. bei klaren Anforderungen).\n\n### **6. Erstellen (Creating)**\n⚠️ **Verbesserungspotenzial:**\n- Keine **eigene Ergänzung** (z. B. Unterphasen, Tools oder Methoden innerhalb der Phasen).\n\n### **Zusammenfassung & Empfehlung**\n- **Sehr gute Basis** (Wissen & Verstehen), aber **zu oberflächlich**.\n- **Nächste Schritte:**\n  - **Anwenden:** Beschreibe, wie eine Phase in der Praxis abläuft (z. B. Tools für Anforderungsanalyse).\n  - **Analysieren:** Vergleiche mit Agile oder Spiralmodell.\n  - **Bewerten:** Nenne Vor- und Nachteile des Wasserfallmodells.\n  - **Erstellen:** Entwickle ein einfaches Beispielprojekt mit den Phasen.\n\n**Note:** **2 (gut)** – aber mit Potenzial für eine **1 (sehr gut)** durch vertiefende Analyse und Anwendung! 🚀",
+      "readability": "Mittelschwer",
+      "satzanzahl": 5,
+      "satzlänge": "-"
+    }
+  ]
+}

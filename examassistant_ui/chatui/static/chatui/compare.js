@@ -19,7 +19,6 @@
         btnQuickCompare=document.getElementById("btnQuickCompare"),
         btnToStep3=document.getElementById("toStep3");
 
-  // ======= STATUS =======
   let state={hasGenerated:false,quickDone:false,running:false};
 
   const show=(el)=>el?.classList.remove("hidden");
@@ -28,8 +27,10 @@
 
   // ======= STEP 1 =======
   genFile?.addEventListener("change",()=>{
-    if(genFile.files.length){genFeedback.textContent=`✅ ${genFile.files[0].name}`;genInfo.textContent="Bereit zur Analyse.";}
-    else{genFeedback.textContent="";genInfo.textContent="";}
+    if(genFile.files.length){
+      genFeedback.textContent=`✅ ${genFile.files[0].name}`;
+      genInfo.textContent="Bereit zur Analyse.";
+    } else { genFeedback.textContent=""; genInfo.textContent=""; }
   });
 
   btnGenPreview?.addEventListener("click",async()=>{
@@ -41,7 +42,11 @@
       const data=await res.json();
       if(!res.ok) throw new Error(data.detail||"Fehler beim Generieren.");
       genPreview.textContent=data.solution||"(Keine Vorschau)";
-      show(genPreview);genInfo.textContent="✅ Lösung generiert.";state.hasGenerated=true;toStep2.removeAttribute("disabled");setProgress("50%");
+      show(genPreview);
+      genInfo.textContent="✅ Lösung generiert.";
+      state.hasGenerated=true;
+      toStep2.removeAttribute("disabled");
+      setProgress("50%");
     }catch(e){genInfo.textContent="❌ Fehler: "+e.message;}
   });
 
@@ -57,8 +62,12 @@
   async function runQuickCompare(){
     if(state.running)return;
     if(!cmpFile1.files.length||!cmpFile2.files.length){showCmpResult("⚠️ Bitte 2 PDFs auswählen.");return;}
-    state.running=true;btnQuickCompare.disabled=true;showCmpResult("⏳ Quick-Vergleich läuft...");
-    const fd=new FormData();fd.append("file1",cmpFile1.files[0]);fd.append("file2",cmpFile2.files[0]);fd.append("mode","quick");
+    state.running=true;btnQuickCompare.disabled=true;
+    showCmpResult("⏳ Quick-Vergleich läuft...");
+    const fd=new FormData();
+    fd.append("file1",cmpFile1.files[0]);
+    fd.append("file2",cmpFile2.files[0]);
+    fd.append("mode","quick");
     try{
       const res=await fetch("http://127.0.0.1:8000/compare-solutions",{method:"POST",body:fd});
       const data=await res.json();
@@ -77,42 +86,53 @@
         metaDetail=document.getElementById("metaDetail"),
         simScoreEl=document.getElementById("simScore"),
         readLevelEl=document.getElementById("readLevel"),
-        pagerDetail=document.getElementById("pagerDetail"),
-        btnPrev=document.getElementById("btnPrev"),
-        btnNext=document.getElementById("btnNext"),
-        pageNowEl=document.getElementById("pageNow"),
-        pageMaxEl=document.getElementById("pageMax"),
         gridDetail=document.getElementById("gridDetail"),
         colML=document.getElementById("colML"),
         colSL=document.getElementById("colSL"),
         endMsg=document.getElementById("endMsg");
 
-  const PAGE_SIZE=3;
-  let tasks=[],page=1,pageMax=1;
   const fmtPercent=(v)=>typeof v==="number"?(v*100).toFixed(1)+" %":"–";
-  const chunk=(a,s)=>{const o=[];for(let i=0;i<a.length;i+=s)o.push(a.slice(i,i+s));return o;};
   const cleanText=(t)=>t?.replace(/Klausur:.*|Name:.*|Vorname:.*|Matrikelnummer:.*|Thema:.*|Gewichtung:.*|Erstellt am:.*|Themen & Gewichtungen.*|%/gi,"").trim();
 
-  function renderPage(){
-    pageMaxEl.textContent=pageMax;pageNowEl.textContent=page;
-    btnPrev.disabled=page<=1;btnNext.disabled=page>=pageMax;
+  function renderAll(tasks, summary){
     colML.innerHTML="";colSL.innerHTML="";
-    const groups=chunk(tasks,PAGE_SIZE),slice=groups[page-1]||[];
-    slice.forEach(t=>{
+    tasks.forEach((t, idx)=>{
+      const divider = `<hr style="border:1px solid #eee; margin:12px 0;">`;
+
+      // Musterlösung
       const ml=document.createElement("div");
       ml.className="card";
-      ml.innerHTML=`<b>${t.task_id}</b><pre>${t.model_solution||"(Keine ML)"}</pre>`;
+      ml.innerHTML = `
+        <b>${t.task_id || "Aufgabe"}</b>
+        <pre>${t.model_solution || "(Keine ML)"}</pre>
+        <div class="feedback-box">
+          <b>Lesbarkeitsgrad (ML):</b> ${summary.readability_metrics_model?.lesbarkeitsgrad || "-"}<br>
+          <b>Satzanzahl:</b> ${summary.readability_metrics_model?.satzanzahl || "-"}<br>
+          <b>Ø Satzlänge:</b> ${summary.readability_metrics_model?.satzlaenge || "-"}
+        </div>
+        ${idx < tasks.length - 1 ? divider : ""}
+      `;
       colML.appendChild(ml);
+
+      // Studentenlösung
       const sl=document.createElement("div");
       sl.className="card";
-      sl.innerHTML=`<b>${t.task_id}</b><pre>${cleanText(t.student_answer)||"(Keine SL)"}</pre><div class="feedback-box"><b>Feedback:</b><br>${t.feedback||"(Kein Feedback)"}</div>`;
+      sl.innerHTML = `
+        <b>${t.task_id || "Aufgabe"}</b>
+        <pre style="border-bottom:1px solid #ddd; padding-bottom:6px;">${cleanText(t.student_answer) || "(Keine SL)"}</pre>
+        <div class="feedback-box">
+          <b>Ähnlichkeit:</b> ${fmtPercent(t.similarity)}<br>
+          <b>Lesbarkeitsgrad (SL):</b> ${t.readability || "-"}<br>
+          <b>Satzanzahl:</b> ${t.satzanzahl || "-"}<br>
+          <b>Ø Satzlänge:</b> ${t.satzlänge || "-"}<br><br>
+          <b>Feedback:</b><br>${t.feedback?.replaceAll("\n","<br>") || "(Kein Feedback)"}
+        </div>
+        ${idx < tasks.length - 1 ? divider : ""}
+      `;
       colSL.appendChild(sl);
     });
-    endMsg.classList.toggle("hidden",page<pageMax);
+    endMsg.classList.remove("hidden");
   }
-
-  btnPrev?.addEventListener("click",()=>{if(page>1){page--;renderPage();window.scrollTo({top:0,behavior:"smooth"});}});
-  btnNext?.addEventListener("click",()=>{if(page<pageMax){page++;renderPage();window.scrollTo({top:0,behavior:"smooth"});}});
 
   async function loadDetailed(chat_id,run_id){
     hide(step2);show(step3);setProgress("90%");
@@ -120,20 +140,21 @@
       const res=await fetch(`http://127.0.0.1:8000/detailed-analysis?chat_id=${chat_id}&run_id=${run_id}`);
       const data=await res.json();
       if(!res.ok) throw new Error(data.detail||"Analyse konnte nicht geladen werden.");
-      const s=data.summary;tasks=Array.isArray(s.tasks)?s.tasks:[];if(!tasks.length)throw new Error("Keine Aufgaben gefunden.");
-      simScoreEl.textContent=fmtPercent(s.similarity_score);readLevelEl.textContent=s.readability_metrics?.lesbarkeitsgrad||"–";
-      hide(loadingDetail);show(metaDetail);show(gridDetail);show(pagerDetail);
-      pageMax=Math.ceil(tasks.length/PAGE_SIZE);page=1;render
-      pageMax = Math.ceil(tasks.length / PAGE_SIZE);
-      page = 1;
-      renderPage();
+      const s=data.summary;
+      const tasks=Array.isArray(s.tasks)?s.tasks:[];
+      if(!tasks.length) throw new Error("Keine Aufgaben gefunden.");
+
+      simScoreEl.textContent=fmtPercent(s.similarity_score);
+      readLevelEl.textContent=s.readability_metrics?.lesbarkeitsgrad||"–";
+
+      hide(loadingDetail);show(metaDetail);show(gridDetail);
+      renderAll(tasks, s);
       setProgress("100%");
     } catch (e) {
-      loadingDetail.textContent = "❌ Fehler: " + e.message;
+      loadingDetail.textContent="❌ Fehler: "+e.message;
     }
   }
 
-  // ======= Button → Detaillierte Analyse starten =======
   btnToStep3?.addEventListener("click", async () => {
     if (!state.quickDone || state.running) return;
     state.running = true;
@@ -146,12 +167,8 @@
     fd.append("chat_id", "default");
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/compare-solutions", {
-        method: "POST",
-        body: fd,
-      });
+      const res = await fetch("http://127.0.0.1:8000/compare-solutions", { method: "POST", body: fd });
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.detail || "Fehler bei Analyse.");
 
       if (data.mode === "detailed" && data.run_id) {
