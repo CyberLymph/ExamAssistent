@@ -1,2 +1,0 @@
-Komplexe SQL-Joins in relationalen Datenbanken
-Erkläre den Unterschied zwischen INNER JOIN, LEFT JOIN und FULL OUTER JOIN anhand eines Beispiels mit drei Tabellen. Zeige jeweils die resultierende Tabelle auf und beschreibe, wann welcher Join-Typ sinnvoll ist.

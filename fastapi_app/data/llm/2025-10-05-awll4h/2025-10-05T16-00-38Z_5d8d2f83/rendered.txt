@@ -1,2 +1,0 @@
-Berechnung der Ableitung einer komplexen Funktion
-Berechne die Ableitung der Funktion f(x) = (3x^2 + 2x - 1) * e^(x^3) mit der Produktregel.

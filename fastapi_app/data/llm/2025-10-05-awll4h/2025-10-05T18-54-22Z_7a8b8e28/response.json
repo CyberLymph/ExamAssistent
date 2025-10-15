@@ -1,6 +1,0 @@
-{
-  "title": "Grundlagen von SQL",
-  "topic": "Datenbanken",
-  "points_total": 15,
-  "task": "Erkläre die Unterschiede zwischen den SQL-Befehlen SELECT, INSERT, UPDATE und DELETE. Gib jeweils ein Beispiel für jeden Befehl an."
-}

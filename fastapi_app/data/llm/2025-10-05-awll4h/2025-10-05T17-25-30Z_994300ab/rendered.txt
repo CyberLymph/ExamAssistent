@@ -1,2 +1,0 @@
-SQL-Joins: Komplexe Datenabfrage
-Erkläre den Unterschied zwischen INNER JOIN und LEFT JOIN anhand eines Beispiels. Beschreibe, wann du welchen Join verwenden würdest und zeige die SQL-Syntax für beide Varianten.

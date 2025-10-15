@@ -1,6 +1,0 @@
-{
-  "title": "SQL-Abfrage mit JOINs",
-  "topic": "Datenbanken",
-  "points_total": 15,
-  "task": "Schreiben Sie eine SQL-Abfrage, die alle Kunden mit ihren Bestellungen ausgibt. Verwenden Sie dabei die Tabellen 'Kunden' (Kundennummer, Name, Adresse) und 'Bestellungen' (Bestellnummer, Kundennummer, Bestelldatum, Betrag). Geben Sie die Kundennummer, den Namen des Kunden und die Summe aller Bestellbeträge pro Kunde aus."
-}

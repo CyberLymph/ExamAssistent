@@ -1,2 +1,0 @@
-SQL-Joins in relationalen Datenbanken
-Erkläre den Unterschied zwischen INNER JOIN und LEFT JOIN. Gib jeweils ein Beispiel mit Tabellenstruktur und Abfrage an.

@@ -1,2 +1,0 @@
-Erkläre das JSON-Schema für Datenbanktabellen
-Beschreibe die wichtigsten Komponenten eines JSON-Schemas zur Definition von Datenbanktabellen. Gehe dabei auf Datentypen, Constraints und Beziehungen ein.

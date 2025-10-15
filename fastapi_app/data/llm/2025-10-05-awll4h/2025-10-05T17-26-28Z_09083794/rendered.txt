@@ -1,2 +1,0 @@
-Verbundoperatoren in SQL
-Erkläre die Unterschiede zwischen den Verbundoperatoren UNION, UNION ALL, INTERSECT und EXCEPT in SQL. Gib jeweils ein Beispiel an.

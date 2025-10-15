@@ -1,2 +1,0 @@
-SQL-Abfrage zur Datenbankanalyse
-Schreiben Sie eine SQL-Abfrage, die alle Kunden aus einer Tabelle 'kunden' mit dem Nachnamen 'Müller' und einem Alter über 30 ausgibt. Die Ergebnisse sollen nach dem Vor- und Nachnamen sortiert werden.

@@ -1,2 +1,0 @@
-SQL-Joins: Kundenbestellungen analysieren
-Gegeben sind zwei Tabellen: `kunden` (id, name, ort) und `bestellungen` (id, kunde_id, betrag, datum). Schreiben Sie eine SQL-Abfrage, die für jeden Kunden den Gesamtbetrag aller Bestellungen und die Anzahl der Bestellungen ausgibt. Sortieren Sie die Ergebnisse nach dem Gesamtbetrag absteigend. Erklären Sie kurz, welche Join-Art Sie verwenden und warum.

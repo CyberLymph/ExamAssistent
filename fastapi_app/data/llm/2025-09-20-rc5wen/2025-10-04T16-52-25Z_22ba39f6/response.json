@@ -1,6 +1,0 @@
-{
-  "title": "SQL-Joins in relationalen Datenbanken",
-  "topic": "Datenbanken",
-  "points_total": 5,
-  "task": "Erkläre den Unterschied zwischen INNER JOIN und LEFT JOIN anhand eines Beispiels mit zwei Tabellen."
-}

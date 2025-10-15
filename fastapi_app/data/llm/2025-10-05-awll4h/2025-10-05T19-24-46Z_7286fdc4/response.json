@@ -1,6 +1,0 @@
-{
-  "title": "Analyse von Remember-Mechanismen in Webanwendungen",
-  "topic": "Webentwicklung",
-  "points_total": 20,
-  "task": "Erläutern Sie die Sicherheitsrisiken von Remember-Me-Funktionen in Webanwendungen. Gehen Sie dabei auf mögliche Angriffsvektoren ein und beschreiben Sie mindestens drei Gegenmaßnahmen, die diese Risiken minimieren können."
-}

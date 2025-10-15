@@ -1,2 +1,0 @@
-Verbundsoperatoren in der Logik
-Erkläre den Unterschied zwischen den Verbundsoperatoren 'und' (∧) und 'oder' (∨) anhand eines Beispiels.

@@ -1,2 +1,0 @@
-Grundlagen von SQL: Datenbank-Schemas und Konzepte
-Erkläre die Unterschiede zwischen relationalen und nicht-relationalen Datenbanken. Beschreibe jeweils ein typisches Anwendungsbeispiel und nenne Vor- und Nachteile der beiden Ansätze.

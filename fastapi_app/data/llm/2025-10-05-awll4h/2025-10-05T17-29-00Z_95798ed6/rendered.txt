@@ -1,6 +1,0 @@
-Datenbankkonzepte: Schemata und Ansichten
-Welches Schema zeigt die logische Struktur einer Datenbank aus Sicht der Benutzer?
-1) Externes Schema
-2) Internes Schema
-3) Konzeptuelles Schema
-4) Visuelles Schema

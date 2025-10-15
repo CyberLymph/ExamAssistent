@@ -1,2 +1,0 @@
-Mendelsche Vererbung: Genotypen berechnen
-Ein heterozygoter Elternteil (Aa) kreuzt mit einem homozygoten rezessiven Elternteil (aa). Berechne die Wahrscheinlichkeit für den Nachwuchs, homozygot dominant (AA) zu sein.

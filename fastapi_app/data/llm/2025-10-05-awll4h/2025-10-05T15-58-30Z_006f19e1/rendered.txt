@@ -1,2 +1,0 @@
-SQL-Joins in der Praxis
-Erkläre den Unterschied zwischen INNER JOIN und LEFT JOIN anhand eines Beispiels mit zwei Tabellen.

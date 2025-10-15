@@ -1,6 +1,0 @@
-Grundlagen der Algebra: Lineare Gleichungen
-Welche Lösung hat die Gleichung 3x + 5 = 20?
-1) x = 5
-2) x = 15
-3) x = 2
-4) x = 10

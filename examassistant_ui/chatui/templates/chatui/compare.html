@@ -1,0 +1,184 @@
+{% load static %}
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ExamAssistant · Wizard</title>
+    <link rel="stylesheet" href="{% static 'chatui/styles.css' %}" />
+
+    <style>
+      :root {
+        --gap: 16px;
+        --border: #ddd;
+        --muted: #666;
+        --primary: #0056b3;
+        --radius: 10px;
+        --card-bg: #fff;
+        --feedback-bg: #f5f8ff;
+      }
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        font-family: system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+        background: #fafafa;
+      }
+
+      .page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .wizard {
+        width: min(1000px, 96vw);
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .title { font-size: 18px; font-weight: 700; margin: 0; }
+      .progress { width: 240px; height: 8px; background: #eee; border-radius: 999px; overflow: hidden; }
+      .progress > div { height: 100%; width: 0; background: var(--primary); transition: width .25s; }
+
+      .step {
+        border: 1px solid var(--border);
+        background: #f9f9f9;
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 14px;
+      }
+
+      .badge { background: var(--primary); color: #fff; border-radius: 999px; padding: 2px 8px; font-size: 12px; }
+      .muted { color: var(--muted); font-size: 13px; }
+      .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+      .feedback { font-size: 13px; color: #198754; }
+      .btn { background: var(--primary); color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; }
+      .btn[disabled]{ opacity: .6; cursor: not-allowed; }
+      .btn:hover { background: #004099; }
+      .btn-ghost { background: transparent; color: var(--primary); border: none; cursor: pointer; }
+      .btn-ghost:hover { text-decoration: underline; }
+      .btn-success { background: #198754; } .btn-success:hover { background: #146c43; }
+      .preview { border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 10px; margin-top: 10px; max-height: 40vh; overflow: auto; white-space: pre-wrap; font-size: 14px; }
+      .nav { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+      .hidden { display: none !important; }
+
+      /* STEP 3 Layout */
+      #gridDetail {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 12px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        font-size: 14px;
+      }
+      .feedback-box {
+        background: var(--feedback-bg);
+        border-left: 4px solid var(--primary);
+        padding: 8px 10px;
+        border-radius: 8px;
+        margin-top: 8px;
+      }
+      pre { white-space: pre-wrap; font-family: inherit; line-height: 1.5; }
+    </style>
+  </head>
+
+  <body>
+    <main class="page">
+      <section class="wizard" id="wizardRoot">
+        <div class="header">
+          <h1 class="title">Einseitiger Wizard</h1>
+          <div class="progress"><div id="progressBar"></div></div>
+        </div>
+
+        <!-- STEP 1 -->
+        <div class="step" id="step1">
+          <h2><span class="badge">1</span> Lösung-Generator</h2>
+          <p class="muted">Bitte lade deine Aufgaben-PDF hoch.</p>
+          <div class="row">
+            <input id="genFile" type="file" accept="application/pdf" />
+            <span id="genFeedback" class="feedback"></span>
+          </div>
+          <div class="row" style="margin-top:8px;">
+            <button id="btnGenPreview" class="btn">Vorschau erzeugen</button>
+          </div>
+          <div id="genPreview" class="preview hidden"></div>
+          <div id="genInfo" class="muted" style="margin-top:6px;"></div>
+          <div class="nav">
+            <button id="toStep2" class="btn" disabled>Weiter ➜</button>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step hidden" id="step2">
+          <h2><span class="badge">2</span> Vergleichsanalyse</h2>
+          <p class="muted">Lade Musterlösung und Studentenlösung.</p>
+          <div class="row"><input id="cmpFile1" type="file" accept="application/pdf" /><span id="cmpFb1" class="feedback"></span> Musterlösung </div>
+          <div class="row"><input id="cmpFile2" type="file" accept="application/pdf" /><span id="cmpFb2" class="feedback"></span> Studentenlösung </div>
+          <div class="row" style="margin-top:12px;"><button id="btnQuickCompare" class="btn btn-secondary">⚡ Quick-Vergleich</button></div>
+          <div id="compareResult" class="preview hidden"></div>
+          <div class="nav">
+            <button id="backTo1" class="btn-ghost">⬅️ Zurück</button>
+            <button id="toStep3" class="btn btn-success hidden">Weiter ➜ Detaillierte Analyse</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step hidden" id="step3">
+          <h2><span class="badge">3</span> Detaillierte Analyse</h2>
+          <p class="muted">Hier siehst du den tiefgehenden Vergleich mit Feedback & Bloom-Taxonomie.</p>
+
+          <div id="loadingDetail">⏳ Starte detaillierte Analyse...</div>
+
+          <div id="metaDetail" class="hidden">
+            <b>Gesamtähnlichkeit:</b> <span id="simScore">–</span><br />
+            <b>Lesbarkeitsgrad (SL):</b> <span id="readLevel">–</span>
+          </div>
+
+          <div id="pagerDetail" class="hidden" style="display:flex;justify-content:space-between;margin:8px 0;">
+            <button id="btnPrev" class="btn-ghost" disabled>⬅️ Zurück</button>
+            <div>Seite <span id="pageNow">1</span>/<span id="pageMax">1</span></div>
+            <button id="btnNext" class="btn">Weiter ➜</button>
+          </div>
+
+          <div id="gridDetail" class="hidden">
+            <div>
+              <h4>📘 Musterlösung</h4>
+              <div id="colML"></div>
+            </div>
+            <div>
+              <h4>📝 Studentenlösung & Feedback</h4>
+              <div id="colSL"></div>
+            </div>
+          </div>
+
+          <div id="endMsg" class="hidden" style="margin-top:10px;color:green;font-weight:600;">✅ Ende – alle Aufgaben angezeigt.</div>
+        </div>
+      </section>
+    </main>
+
+    <script defer src="{% static 'chatui/compare.js' %}?v=20251008"></script>
+  </body>
+</html>
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'chatui/styles.css' %}?v=20251006-4">
+{% endblock %}

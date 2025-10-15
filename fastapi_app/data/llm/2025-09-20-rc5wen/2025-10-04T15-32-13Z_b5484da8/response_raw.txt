@@ -1,8 +1,0 @@
-```json
-{
-  "title": "Erkläre die Unterschiede zwischen INNER JOIN, LEFT JOIN und RIGHT JOIN",
-  "topic": "Datenbanken",
-  "points_total": 20,
-  "task": "Vergleiche die drei Join-Typen anhand eines Beispiels und beschreibe, wann welcher Join verwendet werden sollte. Gehe dabei auch auf die Auswirkungen auf die Ergebnismenge ein."
-}
-```

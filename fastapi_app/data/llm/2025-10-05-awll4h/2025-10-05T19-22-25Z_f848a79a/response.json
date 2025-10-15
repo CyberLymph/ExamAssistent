@@ -1,6 +1,0 @@
-{
-  "title": "SQL-Abfrage zur Datenbankanalyse",
-  "topic": "Datenbanken",
-  "points_total": 15,
-  "task": "Schreiben Sie eine SQL-Abfrage, die die durchschnittlichen Verkäufe pro Produktkategorie für das letzte Quartal berechnet und die Ergebnisse nach Kategorie absteigend sortiert."
-}

@@ -1,2 +1,0 @@
-Isomorphie von Gruppen beweisen
-Gegeben seien die Gruppen (ℤ, +) und (2ℤ, +). Zeigen Sie, dass diese Gruppen isomorph sind, indem Sie einen Isomorphismus explizit angeben und die Gruppenaxiome überprüfen.

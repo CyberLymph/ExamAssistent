@@ -1,2 +1,0 @@
-Hauptachsentransformation einer Matrix
-Gegeben sei die symmetrische Matrix A = [[3, 2], [2, 6]]. Berechne die Hauptachsentransformation, indem du die Eigenwerte und Eigenvektoren bestimmst und die Matrix diagonalisierst.

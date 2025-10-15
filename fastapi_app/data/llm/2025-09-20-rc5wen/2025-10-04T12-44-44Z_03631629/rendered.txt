@@ -1,2 +1,0 @@
-Aufgabenplanung mit Deadlines
-Ein Unternehmen hat drei Projekte mit unterschiedlichen Deadlines und Ressourcenanforderungen. Beschreiben Sie, wie Sie die Projekte priorisieren und einen Zeitplan erstellen würden, um alle Deadlines einzuhalten. Gehen Sie dabei auf mögliche Konflikte und Lösungsansätze ein.

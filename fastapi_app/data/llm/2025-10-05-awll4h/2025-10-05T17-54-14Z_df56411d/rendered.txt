@@ -1,6 +1,0 @@
-Verbundsoperatoren in der Logik
-Welcher Verbundsoperator verbindet zwei Aussagen so, dass das Ergebnis wahr ist, wenn mindestens eine der Aussagen wahr ist?
-1) Konjunktion
-2) Disjunktion
-3) Negation
-4) Implikation

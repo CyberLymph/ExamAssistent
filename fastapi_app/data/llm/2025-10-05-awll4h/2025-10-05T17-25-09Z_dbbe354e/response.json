@@ -1,6 +1,0 @@
-{
-  "title": "Schwierige Aufgabe zu SQL-Joins",
-  "topic": "Datenbanken",
-  "points_total": 25,
-  "task": "Erkläre den Unterschied zwischen INNER JOIN und LEFT JOIN anhand eines Beispiels mit drei Tabellen. Zeige, wie sich die Ergebnisse unterscheiden, wenn eine der Tabellen keine passenden Zeilen enthält."
-}

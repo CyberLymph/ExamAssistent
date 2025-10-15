@@ -1,6 +1,0 @@
-SQL JOINs verstehen
-Welcher JOIN-Typ gibt alle Zeilen der linken Tabelle zurück, auch wenn keine Übereinstimmung in der rechten Tabelle existiert?
-1) INNER JOIN
-2) LEFT JOIN
-3) RIGHT JOIN
-4) FULL JOIN
