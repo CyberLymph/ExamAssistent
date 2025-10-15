@@ -1,0 +1,14 @@
+[
+  {
+    "run_id": "20251015T210821Z_0434c344",
+    "text": "Berechnung der Beschleunigung\nEin Auto beschleunigt gleichmäßig von 0 m/s auf 20 m/s in 10 Sekunden. Berechne die Beschleunigung.",
+    "json": {
+      "title": "Berechnung der Beschleunigung",
+      "topic": "Thema 1",
+      "points_total": 5,
+      "task": "Ein Auto beschleunigt gleichmäßig von 0 m/s auf 20 m/s in 10 Sekunden. Berechne die Beschleunigung."
+    },
+    "schema_type": "default",
+    "accepted_at": "2025-10-15T21:08:28Z"
+  }
+]

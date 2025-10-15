@@ -1,0 +1,35 @@
+Aufgabe 1:
+[Fragetext]
+
+Antwort 1:
+Eine tierische Zelle besteht aus einer Zellmembran, die die Zelle umgibt und als selektive Barriere fungiert, sowie dem Zytoplasma, das die Organellen enthält. Der Zellkern beherbergt die DNA und steuert die Zellaktivitäten durch Transkription und Replikation. Mitochondrien sind die „Kraftwerke“ der Zelle und produzieren ATP durch Zellatmung. Diese läuft in drei Schritten ab: Glykolyse (im Zytoplasma), Citratzyklus (Mitochondrienmatrix) und Atmungskette (innere Mitochondrienmembran), wobei Elektronen über die Atmungskette transportiert werden, um ATP zu synthetisieren.
+
+Aufgabe 2:
+[Fragetext]
+
+Antwort 2:
+2) Adipozyten
+
+Aufgabe 3:
+[Fragetext]
+
+Antwort 3:
+Homologe Rekombination repariert DNA-Schäden unter Verwendung einer intakten DNA-Sequenz als Vorlage, was zu präzisen Reparaturen führt. NHEJ verbindet DNA-Enden ohne Vorlage, was oft zu Insertionen oder Deletionen führt. Beide Prozesse erhöhen die genetische Vielfalt: Homologe Rekombination durch Rekombination, NHEJ durch Mutationen. Letzteres ist fehleranfälliger und kann schädliche Mutationen verursachen.
+
+Aufgabe 4:
+[Fragetext]
+
+Antwort 4:
+0 % (25 % Aa, 25 % aa, 50 % aa)
+
+Aufgabe 5:
+[Fragetext]
+
+Antwort 5:
+Mutationen erzeugen genetische Variabilität, genetische Drift verändert Häufigkeiten zufällig, und natürliche Selektion begünstigt vorteilhafte Anpassungen. Allopatrische Artbildung erfolgt durch geografische Trennung, sympatrische Artbildung ohne räumliche Barrieren. Die Geschwindigkeit hängt von Mutationsraten, Selektionsdruck und Populationsgröße ab.
+
+Aufgabe 6:
+[Fragetext]
+
+Antwort 6:
+2) Selektion

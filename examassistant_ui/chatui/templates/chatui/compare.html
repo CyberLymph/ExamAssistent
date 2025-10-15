@@ -38,32 +38,36 @@
   <div id="genInfo" class="muted" style="margin-top:6px;"></div>
 </div>
 
-    <!-- STEP 2 -->
-    <div class="step hidden" id="step2">
-      <h2><span class="badge">2</span> Vergleichsanalyse</h2>
-      <p class="muted">Lade Musterlösung und Studentenlösung.</p>
+<!-- STEP 2 -->
+<div class="step hidden" id="step2">
+  <div class="step-header">
+    <h2><span class="badge">2</span> Vergleichsanalyse</h2>
+  </div>
 
-      <div class="row">
-        <input id="cmpFile1" type="file" accept="application/pdf" />
-        <span id="cmpFb1" class="feedback"></span> Musterlösung
-      </div>
+  <p class="muted">Lade <b>Musterlösung</b> und <b>Studentenlösung</b>.</p>
 
-      <div class="row">
-        <input id="cmpFile2" type="file" accept="application/pdf" />
-        <span id="cmpFb2" class="feedback"></span> Studentenlösung
-      </div>
+  <div class="row">
+    <input id="cmpFile1" type="file" accept="application/pdf" />
+    <span id="cmpFb1" class="feedback"></span> Musterlösung
+  </div>
 
-      <div class="button-group">
-        <button id="btnQuickCompare" class="btn btn-secondary">⚡ Quick-Vergleich</button>
-      </div>
+  <div class="row">
+    <input id="cmpFile2" type="file" accept="application/pdf" />
+    <span id="cmpFb2" class="feedback"></span> Studentenlösung
+  </div>
 
-      <div id="compareResult" class="preview hidden"></div>
+  <!-- Buttons unten -->
+  <div class="button-group between" id="cmpButtons">
+    <button id="backTo1" class="btn-ghost">⬅️ Zurück</button>
+    <button id="btnQuickCompare" class="btn">⚡ Quick-Vergleich</button>
+  </div>
 
-      <div class="button-group">
-        <button id="backTo1" class="btn-ghost">⬅️ Zurück</button>
-        <button id="toStep3" class="btn btn-success hidden">Weiter ➜ Detaillierte Analyse</button>
-      </div>
-    </div>
+  <div id="compareResult" class="preview hidden"></div>
+
+  <div class="button-group end">
+    <button id="toStep3" class="btn btn-success hidden">Weiter ➜ Detaillierte Analyse</button>
+  </div>
+</div>
 
     <!-- STEP 3 -->
     <div class="step hidden" id="step3">
@@ -72,10 +76,17 @@
 
       <div id="loadingDetail">⏳ Starte detaillierte Analyse...</div>
 
-      <div id="metaDetail" class="hidden">
-        <b>Gesamtähnlichkeit:</b> <span id="simScore">–</span><br />
-        <b>Lesbarkeitsgrad (SL):</b> <span id="readLevel">–</span>
-      </div>
+   <div id="metaDetail" class="hidden">
+  <div class="info-card">
+    <h4>Gesamtähnlichkeit</h4>
+    <p id="simScore">–</p>
+  </div>
+  <div class="info-card">
+    <h4>Lesbarkeitsgrad (SL)</h4>
+    <p id="readLevel">–</p>
+  </div>
+</div>
+
 
       <div id="pagerDetail" class="hidden" style="display:flex;justify-content:space-between;margin:8px 0;">
         <button id="btnPrev" class="btn-ghost" disabled>⬅️ Zurück</button>

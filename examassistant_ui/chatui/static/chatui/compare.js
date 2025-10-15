@@ -57,7 +57,41 @@
   cmpFile1?.addEventListener("change",()=>cmpFb1.textContent=cmpFile1.files.length?`✅ ${cmpFile1.files[0].name}`:"");
   cmpFile2?.addEventListener("change",()=>cmpFb2.textContent=cmpFile2.files.length?`✅ ${cmpFile2.files[0].name}`:"");
 
-  const showCmpResult=(html)=>{cmpResult.innerHTML=html;show(cmpResult);};
+  // ---- Darkmode-kompatible Anzeige des Vergleichsergebnisses ----
+ const showCmpResult = (content) => {
+  if (!content.includes("<")) content = `<pre>${content}</pre>`;
+
+  content = content
+    .replace(/background[^:>]*:\s*[^;>]+;?/gi, "")
+    .replace(/color\s*:\s*(black|#000|rgb\s*\(0,\s*0,\s*0\)|#[0-2][0-9a-f]{2});?/gi, "")
+    .replace(/!important/gi, "")
+    .replace(/<span[^>]*>/gi, (m) => m.replace(/style="[^"]*"/gi, ""))
+    .replace(/<div[^>]*style="[^"]*background[^"]*"[^>]*>/gi, "<div>")
+    .replace(/<p[^>]*style="[^"]*background[^"]*"[^>]*>/gi, "<p>");
+
+  cmpResult.innerHTML = content;
+  cmpResult.classList.remove("hidden");
+
+  Object.assign(cmpResult.style, {
+    backgroundColor: "#141926",
+    color: "#f8fafc",
+    border: "1px solid var(--border)",
+    padding: "14px 16px",
+    borderRadius: "8px",
+    whiteSpace: "pre-wrap"
+  });
+
+  cmpResult.querySelectorAll("*").forEach((el) => {
+    el.style.backgroundColor = "transparent";
+    el.style.color = "#f8fafc";
+  });
+
+  cmpResult.querySelectorAll("pre").forEach((pre) => {
+    pre.style.backgroundColor = "transparent";
+    pre.style.color = "#f8fafc";
+    pre.style.border = "none";
+  });
+};
 
   async function runQuickCompare(){
     if(state.running)return;
@@ -73,8 +107,14 @@
       const data=await res.json();
       if(!res.ok) throw new Error(data.detail||"Fehler beim Vergleich.");
       if(data.mode==="quick"){
-        showCmpResult(`<b>⚡ Quick-Vergleich</b><br>Ähnlichkeit: ${(data.quick_similarity*100).toFixed(2)} %<br>Lesbarkeitsgrad: ${data.readability?.lesbarkeitsgrad||"-"}`);
+        const html = `
+          <b>⚡ Quick-Vergleich</b><br>
+          Ähnlichkeit: ${(data.quick_similarity*100).toFixed(2)} %<br>
+          Lesbarkeitsgrad: ${data.readability?.lesbarkeitsgrad||"-"}
+        `;
+        showCmpResult(html);
         state.quickDone=true;setProgress("75%");show(btnToStep3);
+        step2.classList.add("quickdone");
       }
     }catch(e){showCmpResult("❌ Fehler: "+e.message);}
     finally{state.running=false;btnQuickCompare.disabled=false;}
@@ -95,44 +135,95 @@
   const cleanText=(t)=>t?.replace(/Klausur:.*|Name:.*|Vorname:.*|Matrikelnummer:.*|Thema:.*|Gewichtung:.*|Erstellt am:.*|Themen & Gewichtungen.*|%/gi,"").trim();
 
   function renderAll(tasks, summary){
-    colML.innerHTML="";colSL.innerHTML="";
-    tasks.forEach((t, idx)=>{
-      const divider = `<hr style="border:1px solid #eee; margin:12px 0;">`;
+  colML.innerHTML="";colSL.innerHTML="";
+  tasks.forEach((t, idx)=>{
+    const divider = `<hr style="border:1px solid #eee; margin:12px 0;">`;
 
-      // Musterlösung
-      const ml=document.createElement("div");
-      ml.className="card";
-      ml.innerHTML = `
-        <b>${t.task_id || "Aufgabe"}</b>
-        <pre>${t.model_solution || "(Keine ML)"}</pre>
-        <div class="feedback-box">
-          <b>Lesbarkeitsgrad (ML):</b> ${summary.readability_metrics_model?.lesbarkeitsgrad || "-"}<br>
-          <b>Satzanzahl:</b> ${summary.readability_metrics_model?.satzanzahl || "-"}<br>
-          <b>Ø Satzlänge:</b> ${summary.readability_metrics_model?.satzlaenge || "-"}
-        </div>
-        ${idx < tasks.length - 1 ? divider : ""}
-      `;
-      colML.appendChild(ml);
+    // Musterlösung
+const ml = document.createElement("div");
+ml.className = "card";
+ml.innerHTML = `
+  <b>${t.task_id || "Aufgabe"}</b>
+  <pre style="margin-top:8px; line-height:1.6;">${t.model_solution || "(Keine Musterlösung)"}</pre>
+  ${idx < tasks.length - 1 ? divider : ""}
+`;
+colML.appendChild(ml);
 
-      // Studentenlösung
-      const sl=document.createElement("div");
-      sl.className="card";
-      sl.innerHTML = `
-        <b>${t.task_id || "Aufgabe"}</b>
-        <pre style="border-bottom:1px solid #ddd; padding-bottom:6px;">${cleanText(t.student_answer) || "(Keine SL)"}</pre>
-        <div class="feedback-box">
-          <b>Ähnlichkeit:</b> ${fmtPercent(t.similarity)}<br>
-          <b>Lesbarkeitsgrad (SL):</b> ${t.readability || "-"}<br>
-          <b>Satzanzahl:</b> ${t.satzanzahl || "-"}<br>
-          <b>Ø Satzlänge:</b> ${t.satzlänge || "-"}<br><br>
-          <b>Feedback:</b><br>${t.feedback?.replaceAll("\n","<br>") || "(Kein Feedback)"}
-        </div>
-        ${idx < tasks.length - 1 ? divider : ""}
-      `;
-      colSL.appendChild(sl);
-    });
-    endMsg.classList.remove("hidden");
+
+    // Studentenlösung
+    const sl=document.createElement("div");
+    sl.className="card";
+    sl.innerHTML = `
+      <b>${t.task_id || "Aufgabe"}</b>
+      <pre style="border-bottom:1px solid #ddd; padding-bottom:6px;">${cleanText(t.student_answer) || "(Keine SL)"}</pre>
+      <div class="feedback-box">
+        <b>Ähnlichkeit:</b> ${fmtPercent(t.similarity)}<br>
+        <b>Lesbarkeitsgrad (SL):</b> ${t.readability || "-"}<br>
+        <b>Satzanzahl:</b> ${t.satzanzahl || "-"}<br>
+        <b>Ø Satzlänge:</b> ${t.satzlänge || "-"}<br><br>
+        <b>Feedback:</b><br>${t.feedback?.replaceAll("\n","<br>") || "(Kein Feedback)"}
+      </div>
+      ${idx < tasks.length - 1 ? divider : ""}
+    `;
+    colSL.appendChild(sl);
+  });
+
+  // === Hover-Popup Setup (verbesserte Version mit Scrollfix) ===
+// === Hover-Popup Setup (fixiert, scroll- und hoverbar) ===
+const popup = document.createElement("div");
+popup.className = "feedback-popup";
+document.body.appendChild(popup);
+
+let activeCard = null;
+
+const showPopup = (evt, html) => {
+  popup.innerHTML = html;
+  popup.style.display = "block";
+  popup.style.position = "fixed"; // bleibt am Bildschirm, nicht an der Maus
+  const rect = evt.currentTarget.getBoundingClientRect();
+
+  // Positionierung rechts neben der Karte, aber innerhalb des Viewports
+  const left = Math.min(window.innerWidth - 450, rect.right + 20);
+  const top = Math.max(60, Math.min(rect.top, window.innerHeight - popup.offsetHeight - 20));
+
+  popup.style.left = `${left}px`;
+  popup.style.top = `${top}px`;
+  activeCard = evt.currentTarget;
+};
+
+const hidePopup = (e) => {
+  // Popup nur schließen, wenn Maus NICHT über Karte ODER Popup ist
+  if (
+    !popup.contains(e.relatedTarget) &&
+    !activeCard?.contains(e.relatedTarget)
+  ) {
+    popup.style.display = "none";
+    activeCard = null;
   }
+};
+
+// Event-Delegation für alle Studentenkarten
+colSL.querySelectorAll(".card").forEach((card) => {
+  const fb = card.querySelector(".feedback-box");
+  if (!fb) return;
+  const html = fb.innerHTML;
+  fb.style.display = "none";
+
+  card.addEventListener("mouseenter", (e) => showPopup(e, html));
+  card.addEventListener("mouseleave", hidePopup);
+});
+
+// Popup verschwindet, wenn man selbst das Popup verlässt
+popup.addEventListener("mouseleave", (e) => {
+  if (!activeCard?.contains(e.relatedTarget)) {
+    popup.style.display = "none";
+    activeCard = null;
+  }
+});
+
+
+}
+
 
   async function loadDetailed(chat_id,run_id){
     hide(step2);show(step3);setProgress("90%");

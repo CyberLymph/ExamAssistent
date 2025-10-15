@@ -1,0 +1,41 @@
+Aufgabe 1:
+Aufbau und Funktion von Zellen
+Beschreiben Sie den grundlegenden Aufbau einer tierischen Zelle und erklären Sie die Funktionen der Zellmembran, des Zellkerns und der Mitochondrien. Erläutern Sie zudem, wie die Zellatmung in den Mitochondrien abläuft.
+
+Antwort 1:
+Eine tierische Zelle besteht aus einer Zellmembran, die die Zelle umgibt und als selektive Barriere fungiert, sowie einem Zellkern, der die genetische Information (DNA) enthält und die Zellaktivitäten steuert. Die Mitochondrien sind die „Kraftwerke“ der Zelle und produzieren durch Zellatmung (Atmungskette) ATP. Die Zellatmung umfasst Glykolyse, Citratzyklus und Atmungskette, wobei in den Mitochondrien Elektronen über die Atmungskette transportiert werden, um ATP zu synthetisieren.
+
+Aufgabe 2:
+Zelltypen und ihre Funktionen
+Welcher Zelltyp ist für die Speicherung von Fett verantwortlich? 1) Erythrozyten 2) Adipozyten 3) Neurozyten 4) Fibroblasten Thema: Genetik Gewichtung: 30 Punkte
+
+Antwort 2:
+2) Adipozyten
+
+Aufgabe 3:
+Genetische Vererbung und Mutation
+Erläutern Sie die Unterschiede zwischen homologer Rekombination und nicht-homologer Endverknüpfung (NHEJ) bei der DNA-Reparatur. Diskutieren Sie die Konsequenzen beider Prozesse für die genetische Vielfalt und die Entstehung von Mutationen.
+
+Antwort 3:
+Homologe Rekombination repariert DNA-Schäden unter Verwendung einer intakten DNA-Sequenz als Vorlage, was zu präzisen Reparaturen führt und genetische Vielfalt durch Crossing-over erhöht. NHEJ verbindet DNA-Enden ohne Vorlage, was oft zu Mutationen führt, da Basenpaare verloren gehen oder eingefügt werden. NHEJ ist schneller, aber fehleranfälliger, während homologe Rekombination exakter, aber langsamer ist.
+
+Aufgabe 4:
+Mendelsche Vererbung: Genotypen berechnen
+Ein heterozygoter Elternteil (Aa) kreuzt mit einem homozygoten rezessiven Elternteil (aa). Berechne die Wahrscheinlichkeit für den Nachwuchs, homozygot dominant (AA) zu sein. Thema: Evolution Gewichtung: 40 Punkte
+
+Antwort 4:
+Die Wahrscheinlichkeit beträgt 0 %, da der homozygote rezessive Elternteil (aa) nur das Allel „a“ weitergibt. Der Nachwuchs kann nur Aa (heterozygot) oder aa (homozygot rezessiv) sein.
+
+Aufgabe 5:
+Evolutionäre Mechanismen und ihre Auswirkungen
+Erläutern Sie die Rolle von Mutationen, genetischer Drift und natürlicher Selektion bei der Entstehung neuer Arten. Gehen Sie dabei auf die Unterschiede zwischen allopatrischer und sympatrischer Artbildung ein und diskutieren Sie, welche Faktoren die Geschwindigkeit der Artbildung beeinflussen können.
+
+Antwort 5:
+Mutationen erzeugen genetische Variationen, genetische Drift verändert Häufigkeiten zufällig, und natürliche Selektion begünstigt vorteilhafte Anpassungen. Allopatrische Artbildung erfolgt durch geografische Trennung, während sympatrische Artbildung ohne räumliche Trennung stattfindet. Faktoren wie Mutationsrate, Selektionsdruck und Populationsgröße beeinflussen die Geschwindigkeit der Artbildung.
+
+Aufgabe 6:
+Evolution: Anpassung von Lebewesen
+Welcher Prozess beschreibt die Anpassung von Lebewesen an ihre Umwelt über Generationen? 1) Mutation 2) Selektion 3) Vererbung 4) Reproduktion
+
+Antwort 6:
+2) Selektion

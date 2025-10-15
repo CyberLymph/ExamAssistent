@@ -1,0 +1,41 @@
+Aufgabe 1:
+Aufbau und Funktion von Zellen
+Beschreiben Sie den grundlegenden Aufbau einer tierischen Zelle und erklären Sie die Funktionen der Zellmembran, des Zellkerns und der Mitochondrien. Erläutern Sie zudem, wie die Zellatmung in den Mitochondrien abläuft.
+
+Antwort 1:
+Eine tierische Zelle besteht aus einer Zellmembran, die die Zelle umgibt und als selektive Barriere fungiert, sowie einem Zellkern, der die DNA enthält und die Zellaktivitäten steuert. Die Mitochondrien sind die „Kraftwerke“ der Zelle und sind für die Energiegewinnung durch Zellatmung verantwortlich. Die Zellatmung umfasst Glykolyse, Citratzyklus und Atmungskette, wobei ATP als Energieträger entsteht.
+
+Aufgabe 2:
+Zelltypen und ihre Funktionen
+Welcher Zelltyp ist für die Speicherung von Fett verantwortlich? 1) Erythrozyten 2) Adipozyten 3) Neurozyten 4) Fibroblasten Thema: Genetik Gewichtung: 30 Punkte
+
+Antwort 2:
+2) Adipozyten
+
+Aufgabe 3:
+Genetische Vererbung und Mutation
+Erläutern Sie die Unterschiede zwischen homologer Rekombination und nicht-homologer Endverknüpfung (NHEJ) bei der DNA-Reparatur. Diskutieren Sie die Konsequenzen beider Prozesse für die genetische Vielfalt und die Entstehung von Mutationen.
+
+Antwort 3:
+Homologe Rekombination repariert DNA-Schäden unter Verwendung einer intakten DNA-Sequenz als Vorlage, was zu präzisen Reparaturen führt. NHEJ verbindet DNA-Enden ohne Vorlage, was oft zu Mutationen führt. Homologe Rekombination erhöht die genetische Vielfalt durch Rekombination, während NHEJ häufig Mutationen verursacht.
+
+Aufgabe 4:
+Mendelsche Vererbung: Genotypen berechnen
+Ein heterozygoter Elternteil (Aa) kreuzt mit einem homozygoten rezessiven Elternteil (aa). Berechne die Wahrscheinlichkeit für den Nachwuchs, homozygot dominant (AA) zu sein. Thema: Evolution Gewichtung: 40 Punkte
+
+Antwort 4:
+0 % (25 % Aa, 50 % aa, 25 % Aa)
+
+Aufgabe 5:
+Evolutionäre Mechanismen und ihre Auswirkungen
+Erläutern Sie die Rolle von Mutationen, genetischer Drift und natürlicher Selektion bei der Entstehung neuer Arten. Gehen Sie dabei auf die Unterschiede zwischen allopatrischer und sympatrischer Artbildung ein und diskutieren Sie, welche Faktoren die Geschwindigkeit der Artbildung beeinflussen können.
+
+Antwort 5:
+Mutationen schaffen genetische Vielfalt, genetische Drift verändert Häufigkeiten zufällig, und natürliche Selektion begünstigt vorteilhafte Merkmale. Allopatrische Artbildung erfolgt durch geografische Trennung, sympatrische ohne. Faktoren wie Mutationsrate, Selektionsdruck und Populationsgröße beeinflussen die Geschwindigkeit.
+
+Aufgabe 6:
+Evolution: Anpassung von Lebewesen
+Welcher Prozess beschreibt die Anpassung von Lebewesen an ihre Umwelt über Generationen? 1) Mutation 2) Selektion 3) Vererbung 4) Reproduktion
+
+Antwort 6:
+2) Selektion
