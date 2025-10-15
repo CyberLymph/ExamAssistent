@@ -52,6 +52,17 @@ wrapper = MistralWrapper()
 comparator = AnswerComparator()
 readability_analyzer = ReadabilityAnalyzer()
 
+# ============================================================
+# CORS (Frontend-Port 8001)
+# ============================================================
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:8001", "http://localhost:8001"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 class OpenApiMessage(BaseModel):
     content: str

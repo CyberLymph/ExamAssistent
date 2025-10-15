@@ -8,6 +8,7 @@
 
    <link rel="stylesheet" href="{% static 'chatui/base.css' %}?v=20251006-1"/>
    <link rel="stylesheet" href="{% static 'chatui/styles.css' %}?v=20251006-5"/>
+   
     <link rel="icon" href="{% static 'chatui/favicon.ico' %}"/>
 
     {% block head_extra %}{% endblock %}
@@ -25,6 +26,8 @@
         <nav class="topnav">
           <a href="{% url 'chat' %}" class="{% block nav_chat %}{% endblock %}">Chat</a>
           <a href="{% url 'generator' %}" class="{% block nav_gen %}{% endblock %}">Aufgaben-Generator</a>
+          <a href="/compare" class="{% if request.path == '/compare' %}active{% endif %}">Vergleich</a>
+
         </nav>
       </header>
 

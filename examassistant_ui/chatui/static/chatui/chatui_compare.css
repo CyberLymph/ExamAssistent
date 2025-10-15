@@ -1,0 +1,222 @@
+
+
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.wizard {
+  width: min(1000px, 96vw);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.title { font-size: 18px; font-weight: 700; margin: 0; }
+.progress { width: 240px; height: 8px; background: #eee; border-radius: 999px; overflow: hidden; }
+.progress > div { height: 100%; width: 0; background: var(--primary); transition: width .25s; }
+
+.step {
+  border: 1px solid var(--border);
+  background: #141926;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 14px;
+}
+
+.badge { background: var(--primary); color: #fff; border-radius: 999px; padding: 2px 8px; font-size: 12px; }
+.muted { color: var(--muted); font-size: 13px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.feedback { font-size: 13px; color: #198754; }
+.btn { background: var(--primary); color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; }
+.btn[disabled]{ opacity: .6; cursor: not-allowed; }
+.btn:hover { background: #004099; }
+.btn-ghost { background: transparent; color: var(--primary); border: none; cursor: pointer; }
+.btn-ghost:hover { text-decoration: underline; }
+.btn-success { background: #198754; } 
+.btn-success:hover { background: #146c43; }
+.preview { border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 10px; margin-top: 10px; max-height: 40vh; overflow: auto; white-space: pre-wrap; font-size: 14px; }
+.nav { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+.hidden { display: none !important; }
+
+#gridDetail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  font-size: 14px;
+}
+.feedback-box {
+  background: var(--feedback-bg);
+  border-left: 4px solid var(--primary);
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+pre { white-space: pre-wrap; font-family: inherit; line-height: 1.5; }
+
+
+
+/* --- Button Group- */
+
+/* --- Button Group: finale Version --- */
+.step .button-group {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-top: 10px !important; /* näher an Upload */
+  padding-top: 6px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06); /* dezente Trennlinie */
+  width: 100% !important;
+}
+
+/* Einheitliches Button-Design */
+.step .button-group .btn {
+  min-width: 140px !important;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  line-height: 1.2 !important;
+  border: none !important;
+  color: #fff !important;
+  cursor: pointer !important;
+  background: linear-gradient(180deg, #3b82f6, #2563eb) !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  transition: all 0.2s ease;
+}
+
+.step .button-group .btn:hover:not([disabled]) {
+  background: linear-gradient(180deg, #5288ff, #2b6df1) !important;
+  transform: translateY(-1px);
+}
+
+.step .button-group .btn:active:not([disabled]) {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.step .button-group .btn[disabled] {
+  background: #2a2f45 !important;
+  color: #aaa !important;
+  cursor: not-allowed !important;
+  opacity: 0.7 !important;
+  box-shadow: none !important;
+}
+
+/* --- Layout-Korrektur für Step 1 Struktur --- */
+#step1 h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+#step1 .muted {
+  display: block;
+  margin-bottom: 8px;
+  margin-left: 28px; /* Text leicht einrücken */
+}
+
+#step1 .row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-left: 28px; /* gleiche Fluchtlinie wie Text */
+}
+
+/* Buttons bündig nach rechts unten */
+#step1 .button-group {
+  justify-content: flex-end !important;
+  margin-top: 12px !important;
+  padding-top: 8px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Uploadfeld optisch balancieren */
+#step1 input[type="file"] {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 6px;
+  color: #fff;
+}
+
+#step1 input[type="file"]:hover {
+  border-color: var(--primary);
+}
+
+/* Einheitliche vertikale Balance im Step */
+#step1 {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* --- Badge (Zahl im Kreis) perfekt zentrieren --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  width: 22px;          /* gleiche Höhe und Breite → echter Kreis */
+  height: 22px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  transform: translateY(1px); /* optische Korrektur, weil Ziffern leicht höher wirken */
+}
+
+#step1 .feedback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  margin-left: auto; /* nach rechts schieben */
+  color: #22c55e; /* freundliches Grün */
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  animation: fadeInFeedback 0.25s ease-out;
+}
+
+/* dezente Erscheinungs-Animation */
+@keyframes fadeInFeedback {
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* sorgt dafür, dass input und Feedback auf einer Linie bleiben */
+#step1 .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 10px;
+  margin-left: 28px;
+}
