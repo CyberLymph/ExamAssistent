@@ -66,7 +66,7 @@ python -m venv .venv // Do this inside root
 
 python -m pip install --upgrade pip
 
-pip install -r requirements.txt // In order to install plugins from requirements
+pip install -r requirements.txt // Inside fastapi_app
 
 
 ---
