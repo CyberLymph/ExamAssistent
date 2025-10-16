@@ -1,0 +1,2 @@
+SQL-Abfrage für Mitarbeiterdaten
+Schreiben Sie eine SQL-Abfrage, die alle Mitarbeiter mit einem Gehalt über 5000€ aus der Tabelle 'Mitarbeiter' ausgibt. Die Ausgabe soll nach Nachnamen sortiert sein.

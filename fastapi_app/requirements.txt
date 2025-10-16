@@ -1,17 +1,42 @@
-OpenAI
-python-dotenv
-fastapi
-uvicorn
-pydantic
-requests
-mistralai
-django
-pypdf
-pytest
-textstat
-reportlab
-lib
-pdfgen
-jsonschema
-python-docx
-docx
+# === Core Backend ===
+fastapi==0.115.0
+uvicorn==0.30.6
+pydantic==2.9.1
+pydantic-settings==2.5.2
+
+# === LLM / AI Integration ===
+openai==1.42.0
+tiktoken==0.7.0
+
+# === Data & NLP Utilities ===
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.5.2
+nltk==3.9.1
+textstat==0.7.4
+langdetect==1.0.9
+
+# === Document Export & Conversion ===
+python-docx==1.1.2
+reportlab==4.2.2
+pypandoc==1.13
+odfpy==1.4.1
+openpyxl==3.1.5
+python-pptx==0.6.23
+
+# === File Handling & Utilities ===
+aiofiles==24.1.0
+python-multipart==0.0.9
+requests==2.32.3
+
+# === Dev & Debug Tools ===
+httpx==0.27.0
+pytest==8.3.2
+black==24.8.0
+
+# === Optional Frontend Integration (Django UI) ===
+django==5.1.2
+django-cors-headers==4.4.0
+
+# === Visualization / Plotting ===
+matplotlib==3.9.2

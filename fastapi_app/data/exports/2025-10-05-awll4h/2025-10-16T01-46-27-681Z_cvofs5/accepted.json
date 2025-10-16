@@ -1,0 +1,14 @@
+[
+  {
+    "run_id": "20251016T014636Z_cb332ca2",
+    "text": "SQL-Abfrage für Mitarbeiterdaten\nSchreiben Sie eine SQL-Abfrage, die alle Mitarbeiter mit einem Gehalt über 5000€ aus der Tabelle 'Mitarbeiter' ausgibt. Die Ausgabe soll nach Nachnamen sortiert sein.",
+    "json": {
+      "title": "SQL-Abfrage für Mitarbeiterdaten",
+      "topic": "Thema 1",
+      "points_total": 15,
+      "task": "Schreiben Sie eine SQL-Abfrage, die alle Mitarbeiter mit einem Gehalt über 5000€ aus der Tabelle 'Mitarbeiter' ausgibt. Die Ausgabe soll nach Nachnamen sortiert sein."
+    },
+    "schema_type": "default",
+    "accepted_at": "2025-10-16T01:46:45Z"
+  }
+]
