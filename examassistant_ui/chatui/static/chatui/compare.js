@@ -261,6 +261,50 @@ function renderAll(tasks, summary) {
     `;
     colSL.appendChild(sl);
   });
+  // === Höhe der Karten angleichen & Linien exakt ausrichten ===
+requestAnimationFrame(() => {
+  const leftCards = colML.querySelectorAll(".card");
+  const rightCards = colSL.querySelectorAll(".card");
+
+  leftCards.forEach((ml, i) => {
+    const sl = rightCards[i];
+    if (!ml || !sl) return;
+
+    // gemessene Höhen
+    const mlRect = ml.getBoundingClientRect();
+    const slRect = sl.getBoundingClientRect();
+
+    const diff = mlRect.height - slRect.height;
+
+    // gleiche Höhe erzwingen, Linie am Ende bündig
+    if (diff > 0) {
+      const divider = sl.querySelector("hr:last-of-type");
+      if (divider) {
+        // absolute Positionierung innerhalb der Karte
+        divider.style.position = "relative";
+        divider.style.top = diff + "px";
+      } else {
+        const filler = document.createElement("div");
+        filler.style.height = diff + "px";
+        filler.style.opacity = "0";
+        sl.appendChild(filler);
+      }
+    } else if (diff < 0) {
+      const dividerL = ml.querySelector("hr:last-of-type");
+      if (dividerL) {
+        dividerL.style.position = "relative";
+        dividerL.style.top = Math.abs(diff) + "px";
+      }
+    }
+
+    // beide Karten auf gleiche optische Höhe bringen
+    const maxHeight = Math.max(mlRect.height, slRect.height);
+    ml.style.minHeight = maxHeight + "px";
+    sl.style.minHeight = maxHeight + "px";
+  });
+});
+
+  
 
 
 

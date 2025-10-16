@@ -1,0 +1,51 @@
+Beantworte präzise und sachlich nur die folgenden Aufgaben.
+Formatiere das Ergebnis **genau** in diesem Stil:
+
+Aufgabe 1:
+[Fragetext]
+
+Antwort 1:
+[Lösung]
+
+Aufgabe 2:
+[Fragetext]
+
+Antwort 2:
+[Lösung]
+
+usw.
+
+Gib **nur** die Fragen und Antworten zurück — keine Einleitung, keine Kommentare.
+
+Hier sind die Aufgaben:
+<<<
+Aufgabe 1:
+Aufbau und Funktion von Zellen Beschreiben Sie den grundlegenden Aufbau einer tierischen Zelle und erklären Sie die Funktionen der Zellmembran, des Zellkerns und der Mitochondrien. Erläutern Sie zudem, wie die Zellatmung in den Mitochondrien abläuft.
+
+Antwort 1:
+
+Aufgabe 2:
+Zelltypen und ihre Funktionen Welcher Zelltyp ist für die Speicherung von Fett verantwortlich? 1) Erythrozyten 2) Adipozyten 3) Neurozyten 4) Fibroblasten Thema: Genetik Gewichtung: 30 Punkte
+
+Antwort 2:
+
+Aufgabe 3:
+Genetische Vererbung und Mutation Erläutern Sie die Unterschiede zwischen homologer Rekombination und nicht-homologer Endverknüpfung (NHEJ) bei der DNA-Reparatur. Diskutieren Sie die Konsequenzen beider Prozesse für die genetische Vielfalt und die Entstehung von Mutationen.
+
+Antwort 3:
+
+Aufgabe 4:
+Mendelsche Vererbung: Genotypen berechnen Ein heterozygoter Elternteil (Aa) kreuzt mit einem homozygoten rezessiven Elternteil (aa). Berechne die Wahrscheinlichkeit für den Nachwuchs, homozygot dominant (AA) zu sein. Thema: Evolution Gewichtung: 40 Punkte
+
+Antwort 4:
+
+Aufgabe 5:
+Evolutionäre Mechanismen und ihre Auswirkungen Erläutern Sie die Rolle von Mutationen, genetischer Drift und natürlicher Selektion bei der Entstehung neuer Arten. Gehen Sie dabei auf die Unterschiede zwischen allopatrischer und sympatrischer Artbildung ein und diskutieren Sie, welche Faktoren die Geschwindigkeit der Artbildung beeinflussen können.
+
+Antwort 5:
+
+Aufgabe 6:
+Evolution: Anpassung von Lebewesen Welcher Prozess beschreibt die Anpassung von Lebewesen an ihre Umwelt über Generationen? 1) Mutation 2) Selektion 3) Vererbung 4) Reproduktion
+
+Antwort 6:
+>>>

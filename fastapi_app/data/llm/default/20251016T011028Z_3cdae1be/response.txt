@@ -1,0 +1,41 @@
+Aufgabe 1:
+[Fragetext]
+Beschreiben Sie den grundlegenden Aufbau einer tierischen Zelle und erklären Sie die Funktionen der Zellmembran, des Zellkerns und der Mitochondrien. Erläutern Sie zudem, wie die Zellatmung in den Mitochondrien abläuft.
+
+Antwort 1:
+Eine tierische Zelle besteht aus einer Zellmembran, dem Zytoplasma und verschiedenen Organellen. Die **Zellmembran** reguliert den Stoffaustausch und schützt die Zelle. Der **Zellkern** enthält die DNA und steuert die Zellaktivitäten. Die **Mitochondrien** sind die „Kraftwerke“ der Zelle und produzieren ATP durch Zellatmung. Diese läuft in drei Schritten ab: Glykolyse (im Zytoplasma), Citratzyklus (Mitochondrienmatrix) und Atmungskette (innere Mitochondrienmembran), wobei Elektronen über die Atmungskette transportiert werden und ATP entsteht.
+
+Aufgabe 2:
+[Fragetext]
+Welcher Zelltyp ist für die Speicherung von Fett verantwortlich? 1) Erythrozyten 2) Adipozyten 3) Neurozyten 4) Fibroblasten
+
+Antwort 2:
+2) Adipozyten
+
+Aufgabe 3:
+[Fragetext]
+Erläutern Sie die Unterschiede zwischen homologer Rekombination und nicht-homologer Endverknüpfung (NHEJ) bei der DNA-Reparatur. Diskutieren Sie die Konsequenzen beider Prozesse für die genetische Vielfalt und die Entstehung von Mutationen.
+
+Antwort 3:
+**Homologe Rekombination** nutzt homologe DNA-Sequenzen als Vorlage für präzise Reparatur, führt zu geringen Mutationsraten und fördert genetische Vielfalt durch Crossing-over. **NHEJ** verbindet DNA-Enden ohne Vorlage, ist schneller, aber fehleranfälliger, was zu Deletionen oder Insertionen führt. NHEJ erhöht die Mutationsrate, während homologe Rekombination stabiler ist.
+
+Aufgabe 4:
+[Fragetext]
+Ein heterozygoter Elternteil (Aa) kreuzt mit einem homozygoten rezessiven Elternteil (aa). Berechne die Wahrscheinlichkeit für den Nachwuchs, homozygot dominant (AA) zu sein.
+
+Antwort 4:
+Die Wahrscheinlichkeit beträgt 0 % (0/4), da der rezessive Elternteil (aa) nur das Allel „a“ weitergibt.
+
+Aufgabe 5:
+[Fragetext]
+Erläutern Sie die Rolle von Mutationen, genetischer Drift und natürlicher Selektion bei der Entstehung neuer Arten. Gehen Sie dabei auf die Unterschiede zwischen allopatrischer und sympatrischer Artbildung ein und diskutieren Sie, welche Faktoren die Geschwindigkeit der Artbildung beeinflussen können.
+
+Antwort 5:
+**Mutationen** erzeugen genetische Variationen, **genetische Drift** verändert Häufigkeiten zufällig, und **natürliche Selektion** begünstigt vorteilhafte Anpassungen. **Allopatrische Artbildung** erfolgt durch geografische Trennung, **sympatrische** ohne räumliche Barrieren. Die Geschwindigkeit hängt von Mutationsraten, Selektionsdruck, Populationsgröße und Reproduktionsrate ab.
+
+Aufgabe 6:
+[Fragetext]
+Welcher Prozess beschreibt die Anpassung von Lebewesen an ihre Umwelt über Generationen? 1) Mutation 2) Selektion 3) Vererbung 4) Reproduktion
+
+Antwort 6:
+2) Selektion
