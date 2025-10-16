@@ -38,6 +38,7 @@ ExamAssistent/
 - Python **3.10+**
 - Internetzugang (für Packages & APIs)
 - API-Key für **Mistral**
+- Ein C-Compiler existiert
 
 
 ##  Installation
