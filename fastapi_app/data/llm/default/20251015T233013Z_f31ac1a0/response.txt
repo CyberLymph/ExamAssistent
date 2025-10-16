@@ -1,0 +1,35 @@
+Aufgabe 1:
+[Fragetext]
+
+Antwort 1:
+Eine tierische Zelle besteht aus einer Zellmembran, die die Zelle umgibt und den Stoffaustausch reguliert, einem Zellkern, der die genetische Information (DNA) enthält und die Zellaktivitäten steuert, sowie Mitochondrien, die als „Kraftwerke“ der Zelle fungieren. Die Zellatmung in den Mitochondrien umfasst drei Hauptschritte: Glykolyse (im Zytoplasma), Citratzyklus und Atmungskette, wobei ATP als Energieträger entsteht.
+
+Aufgabe 2:
+[Fragetext]
+
+Antwort 2:
+2) Adipozyten
+
+Aufgabe 3:
+[Fragetext]
+
+Antwort 3:
+Homologe Rekombination repariert DNA-Schäden unter Verwendung einer intakten DNA-Sequenz als Vorlage, was zu präzisen Reparaturen führt und die genetische Vielfalt durch Rekombination erhöht. Nicht-homologe Endverknüpfung (NHEJ) verbindet DNA-Enden ohne Vorlage, was oft zu Mutationen führt. Beide Prozesse tragen zur genetischen Vielfalt bei, wobei NHEJ häufiger Mutationen verursacht.
+
+Aufgabe 4:
+[Fragetext]
+
+Antwort 4:
+0 % (da der homozygote rezessive Elternteil (aa) nur rezessive Allele (a) weitergibt, kann der Nachwuchs nicht AA sein).
+
+Aufgabe 5:
+[Fragetext]
+
+Antwort 5:
+Mutationen erzeugen genetische Variationen, genetische Drift verändert Häufigkeiten zufällig, und natürliche Selektion begünstigt vorteilhafte Anpassungen. Allopatrische Artbildung erfolgt durch geografische Trennung, sympatrische Artbildung ohne räumliche Barrieren. Die Geschwindigkeit der Artbildung hängt von Mutationsraten, Selektionsdruck und Reproduktionsraten ab.
+
+Aufgabe 6:
+[Fragetext]
+
+Antwort 6:
+2) Selektion

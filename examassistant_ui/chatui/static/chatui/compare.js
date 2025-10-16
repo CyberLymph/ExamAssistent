@@ -134,39 +134,139 @@
   const fmtPercent=(v)=>typeof v==="number"?(v*100).toFixed(1)+" %":"–";
   const cleanText=(t)=>t?.replace(/Klausur:.*|Name:.*|Vorname:.*|Matrikelnummer:.*|Thema:.*|Gewichtung:.*|Erstellt am:.*|Themen & Gewichtungen.*|%/gi,"").trim();
 
-  function renderAll(tasks, summary){
-  colML.innerHTML="";colSL.innerHTML="";
-  tasks.forEach((t, idx)=>{
+function renderAll(tasks, summary) {
+  colML.innerHTML = "";
+  colSL.innerHTML = "";
+
+  tasks.forEach((t, idx) => {
     const divider = `<hr style="border:1px solid #eee; margin:12px 0;">`;
 
-    // Musterlösung
-const ml = document.createElement("div");
-ml.className = "card";
-ml.innerHTML = `
-  <b>${t.task_id || "Aufgabe"}</b>
-  <pre style="margin-top:8px; line-height:1.6;">${t.model_solution || "(Keine Musterlösung)"}</pre>
-  ${idx < tasks.length - 1 ? divider : ""}
-`;
-colML.appendChild(ml);
+    // ===== Hilfsfunktionen =====
+    const getAnswer = (...keys) =>
+      keys.map((k) => t[k]).find((v) => v && v.trim && v.trim() !== "");
 
+    const getText = (...keys) =>
+      keys.map((k) => t[k]).find((v) => typeof v === "string" && v.trim() !== "");
 
-    // Studentenlösung
-    const sl=document.createElement("div");
-    sl.className="card";
+    const correct = getAnswer("correct_answer", "solution", "answer_correct", "model_solution");
+    const studentAns = getAnswer("student_answer", "student_choice", "answer_given", "student_result", "response");
+    const questionText = getText("question", "task_text", "prompt", "aufgabe");
+
+    // === Musterlösung ===
+    let modelContent = "";
+    if (t.task_type === "multiple_choice" && Array.isArray(t.options)) {
+      modelContent = `
+        ${questionText || ""}
+        <ul style="margin-top:6px; padding-left:20px;">
+          ${t.options.map((opt, i) => `
+            <li ${opt === correct ? 'style="color:#22c55e;font-weight:600;"' : ""}>
+              ${String.fromCharCode(65 + i)}) ${opt}
+            </li>`).join("")}
+        </ul>
+        <p style="margin-top:6px;"><b>✅ Richtige Antwort:</b> ${correct || "-"}</p>
+      `;
+    } else if (t.task_type === "calculation") {
+      modelContent = `
+        ${questionText || ""}
+        <p style="margin-top:6px;"><b>🔢 Lösung:</b> ${correct || "(Keine Musterlösung)"}</p>
+      `;
+    } else {
+      modelContent = `
+        <div class="solution-text">
+          ${
+            t.model_solution
+              ?.replace(/^\s+/gm, "")
+              ?.replace(/(\s*)(Antwort\s*\d*?:)/g, "<br><br>$2")
+              ?.replace(/(Antwort\s*\d*?:)(\s*)(?=[A-ZÄÖÜa-zäöü])/g, "$1<br>")
+              || "(Keine Musterlösung)"
+          }
+        </div>
+      `;
+    }
+
+    const ml = document.createElement("div");
+    ml.className = "card";
+    ml.innerHTML = `
+      <b>${t.task_id || "Aufgabe"}</b>
+      ${modelContent}
+      ${idx < tasks.length - 1 ? divider : ""}
+    `;
+    colML.appendChild(ml);
+
+    // === Studentenlösung ===
+    let studentContent = "";
+    if (t.task_type === "multiple_choice" && Array.isArray(t.options)) {
+      studentContent = `
+        ${questionText || ""}
+        <ul style="margin-top:6px; padding-left:20px;">
+          ${t.options.map((opt, i) => `
+            <li ${opt === studentAns ? 'style="color:#facc15;font-weight:600;"' : ""}>
+              ${String.fromCharCode(65 + i)}) ${opt}
+            </li>`).join("")}
+        </ul>
+        <p style="margin-top:6px;">
+          <b>🧩 Gewählte Antwort:</b> ${studentAns || "-"}<br>
+          ${
+            correct && studentAns
+              ? studentAns === correct
+                ? '<span style="color:#22c55e;">✅ korrekt</span>'
+                : '<span style="color:#ef4444;">❌ falsch</span>'
+              : ""
+          }
+        </p>
+      `;
+    } else if (t.task_type === "calculation") {
+      studentContent = `
+        ${questionText || ""}
+        <p style="margin-top:6px;">
+          <b>🧮 Berechnete Antwort:</b> ${studentAns || "(Keine Antwort)"}<br>
+          ${
+            correct && studentAns
+              ? studentAns.trim() === correct.trim()
+                ? '<span style="color:#22c55e;">✅ korrekt</span>'
+                : '<span style="color:#ef4444;">❌ falsch</span>'
+              : ""
+          }
+        </p>
+      `;
+    } else {
+      studentContent = `
+        <div class="solution-text">
+          ${
+            cleanText(studentAns)
+              ?.replace(/^\s+/gm, "")
+              ?.replace(/(\s*)(Antwort\s*\d*?:)/g, "<br><br>$2")
+              ?.replace(/(Antwort\s*\d*?:)(\s*)(?=[A-ZÄÖÜa-zäöü])/g, "$1<br>")
+              || "(Keine SL)"
+          }
+        </div>
+      `;
+    }
+
+    const sl = document.createElement("div");
+    sl.className = "card";
     sl.innerHTML = `
       <b>${t.task_id || "Aufgabe"}</b>
-      <pre style="border-bottom:1px solid #ddd; padding-bottom:6px;">${cleanText(t.student_answer) || "(Keine SL)"}</pre>
+      ${studentContent}
       <div class="feedback-box">
         <b>Ähnlichkeit:</b> ${fmtPercent(t.similarity)}<br>
         <b>Lesbarkeitsgrad (SL):</b> ${t.readability || "-"}<br>
         <b>Satzanzahl:</b> ${t.satzanzahl || "-"}<br>
         <b>Ø Satzlänge:</b> ${t.satzlänge || "-"}<br><br>
-        <b>Feedback:</b><br>${t.feedback?.replaceAll("\n","<br>") || "(Kein Feedback)"}
+        <b>Feedback:</b><br>${
+          t.feedback?.replaceAll("\n", "<br>") || "(Kein Feedback)"
+        }
       </div>
       ${idx < tasks.length - 1 ? divider : ""}
     `;
     colSL.appendChild(sl);
   });
+
+
+
+
+
+
 
   // === Hover-Popup Setup (verbesserte Version mit Scrollfix) ===
 // === Hover-Popup Setup (fixiert, scroll- und hoverbar) ===
